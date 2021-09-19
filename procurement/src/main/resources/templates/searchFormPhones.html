@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Phones</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+				
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/phones/list">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Search Phones</p>
+				          
+        			</div>
+      			</div>
+      			
+      			<div class="row">
+      			
+      				<div class="col">
+      				
+      					<label class="warning">Search by Phone Number</label>
+      				
+      					<form class="utilityForm" th:action="@{/procurement/phones/findByPhoneNum}" method="post">
+	                    
+		                    <div class="form-group">
+		                       	<label for="project" class="col-form-label">Phone Number<sup>*</sup>:</label> 
+		                       	<input type="text" name="stringSearch" placeholder="Project Number" required  size="15" maxlength="10"/>
+		                    </div>
+		                                        
+		                    
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		                      	
+	            		</form>
+      				
+      				</div>
+      				<div class="col">
+      				
+      					<label class="warning">Search by Site Number</label>
+      				
+      					<form class="utilityForm" th:action="@{/procurement/phones/findBySiteNum}" method="post">
+	                    
+		                   <div class="form-group">
+                       			<label for="site" class="col-form-label">String to Search :</label> 
+                       			<select name="stringSearch" required>
+                       				<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}" ></option>
+                       			</select>
+                    		</div>
+                                       
+		                    
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		                      	
+	            		</form>
+      				
+      				
+      				</div>
+     		
+     				<div class="col">
+      				
+      					<label class="warning">Search by Status</label>
+      				
+      					<form class="utilityForm" th:action="@{/procurement/phones/findByStatus}" method="post">
+	                    
+		                   <div class="form-group">
+                       			<label for="status" class="col-form-label">String to Search :</label> 
+                       			<select name="stringSearch" required>
+                       				<option th:each="status : ${statuses}" th:value="${status}" th:text="${status}" ></option>
+                       			</select>
+                    		</div>
+                                       
+		                    
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		                      	
+	            		</form>
+      				
+      				
+      				</div>
+      			</div>
+      			<div class="row"><hr></div>
+      			<div class="row">
+      				
+      				<div class="col">
+      				
+      					<label class="warning">Search by Type</label>
+      				
+      					<form class="utilityForm" th:action="@{/procurement/phones/findByKlass}" method="post">
+	                    
+		                   <div class="form-group">
+                       			<label for="klass" class="col-form-label">String to Search :</label> 
+                       			<select name="stringSearch" required>
+                       				<option th:each="klass : ${klasses}" th:value="${klass}" th:text="${klass}" ></option>
+                       			</select>
+                    		</div>
+                                       
+		                    
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		            
+	            		</form>
+      				
+      				</div>
+      				<div class="col">
+      				
+      					<label class="warning">Search by Site and Status</label>
+      				
+      					<form class="utilityForm" th:action="@{/procurement/phones/findBySiteStatus}" method="post">
+	                    
+		                    <div class="form-group">
+                       			<select name="stringSearch1" required>
+                       				<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}" ></option>
+                       			</select>
+                    		
+                       			<select name="stringSearch2" required>
+                       				<option th:each="status : ${statuses}" th:value="${status}" th:text="${status}" ></option>
+                       			</select>
+                    		</div>
+                    		
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		            
+	            		</form>
+      				
+      				</div>
+	  				
+  				</div>
+  				<div class="row"><hr></div>
+  				<div class="row">
+      				
+      				<div class="col">
+      				
+      					<label class="warning">Search by Site and Type</label>
+      				
+      					<form class="utilityForm" th:action="@{/procurement/phones/findBySiteKlass}" method="post">
+	                    
+		                    <div class="form-group">
+                       			<select name="stringSearch1" required>
+                       				<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}" ></option>
+                       			</select>
+                    		
+                       			<select name="stringSearch2" required>
+                       				<option th:each="klass : ${klasses}" th:value="${klass}" th:text="${klass}" ></option>
+                       			</select>
+                    		</div>
+                    		
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		            
+	            		</form>
+      				
+      				</div>
+      				
+      				<div class="col">
+      				
+      					<label class="warning">Search by extension</label>
+      				
+      					<form class="utilityForm" th:action="@{/procurement/phones/findByExtension}" method="post">
+	                    
+		                    <div class="form-group">
+		                       	<label for="project" class="col-form-label">Extension Number<sup>*</sup>:</label> 
+		                       	<input type="text" name="stringSearch" placeholder="Extension" required  size="6" maxlength="5"/>
+		                    </div>
+                    		
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		            
+	            		</form>
+      				
+      				</div>
+	  				
+  				</div>
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				

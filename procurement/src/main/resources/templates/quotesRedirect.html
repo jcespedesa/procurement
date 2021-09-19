@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Quotes</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
+			
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/Quotes/list">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+
+		<div class="container">
+ 
+  			<section th:if="${id}" class="page-section" id="mainBody">
+    			<div class="container"  th:each="quote : ${quote}">
+      				<div class="row" >
+        				<div class="col-lg-12 text-center">
+				          	<p class="navbar-brand" style="color:#880000;font-size:15px;">Results of uploading Pictures for:</p>
+				         	<div th:text="${quote.number}"></div>
+        				</div>
+      				</div>
+     			     			
+					<hr/>
+				
+					<div th:text="${message}"></div>
+				
+					<a th:href="@{/procurement/Quotes/upload/{id}(id=${quote.quoteid})}" class="btn btn-primary btn-sm"  title="Back to main view">Back to upload more documents</a>
+				
+  					<hr/>
+  				  				  						
+  				</div>
+  		
+  			</section>
+  		</div>
+  		
+  		<!-- Footer -->
+  		
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  		
+	</body>
+</html>			
+				
+				

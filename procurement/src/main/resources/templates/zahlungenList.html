@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Zahlungen List</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
+			
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			
+        		</li>
+            	<li>
+           			<a href="/procurement/zahlungen/select">Back</a>
+        		</li>
+            </ul>
+      	</nav>
+   		
+      			<div class="row">
+        			<div class="col-lg-12 ">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;cellspacing:5px;">
+				          	<label style="color:#000088;"><b>Zahlungen for : </b></label>
+				          	<label th:text="${monthLiteral}"></label>/<label th:text="${year}"></label>
+				          
+				          </p>
+				          
+        			</div>
+      			</div>
+     		
+  				<table class="table table-striped table-responsive-sm">
+  					<thead>
+  						<tr>
+  							<th style="color:#006400;font-size:12px;">#</th>
+  							<th style="color:#006400;font-size:12px;">Description</th>
+  							<th style="color:#006400;font-size:12px;">Provider</th>
+  							<th style="color:#006400;font-size:12px;">Account</th>
+  							<th style="color:#006400;font-size:12px;">Type</th>
+  							<th style="color:#006400;font-size:12px;">Frequency</th>
+  							<th style="color:#006400;font-size:12px;">Invoice</th>
+  							<th style="color:#006400;font-size:12px;">Date Sent to Finance</th>
+  							<th style="color:#006400;font-size:12px;">Voucher</th>
+  							<th style="color:#006400;font-size:12px;">Check Cut</th>
+  							
+  						</tr>
+  					</thead>
+  					<tbody>
+  						<tr th:each="period,itemNum : ${periods}">
+  							<td th:text="${itemNum.count}" style="font-size:12px;"></td>
+  							<td th:text="${period.description}" style="font-size:12px;"></td>
+  							<td th:text="${period.providerId}" style="font-size:12px;"></td>
+  							<td th:text="${period.account}" style="font-size:12px;"></td>
+  							<!--  <td th:text="${period.type}" style="font-size:12px;"></td>  -->
+  							
+  							<td>
+  								<span th:text="${period.type}" style="font-size:12px;font-weight:bold;"></span>
+  								
+  								<span th:if="${period.type=='Request'}">
+  									<span th:text="${period.reqNumber}" style="font-size:12px;color:tyle;"></span>
+  								</span>
+  								
+  								
+  								<span th:if="${period.type=='MPO'}">
+  									<span th:text="${period.poNum}" style="font-size:12px;color:tyle;"></span>
+  								</span>
+  								
+    							
+    						</td>
+  							
+  							<td th:if="${period.frequency}=='Monthly'" th:text="${period.frequency}" style="font-size:12px;"></td>
+  							<td th:if="${period.frequency}=='Quarterly'" th:text="${period.frequency}" style="font-size:12px;background-color: lightblue;"></td>
+  							<td th:if="${period.frequency}=='Annually'" th:text="${period.frequency}" style="font-size:12px;background-color: lightYellow;"></td>
+  							
+  							<td th:text="${period.invoiceDownloaded}" style="font-size:12px;color:#000088"></td>
+  							<td th:text="${period.dateSent}" style="font-size:12px;color:#880000;font-weight:bold;"></td>
+  							
+  							
+  							<!-- <td th:text="${period.voucher}" style="font-size:12px;color:#000088;font-weight:bold;"></td>  -->
+  							
+  							<td th:if="${period.voucher}=='Yes'" th:text="${period.voucher}" style="font-size:12px;color:#000088;font-weight:bold;"></td>
+  							<td th:unless="${period.voucher}=='Yes'" th:text="${period.voucher}" style="font-size:12px;font-weight:bold;color:#880000"></td>
+  							
+  							<td th:if="${period.checkCut}=='Yes'" th:text="${period.checkCut}" style="font-size:12px;color:#000088;font-weight:bold;"></td>
+  							<td th:unless="${period.checkCut}=='Yes'" th:text="${period.checkCut}" style="font-size:12px;font-weight:bold;background-color: #ffcc99"></td>
+  							  							  							  							
+  							<td>
+                            	<a th:href="@{/procurement/zahlungen/edit/{id}(id=${period.zahlungenid})}" class="btn btn-primary btn-sm">
+                                	<i class="fa fa-edit"></i>
+                                </a>
+                            </td>
+                            
+                                                                                   
+  						</tr>	
+  					</tbody>	
+  				</table>
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  		
+ 	</body>
+</html>			

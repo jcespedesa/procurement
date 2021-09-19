@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Projects</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+				
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/Projects/list">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Search Projects</p>
+				          
+        			</div>
+      			</div>
+      			
+      			<div class="row">
+      			
+      				<div class="col">
+      				
+      					<label class="warning">Search by Project Number</label>
+      				
+      					<form class="utilityForm" th:action="@{/procurement/Projects/findProjectNum}" method="post">
+	                    
+		                    <div class="form-group">
+		                       	<label for="project" class="col-form-label">Project Number<sup>*</sup>:</label> 
+		                       	<input type="text" name="stringSearch" placeholder="Project Number" required  size="10" maxlength="10"/>
+		                    </div>
+		                                        
+		                    
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		                      	
+	            		</form>
+      				
+      				</div>
+      				<div class="col">
+      				
+      					<label class="warning">Search by Project Name</label>
+      				
+      					<form class="utilityForm" th:action="@{/procurement/Projects/findProjectName}" method="post">
+	                    
+		                    <div class="form-group">
+		                       	<label for="project" class="col-form-label">String to search<sup>*</sup>:</label> 
+		                       	<input type="text" name="stringSearch" placeholder="Part of the name" required  size="15" maxlength="15"/>
+		                    </div>
+		                                        
+		                    
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		                      	
+	            		</form>
+      				
+      				
+      				</div>
+     		
+	  				
+  				</div>
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				

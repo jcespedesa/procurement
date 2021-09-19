@@ -1,0 +1,14 @@
+package com.trc.repositories;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import com.trc.entities.PeripheralsEntity;
+
+@Repository
+public interface PeripheralsRepository extends CrudRepository<PeripheralsEntity,Long>
+{
+	@Query("Select u.description from PeripheralsEntity u where u.peripheralNum=?1")
+	String getPeripheralByNumber(String peripheralNum);
+}

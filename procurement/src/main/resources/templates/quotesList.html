@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Quotes</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
+			
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/Quotes/edit">Add New</a>
+        		</li>
+            	<li>
+           			<a href="/procurement/index">Back</a>
+        		</li>
+        		<li>
+           			<a href="/procurement/Quotes/search">Search</a>
+        		</li>
+            </ul>
+      	</nav>
+   		
+      			<div class="row">
+        			<div class="col-lg-12" th:if="${stringSearch==null}">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Showing All Quotes</p><span th:text="${stringSearch}"></span>
+				   	</div>
+				   	<div class="col-lg-12" th:unless="${stringSearch==null}">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Results searching string: </p><span th:text="${stringSearch}"></span>
+				   	</div>
+      			</div>
+     		
+  				<table class="table table-striped table-responsive-md">
+  					<thead>
+  						<tr>
+  							<th style="color:#006400;font-size:12px;">#</th>
+  							<th style="color:#006400;font-size:12px;">Number</th>
+  							<th style="color:#006400;font-size:12px;">Item</th>
+  							<th style="color:#006400;font-size:12px;">Reference</th>
+  							<th style="color:#006400;font-size:12px;">Date Quote</th>
+  							<th style="color:#006400;font-size:12px;">Sent to</th>
+  							<th style="color:#006400;font-size:12px;">Requester</th>
+  							<th style="color:#006400;font-size:12px;">Edit</th>
+  							<th style="color:#006400;font-size:12px;">Delete</th>
+  							<th style="color:#006400;font-size:12px;">Assoc Docs</th>
+  						</tr>
+  					</thead>
+  					<tbody>
+  						<tr th:each="quote,itemNum : ${quotes}">
+  							<td th:text="${itemNum.count}" style="font-size:12px;"></td>
+  							<td th:text="${quote.number}" style="font-size:12px;"></td>
+  							<td th:text="${quote.item}" style="font-size:12px;"></td>
+  							<td th:text="${quote.details}" style="font-size:11px;"></td>
+  							<td th:text="${quote.dateQuote}" style="font-size:12px;"></td>
+  							<td th:text="${quote.quoteSentTo}" style="font-size:12px;"></td>
+  							<td th:text="${quote.requester}" style="font-size:12px;"></td>
+  							  							  							  							
+  							<td>
+                            	<a th:href="@{/procurement/Quotes/edit/{id}(id=${quote.quoteid})}" class="btn btn-primary btn-sm">
+                                	<i class="fa fa-edit"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a th:href="@{/procurement/Quotes/delete/{id}(id=${quote.quoteid})}" class="btn btn-danger btn-sm" onClick="return confirmDelete();">				                                    			
+                            		<i class="fa fa-trash" style="font-size:12px"></i>
+                            	</a>
+                            </td>
+                            <td>
+                            	<a th:href="@{/procurement/Quotes/upload/{id}(id=${quote.quoteid})}" class="btn btn-warning btn-sm" title="View/Upload Documents">
+                                	<i class="fa fa-upload"></i>
+                                </a>
+                            </td>
+                                                                                   
+  						</tr>	
+  					</tbody>	
+  				</table>
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  		
+ 	</body>
+</html>			

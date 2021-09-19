@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>System Settings</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+				
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/Settings/list">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit Settings</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<form class="form-main" th:action="@{/procurement/Settings/createSetting}" th:object="${setting}" method="post">
+                    
+                                            	
+                	<div class="form-group">
+                       	<label for="sname" class="col-form-label">Description<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{sname}" id="sname" placeholder="Description" required  size="50" maxlength="50"/>
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="path" class="col-form-label">Path:</label> 
+                       	<input type="text" th:field="*{path}" id="path" placeholder="Path" size="70" maxlength="100"/>
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="param1" class="col-form-label">Param 1:</label> 
+                       	<input type="text" th:field="*{param1}" id="param1" placeholder="Param 1" size="50" maxlength="50"/>
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="param2" class="col-form-label">Param 2:</label> 
+                       	<input type="text" th:field="*{param2}" id="param2" placeholder="Param 2" size="50" maxlength="50"/>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                       	
+                       	<a href="/procurement/Settings/list" class="btn btn-secondary btn-sm">
+                			<i class="fas fa-back ml-2"> Cancel </i>
+                		</a>
+                    </div>
+                            	
+                    <input type="hidden" id="id" th:field="*{settingid}">
+     
+                        	
+            	</form>
+  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				

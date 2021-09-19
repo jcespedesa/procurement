@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Phones</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+				
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/phones/list">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit Phones </p>
+				          
+        			</div>
+      			</div>
+     		
+  				<form class="form-main" th:action="@{/procurement/phones/createPhone}" th:object="${phone}" method="post">
+                    
+                    <div class="form-group">
+                       	<label for="phone" class="col-form-label">Phone Number <sup>*</sup>: </label> 
+                       	<input type="text" th:field="*{phoneNumber}" id="phoneNumber" placeholder="Phone Number" required  size="10" maxlength="10"/>
+                       	<label for="extension" class="col-form-label">Extension : </label> 
+                       	<input type="text" th:field="*{extension}" id="extension" size="5" maxlength="6"/>
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="streetNum" class="col-form-label">Street number: </label> 
+                       	<input type="text" th:field="*{streetNum}" id="streetNum" placeholder="Street Number" size="12" maxlength="6"/>
+                    
+                       	<label for="suiteNum" class="col-form-label">Suite number: </label> 
+                       	<input type="text" th:field="*{suiteNum}" id="suiteNum" placeholder="Suite Number" size="8" maxlength="6"/>
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="streetName" class="col-form-label">Street Name:</label> 
+                       	<input type="text" th:field="*{streetName}" id="streetName" placeholder="Street Name" size="20" maxlength="20"/>
+                       	<label th:text="${site}"></label>
+                    </div>  
+                    <div class="form-group">
+                       	<label for="city" class="col-form-label">City: </label> 
+                       	<input type="text" th:field="*{city}" id="city" placeholder="City" size="20" maxlength="20"/>
+                    
+                       	<label for="state" class="col-form-label">State: </label> 
+                       	<input type="text" th:field="*{state}" id="state" placeholder="State" size="5" maxlength="2"/>
+                       	
+                       	<label for="zip" class="col-form-label">ZIP: </label> 
+                       	<input type="text" th:field="*{zip}" id="zip" placeholder="Zip Code" size="10" maxlength="10"/>
+                    </div>
+                    <div class="form-group">
+                       	<label for="vonageKey" class="col-form-label">Vonage Key: </label> 
+                       	<input type="text" th:field="*{vonageKey}" id="vonageKey" placeholder="Vonage Key" size="20" maxlength="20"/>
+                       	
+                       	
+                       	<label for="project" class="col-form-label">CC Site : </label> 
+                       	<select th:field="*{siteNumber}" id="siteNumber">
+                       		<option th:value="*{siteNumber}" th:text="*{siteNumber}"></option>
+                       		<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}"></option>
+                       		<option value=""></option>
+                       	</select>
+                    </div>
+                                    
+                   
+                    <div class="form-group col-md-8">
+     					<label for="active">Status : </label>
+     					<select th:field="*{status}">
+					     	<option th:value="*{status}" th:text="*{status}"></option>
+					    	<option th:value="'Reviewed'" th:text="Reviewed"></option>
+					    	<option th:value="'Pending'" th:text="Pending"></option>
+					    	<option th:value="'Unused'" th:text="Unused"></option>
+					    	<option th:value="'Unknown'" th:text="Unknown"></option>
+					    	<option th:value="'Cancelled'" th:text="Cancelled"></option>
+					    	<option th:value="'Corrected'" th:text="Corrected"></option>
+     					</select>  
+     					
+     					<label for="klass">Class : </label>
+     					<select th:field="*{klass}">
+					     	<option th:value="*{klass}" th:text="*{klass}"></option>
+					    	<option th:value="'Phone'" th:text="Phone"></option>
+					    	<option th:value="'Fax'" th:text="Fax"></option>
+					    	<option th:value="'AA'" th:text="AA"></option>
+					    	<option th:value="'VMO'" th:text="VMO"></option>
+					    	<option th:value="'HG'" th:text="HG"></option>
+					    	<option th:value="'Other'" th:text="Other"></option>
+     					</select> 
+     					  						
+					</div> 
+                             
+                             
+                                       
+                    
+                    <div class="form-group">
+      					<label for="notes">Notes/Observations:</label><br>
+      					<textarea id="notes" th:field="*{notes}" rows="7" cols="80"></textarea>
+					</div>
+                                       
+                    <div class="form-group">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                       	
+                       	<a href="/procurement/phones/list" class="btn btn-secondary btn-sm">
+                			<i class="fas fa-back ml-2"> Cancel </i>
+                		</a>
+                    </div>
+                            	
+                    <input type="hidden" id="id" th:field="*{phoneid}">
+     
+                        	
+            	</form>
+  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				

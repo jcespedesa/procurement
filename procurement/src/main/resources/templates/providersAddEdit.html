@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Providers</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+				
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/Providers/list">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   			
+   		
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit Providers</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<form class="form-main" th:action="@{/procurement/Providers/createProvider}" th:object="${provider}" method="post">
+                    
+                    <div class="form-group">
+                       	<label for="code" class="col-form-label">Code<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{code}" id="code" placeholder="Code" required  size="50" maxlength="50"/>
+                    </div>
+                        	
+                	<div class="form-group">
+                       	<label for="pname" class="col-form-label">Description<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{pname}" id="pname" placeholder="Description" required  size="50" maxlength="50"/>
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="account" class="col-form-label">Account(s):</label> 
+                       	<input type="text" th:field="*{account}" id="account" placeholder="Accounts" size="70" maxlength="100"/>
+                    </div>
+                    
+                                       
+                    
+                    <div class="form-group">   	                     	
+                       	<label for="siteNum" class="col-form-label">Site: <sup>*</sup>:</label> 
+                       	<select th:field="*{siteNum}" id="siteNum">
+                       		<option th:value="*{siteNum}" th:text="${site}"></option>
+                       		<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}" ></option>
+                       		<option value=""></option>
+                       	</select>
+                    </div>
+                    
+                                      
+                    <div class="form-group">
+      					<label for="notes">Notes/Observations:</label><br>
+      					<textarea id="notes" th:field="*{notes}" rows="7" cols="80"></textarea>
+					</div>
+                             	
+                   
+                    <div class="form-group col-md-8">
+     					<label for="active">Active</label>
+     					<select th:field="*{active}">
+					     	<option th:value="*{active}" th:text="*{active}"></option>
+					    	<option th:value="'Yes'" th:text="Yes"></option>
+					    	<option th:value="'No'" th:text="No"></option>
+     					</select>    						
+					</div>
+                    
+                    
+                    <div class="form-group">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                       	
+                       	<a href="/procurement/Providers/list" class="btn btn-secondary btn-sm">
+                			<i class="fas fa-back ml-2"> Cancel </i>
+                		</a>
+                    </div>
+                            	
+                    <input type="hidden" id="id" th:field="*{providerid}">
+     
+                        	
+            	</form>
+  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				

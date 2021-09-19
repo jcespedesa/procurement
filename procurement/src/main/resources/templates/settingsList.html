@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>System Settings</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
+			
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/Settings/edit">Add New</a>
+        		</li>
+            	<li>
+           			<a href="/procurement/index">Back</a>
+        		</li>
+            </ul>
+      	</nav>
+   		
+      			<div class="row">
+        			<div class="col-lg-12 ">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">All Settings</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<table class="table table-striped table-responsive-md">
+  					<thead>
+  						<tr>
+  							<th style="color:#006400;font-size:12px;">ID</th>
+  							<th style="color:#006400;font-size:12px;">Description</th>
+  							<th style="color:#006400;font-size:12px;">Path</th>
+  							<th style="color:#006400;font-size:12px;">Param1</th>
+  							<th style="color:#006400;font-size:12px;">Param2</th>
+  							
+  							<th style="color:#006400;font-size:12px;">Edit</th>
+  							<th style="color:#006400;font-size:12px;">Delete</th>
+  						</tr>
+  					</thead>
+  					<tbody>
+  						<tr th:each="setting : ${settings}">
+  							<td th:text="${setting.settingid}" style="font-size:12px;"></td>
+  							<td th:text="${setting.sname}" style="font-size:12px;"></td>
+  							<td th:text="${setting.path}" style="font-size:12px;"></td>
+  							<td th:text="${setting.param1}" style="font-size:12px;"></td>
+  							<td th:text="${setting.param2}" style="font-size:12px;"></td>
+  							
+  							<td>
+                            	<a th:href="@{/procurement/Settings/edit/{id}(id=${setting.settingid})}" class="btn btn-primary btn-sm">
+                                	<i class="fa fa-edit"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a th:href="@{/procurement/Settings/delete/{id}(id=${setting.settingid})}" class="btn btn-danger btn-sm" onClick="return confirmDelete();">				                                    			
+                            		<i class="fa fa-trash" style="font-size:12px"></i>
+                            	</a>
+                            </td>
+                                                                                   
+  						</tr>	
+  					</tbody>	
+  				</table>
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  		
+ 	</body>
+</html>			

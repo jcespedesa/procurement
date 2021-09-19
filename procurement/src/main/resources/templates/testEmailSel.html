@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Email Test</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a th:href="@{/procurement/index}">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   			
+   		
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Testing the Email Subsystem</p>
+				          
+        			</div>
+      			</div>
+      			
+      			<div class="row">
+      			
+	      			<div class="col">
+	     		
+	  					<form class="form-main" th:action="@{/procurement/tests/testEmailSending}"  method="post">
+	                                       
+	                    		                        
+	                        <div class="form-group">
+	                        	<label for="assetNumber" class="col-form-label">Recipient Email <sup>*</sup>:</label> 
+                       			<input type="text" name="toEmail" placeholder="Your email" required  size="25" maxlength="50"/>
+	                        </div> 
+	                        
+	                      	                                                           
+	                    	<div class="form-group">
+	                       		<input type="submit" class="btn btn-primary btn-sm" value=" Test Sending >> ">
+	                    	</div>
+	                	                        	
+	            		</form>
+	  				</div>
+	  				
+	  				<div class="col">
+	  		
+	  				</div>
+	  			</div>
+	  	</div>
+  		
+  		<!-- Footer --> 
+  
+  		<footer class="customFooter"></footer> 
+  			
+	</body>
+</html>			
+				
+				

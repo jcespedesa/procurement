@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Projects</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+				
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/Projects/list">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit Projects</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<form class="form-main" th:action="@{/procurement/Projects/createProject}" th:object="${project}" method="post">
+                    
+                    <div class="form-group">
+                       	<label for="project" class="col-form-label">Project Number<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{projectNumber}" id="projectNumber" placeholder="Project Number" required  size="10" maxlength="10"/>
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="project" class="col-form-label">Project Name:</label> 
+                       	<input type="text" th:field="*{project}" id="project" placeholder="Project Name" size="70" maxlength="100"/>
+                    </div>
+                        	
+                	                    
+                    <div class="form-group">
+                       	<label for="department" class="col-form-label">Division: <sup>*</sup>:</label> 
+                       	<select th:field="*{department}" id="department">
+                       		<option th:value="*{department}" th:text="${division}"></option>
+                       		<option th:each="division : ${divisions}" th:value="${division.dnumber}" th:text="${division.dname}" ></option>
+                       		<option value=""></option>
+                       	</select>
+                       	<label th:text="${division}"></label>
+                       	<label for="hhsDivision">HHS Division</label>
+     					<select th:field="*{hhsDivision}">
+					     	<option th:value="*{hhsDivision}" th:text="*{hhsDivision}"></option>
+					    	<option th:value="'10'" th:text="10"></option>
+					    	<option th:value="'20'" th:text="20"></option>
+					    	<option th:value="'30'" th:text="30"></option>
+					    	<option th:value="'40'" th:text="40"></option>
+					    	<option th:value="'50'" th:text="50"></option>
+					    	<option th:value="'60'" th:text="60"></option>
+     					</select>
+     					<label for="udelnyBes" class="col-form-label"> Form Order:</label> 
+                       	<select th:field="*{udelnyBes}" id="udelnyBes">
+                       		<option th:value="*{udelnyBes}" th:text="*{udelnyBes}"></option>
+                       		<option th:each="udelnyBes : ${udelnyBeses}" th:value="${udelnyBes}" th:text="${udelnyBes}" ></option>
+                       		<option value=""></option>
+                       	</select> 
+                    </div> 
+                    
+                    
+                    <div class="form-group">
+                       	<label for="siteNumber1" class="col-form-label">Site 1 <sup>*</sup>:</label> 
+                       	<select th:field="*{siteNumber1}" id="siteNumber1">
+                       		<option th:value="*{siteNumber1}" th:text="${site1}"></option>
+                       		<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}" ></option>
+                       		<option value=""></option>
+                       	</select>
+                       	<label th:text="${site}"></label>
+                    </div>   	
+                    <div class="form-group">   	                     	
+                       	<label for="siteNumber2" class="col-form-label">Site 2 <sup>*</sup>:</label> 
+                       	<select th:field="*{siteNumber2}" id="siteNumber2">
+                       		<option th:value="*{siteNumber2}" th:text="${site2}"></option>
+                       		<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}" ></option>
+                       		<option value=""></option>
+                       	</select>
+                    </div>
+                    
+                    
+                    <div class="form-group col-md-8">
+     					<label for="active">Active</label>
+     					<select th:field="*{active}">
+					     	<option th:value="*{active}" th:text="*{active}"></option>
+					    	<option th:value="'Yes'" th:text="Yes"></option>
+					    	<option th:value="'No'" th:text="No"></option>
+     					</select>    						
+					</div>
+                    
+                    
+                    <div class="form-group">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                       	
+                       	<a href="/procurement/Projects/list" class="btn btn-secondary btn-sm">
+                			<i class="fas fa-back ml-2"> Cancel </i>
+                		</a>
+                    </div>
+                            	
+                    <input type="hidden" id="id" th:field="*{projectid}">
+     
+                        	
+            	</form>
+  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				
