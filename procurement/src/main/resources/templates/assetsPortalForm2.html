@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Assets Portal Form2</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<!-- <a th:href="@{/portal/assets/menu/{kluch}(kluch=${kluch})}">Back</a>  -->
+        		</li>
+            	
+            </ul>
+      	</nav>
+   			
+   		
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">HHS IT Inventory Database (Cell Phone)</p>
+				          
+        			</div>
+      			</div>
+      			
+      			<div class="row">
+      			
+	      			<div class="col">
+	     		
+	  					<form class="form-main" th:action="@{/portal/assets/form10}"  method="post">
+	                                       
+	                    	<div class="form-group">
+	                       		<label for="assetNumber" class="col-form-label">CC Phone Number:</label> 
+                       			<input type="text" name="assetNumber" placeholder="Cell Phone Number" required size="50" maxlength="50"/>
+	                       	</div>
+	                        
+	                        <div class="form-group">
+      							<label for="notes">Notes/Observations:</label><br>
+      							<textarea name="notes" rows="7" cols="50"></textarea>
+							</div>
+	                        	                        
+	                                                           
+	                    	<div class="form-group">
+	                       		<input type="submit" class="btn btn-primary btn-sm" value=" Next >> ">
+	                    	</div>
+	                        
+	                        <input type="hidden" th:value="${cname}" th:attr="name='cname'">
+	                        <input type="hidden" th:value="${email}" th:attr="name='email'"> 
+	                        <input type="hidden" th:value="${empStatus}" th:attr="name='empStatus'">
+	                        <input type="hidden" th:value="${title}" th:attr="name='title'">
+	                        <input type="hidden" th:value="${project}" th:attr="name='project'"> 
+	                        	                            	
+	                    	<input type="hidden" th:value="${todayDate}" th:attr="name='todayDate'"> 
+	                    	<input type="hidden" th:value="${kluch}" th:attr="name='kluch'">
+	                    	<input type="hidden" th:value="${active}" th:attr="name='active'">
+	                         				                        	
+	            		</form>
+	  				</div>
+	  				
+	  				<div class="col">
+	  				
+	  					<label style="font-size:10px;font-weight: bold;color:teal;">So far input information:</label>
+	  					<table>
+	  						<tr><td style="font-size:9px;" th:text="${cname}"></td></tr>
+	  						<tr><td style="font-size:9px;" th:text="${email}"></td></tr>
+	  						<tr><td style="font-size:9px;" th:text="'Employee Status : '+ ${empStatus}"></td></tr>
+	  						<tr><td style="font-size:9px;" th:text="'Title Number : '+ ${title}"></td></tr>
+	  						<tr><td style="font-size:9px;" th:text="'Project Number : '+ ${project}"></td></tr>
+	  						<tr>&nbsp;</tr>
+	  						<tr><td style="font-size:9px;" th:text="'Date : '+ ${todayDate}"></td></tr>
+	  						<tr><td style="font-size:9px;" th:text="'Key : '+ ${kluch}"></td></tr>
+	  						<tr><td style="font-size:9px;" th:text="'Active : '+ ${active}"></td></tr>
+	  					</table>
+	  				</div>
+	  			</div>
+	  	</div>
+  		
+  		<!-- Footer --> 
+  
+  		<footer class="customFooter"></footer> 
+  			
+	</body>
+</html>			
+				
+				

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>HHS Divisions</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+				
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/hhsDivisions/list">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit HHS Divisions</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<form class="form-main" th:action="@{/procurement/hhsDivisions/createDivision}" th:object="${division}" method="post">
+                    
+                    <div class="form-group">
+                       	<label for="divisionNumber" class="col-form-label">Number<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{divisionNumber}" id="divisionNumber" placeholder="Div Number" required  size="10" maxlength="10"/>
+                    </div>
+                        	
+                	<div class="form-group">
+                       	<label for="division" class="col-form-label">Description<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{division}" id="division" placeholder="Description" required  size="50" maxlength="70"/>
+                    </div>
+                    
+                    <div class="form-group">
+                    	<label for="director" class="col-form-label">Director<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{director}" id="director" placeholder="HHS Director" required  size="50" maxlength="70"/>
+                       	
+                       	<label for="clientId" class="col-form-label">Client ID<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{clientId}" id="clientId" placeholder="Client ID" required  size="10" maxlength="10"/>
+                    </div>
+                    
+                    <div class="form-group col-md-8">
+     					<label for="active">Active</label>
+     					<select th:field="*{active}">
+					     	<option th:value="*{active}" th:text="*{active}"></option>
+					    	<option th:value="'Yes'" th:text="Yes"></option>
+					    	<option th:value="'No'" th:text="No"></option>
+     					</select>    						
+					</div>
+                    
+                    
+                    <div class="form-group">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                       	
+                       	<a href="/procurement/Divisions/list" class="btn btn-secondary btn-sm">
+                			<i class="fas fa-back ml-2"> Cancel </i>
+                		</a>
+                    </div>
+                            	
+                    <input type="hidden" id="id" th:field="*{divisionid}">
+     
+                        	
+            	</form>
+  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				

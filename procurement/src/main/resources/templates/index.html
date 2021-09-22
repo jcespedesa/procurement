@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  		
+  		<title>Procurement</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		
+		
+  		  
+  <!-- Main Page -->
+  		
+  		<div class="container">
+  		
+  			<span th:include="topMenu"> Top Menu </span>
+  		
+      		<div class="col-sm">&nbsp;</div>	
+      		      		      		
+      		<div class="row">
+      		
+      			<div id='vcssmenu'>
+					<ul>
+					   <li><a href=""><span>Reports</span></a></li>
+					   
+   						<li><a href=""><span>Tickets</span></a></li>
+   						  						
+   						<li><a href='#'><span>Services</span></a>
+      						<ul>
+         						<li class='has-sub'><a href="/procurement/Assets/list"><span>HHS IT Inventory</span></a></li>
+            					<li class='has-sub'><a href='#'><span>HHS IT Procurement</span></a></li>
+            						
+         						
+      						</ul>
+   						</li>
+   						
+   						<li><a href='#'><span>Tests</span></a>
+      						<ul>
+         						<li><a href="/procurement/tests/emailSel"><span>Test Email Subsystem</span></a></li>	
+            					<li><a href="/procurement/tests/sendAssetInfoSel"><span>Test Email Object</span></a></li>	
+         						
+      						</ul>
+   						</li>
+   						
+					</ul>
+				</div>
+      			
+      		</div>				
+		
+  		</div>
+    	
+    <!-- footer -->
+    	
+    	    	
+	</body>
+
+</html>

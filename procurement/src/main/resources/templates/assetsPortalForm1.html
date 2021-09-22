@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Assets Portal Form1</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<!-- <a th:href="@{/portal/assets/menu/{kluch}(kluch=${kluch})}">Back</a>  -->
+        		</li>
+            	
+            </ul>
+      	</nav>
+   			
+   		
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Welcome to the HHS IT Inventory Database (All fields are mandatory)</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<form class="form-main" th:action="@{/portal/assets/form2}"  method="post">
+                    
+                    
+                    <div class="form-group">
+                       	<label for="firstName" class="col-form-label">First Name:</label> 
+                       	<input type="text" name="firstName" placeholder="First name" required size="30" maxlength="50"/>
+                    
+                    	<label for="lastName" class="col-form-label">Last Name:</label> 
+                       	<input type="text" name="lastName" placeholder="Last name" required size="30" maxlength="50"/>
+                                           	
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="email" class="col-form-label">CC Email:</label> 
+                       	<input type="email" name="email" placeholder="Email" required size="50" maxlength="50"/>
+                    
+                    	<label for="empStatus">Employee Status</label>
+     					<select size="1" name="empStatus" required>
+					     	<option value="Perm">Perm</option>
+					    	<option value="Temp">Temp</option>
+     					</select> 
+     					
+     					<label for="title" class="col-form-label">Title :</label> 
+                       	<select size="1" name="title" required>
+                       		<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
+                       		<option value="Other">Other (Add in notes)</option>
+                       	</select>
+                                           	
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="project" class="col-form-label">Program :</label> 
+                       	<select size="1" name="project" required>
+                       		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project} +' - '+ ${project.projectNumber}" ></option>
+                       	</select>
+                                        
+                    	
+                    </div>
+                   
+                    					                                       
+                    <div class="form-group">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Next >> ">
+                       	
+                       
+                    </div>
+                            	
+                    <input type="hidden" th:value="${todayDate}" th:attr="name='todayDate'"> 
+                    <input type="hidden" th:value="${kluch}" th:attr="name='kluch'">
+                    <input type="hidden" th:value="Yes" th:attr="name='active'">
+                         				                        	
+            	</form>
+  				
+  		</div>
+  		
+  		<!-- Footer --> 
+  
+  		<footer class="customFooter"></footer> 
+  			
+	</body>
+</html>			
+				
+				

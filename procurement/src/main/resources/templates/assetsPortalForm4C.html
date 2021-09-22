@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Assets Portal Form4C</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<!-- <a th:href="@{/portal/assets/menu/{kluch}(kluch=${kluch})}">Back</a>  -->
+        		</li>
+            	
+            </ul>
+      	</nav>
+   			
+   		
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">HHS IT Inventory Database (Continuation)</p>
+				          
+        			</div>
+      			</div>
+      			
+      			<div class="row">
+      			
+      				<label class="col-form-label">Do you have a Cell Phone to Report?</label> 
+      			
+	      			<div class="col">
+	     		
+	  					<form class="form-main" th:action="@{/portal/assets/form7}"  method="post">
+	                         
+	                                                                                   
+	                    	<div class="form-group">
+	                       		<input type="submit" class="btn btn-primary btn-sm" value="Yes, I will input the phone information now">
+	                    	</div>
+	                        
+	                        <input type="hidden" th:value="${assetId}" th:attr="name='assetId'">                     
+	                    	<input type="hidden" th:value="${kluch}" th:attr="name='kluch'">
+	                    	 	                    	
+	                    		                         				                        	
+	            		</form>
+	            		
+	            		<form class="form-main" th:action="@{/portal/assets/form10}"  method="post">
+	                        	                                                                                   
+	                    	<div class="form-group">
+	                       		<input type="submit" class="btn btn-primary btn-sm" value="No, I would like to end the session">
+	                    	</div>
+	                        
+	                        <input type="hidden" th:value="${assetId}" th:attr="name='assetId'">  	                        	                        	                            	
+	                    	<input type="hidden" th:value="${kluch}" th:attr="name='kluch'">
+	                    	                    	
+	                    		                         				                        	
+	            		</form>
+	            		
+	  				</div>
+	  				
+	  				<div class="col">
+	  				
+	  					
+	  				</div>
+	  			</div>
+	  	</div>
+  		
+  		<!-- Footer --> 
+  
+  		<footer class="customFooter"></footer> 
+  			
+	</body>
+</html>			
+				
+				

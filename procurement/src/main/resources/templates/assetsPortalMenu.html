@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Assets</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
+			
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+  		
+  				
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation : th:href="@{/procurement/Projects/edit/{id}(id=${project.projectid})}"-->
+  		
+	
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a th:href="@{/portal/assets/edit}">Add New</a>
+        		</li>
+        		            	
+            </ul>
+      	</nav>
+   		
+      			<div class="row">
+        			
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;font-weight: bold;">Welcome to the HHS IT Assets Inventory</p><span th:text="${stringSearch}"></span>
+				   	</div>
+				   	<div class="col-lg-12" th:if="${kluch==null}">
+				          <p class="navbar-brand" style="color:#006600;font-size:15px;">Please press on "Add New" to start</p>
+				   	</div>
+				   	<div class="col-lg-12" th:unless="${kluch==null}">
+				   	
+				   		<!-- <div class="row"><label th:text="${kluch}"></label></div>   -->
+				   		
+				   		<div class="row">
+				   		
+				   			<p class="navbar-brand" style="color:#006400;font-size:12px;font-weight: bold;">Already introduced assets in this session:</p>	
+				   		</div>
+				   		<div class="row">		
+				   			<ol type="1">
+  								<li style="font-size:11px;" th:each="asset : ${assets}" th:text="${asset.assetNumber} +'  '+ ${asset.item}"></li>
+  									
+							</ol>
+				   				
+				   		</div>
+				          
+				   	</div>
+				   	
+      			</div>
+     			     			
+     			<div class="row">
+     			     			
+     			</div>
+     			  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter"></footer> 
+  		
+ 	</body>
+</html>			

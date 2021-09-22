@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Items</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+				
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/Items/list">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit Items</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<form class="form-main" th:action="@{/procurement/Items/createItem}" th:object="${item}" method="post">
+                    
+                    <div class="form-group">
+                       	<label for="item" class="col-form-label">Description<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{item}" id="item" placeholder="Item Description" required  size="50" maxlength="50"/>
+                    </div>
+                    
+                    <div class="form-group col-md-8">
+     					<label for="klass">Class:</label>
+     					<select th:field="*{klass}">
+					     	<option th:value="*{klass}" th:text="*{klass}"></option>
+					    	<option th:value="'Main'" th:text="Main"></option>
+					    	<option th:value="'Peripheral'" th:text="Peripheral"></option>
+     					</select>    						
+					</div>
+					
+					<div class="form-group col-md-8">
+     					<label for="hhsForm">HHS Form</label>
+     					<select th:field="*{hhsForm}">
+					     	<option th:value="*{hhsForm}" th:text="*{hhsForm}"></option>
+					    	<option th:value="'Yes'" th:text="Yes"></option>
+					    	<option th:value="'No'" th:text="No"></option>
+     					</select>    						
+					</div>
+                        	
+                	<div class="form-group">
+                       	<label for="notes" class="col-form-label">Notes<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{notes}" id="notes" placeholder="Notes/Observations" size="100" maxlength="150"/>
+                    </div>
+                    
+                                       
+                    <div class="form-group">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                       	
+                       	<a href="/procurement/Items/list" class="btn btn-secondary btn-sm">
+                			<i class="fas fa-back ml-2"> Cancel </i>
+                		</a>
+                    </div>
+                            	
+                    <input type="hidden" id="id" th:field="*{itemid}">
+     
+                        	
+            	</form>
+  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				
