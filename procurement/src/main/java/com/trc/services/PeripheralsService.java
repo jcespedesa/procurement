@@ -90,4 +90,16 @@ public class PeripheralsService
 		
 		
 	}
+	
+	public List<PeripheralsEntity> getByKluch(String kluch)
+	{
+		List<PeripheralsEntity> result=(List<PeripheralsEntity>) repository.getAllByKluch(kluch);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<PeripheralsEntity>();
+		
+	}
+	
 }

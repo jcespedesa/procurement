@@ -58,10 +58,19 @@
 	                                       
 	                    		                        
 	                        <div class="form-group">
-	                        	<label for="assetNumber" class="col-form-label">Recipient Email <sup>*</sup>:</label> 
+	                        	<label for="toEmail" class="col-form-label">Recipient Email <sup>*</sup>:</label> 
                        			<input type="text" name="toEmail" placeholder="Your email" required  size="25" maxlength="50"/>
 	                        </div> 
 	                        
+	                        <div class="form-group">
+	                        	<label for="subject" class="col-form-label">Subject <sup>*</sup>:</label> 
+                       			<input type="text" name="subject" placeholder="Subject" required  size="50" maxlength="100"/>
+	                        </div>
+	                        
+	                         <div class="form-group">
+      							<label for="body">Message:</label><br>
+      							<textarea name="body" rows="7" cols="80"></textarea>
+							</div>
 	                      	                                                           
 	                    	<div class="form-group">
 	                       		<input type="submit" class="btn btn-primary btn-sm" value=" Test Sending >> ">

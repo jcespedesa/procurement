@@ -22,7 +22,7 @@ public class PeripheralsEntity
 	@Column(name="peripheralnum")
 	private String peripheralNum;
 	
-	@Column(name="assetId")
+	@Column(name="assetid")
 	private String assetId;
 	
 	@Column(name="kluch")
@@ -31,12 +31,15 @@ public class PeripheralsEntity
 	@Column(name="notes")
 	private String notes;
 	
+	@Column(name="assetnumber")
+	private String assetNumber;
+	
 	//Constructors	
 	
 	@Override
 	public String toString()
 	{
-		return "SettingsEntity[itemid="+ itemid +",description="+ description +",peripheralNum="+ peripheralNum +",assetId="+ assetId +",kluch="+ kluch +",notes="+ notes +"]";				
+		return "SettingsEntity[itemid="+ itemid +",description="+ description +",peripheralNum="+ peripheralNum +",assetId="+ assetId +",kluch="+ kluch +",notes="+ notes +",assetNumber="+ assetNumber +"]";				
 		
 	}
 
@@ -99,5 +102,17 @@ public class PeripheralsEntity
 	{
 		this.notes=notes;
 	}
+
+	public String getAssetNumber() 
+	{
+		return assetNumber;
+	}
+
+	public void setAssetNumber(String assetNumber) 
+	{
+		this.assetNumber=assetNumber;
+	}
+	
+	
 	
 }

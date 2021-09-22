@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Periodicals</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a href="/procurement/Periodicals/list">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   		
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit Periodicals</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<form class="form-main" th:action="@{/procurement/Periodicals/createPeriodical}" th:object="${periodical}" method="post">
+                    
+                    <div class="form-group">
+                       	<label for="description" class="col-form-label">Description<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{description}" id="description" placeholder="Description" required  size="50" maxlength="50"/>
+                    </div>
+                        	
+                                    
+                    <div class="form-group">
+                       	<label for="provider" class="col-form-label">Provider:</label> 
+                       	<select th:field="*{provider}" id="provider" required>
+                       		<option th:value="*{provider}" th:text="*{provider}"></option>
+                       		<option th:each="provider : ${providers}" th:value="${provider.code}" th:text="${provider.code}" ></option>
+                       	</select>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                       	<label for="account" class="col-form-label">Account Number<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{account}" id="account" placeholder="Account" required  size="50" maxlength="50"/>
+                    </div>
+                    
+                    <div class="form-group">
+     					<label for="active">Frequency:</label>
+     					<select th:field="*{frequency}">
+					     	<option th:value="*{frequency}" th:text="*{frequency}"></option>
+					    	<option th:value="'Monthly'" th:text="Monthly"></option>
+					    	<option th:value="'Quarterly'" th:text="Quarterly"></option>
+					    	<option th:value="'Annually'" th:text="Annually"></option>
+     					</select>    						
+					</div>
+                    
+                    <div class="form-group">
+                       	<label for="amount" class="col-form-label">Amount: $</label> 
+                       	<input type="text" th:field="*{amount}" id="amount" placeholder="Amount" size="5" maxlength="9"/>
+                    </div>
+                            	
+                                     
+                    <div class="form-group">
+                       	<label for="locationNumber" class="col-form-label">Location:</label> 
+                       	<select th:field="*{locationNumber}" id="locationNumber" required>
+                       		<option th:value="*{locationNumber}" th:text="*{location}"></option>
+                       		<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}" ></option>
+                       	</select>
+                    </div>
+                                        
+                            	
+                    <div class="form-group">
+                       	<label for="ponum" class="col-form-label">PO Num:</label> 
+                       	<input type="text" th:field="*{ponum}" id="ponum" placeholder="PO Num" size="5" maxlength="6"/>
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="provSite" class="col-form-label">Provider Web Site</label> 
+                       	<input type="text" th:field="*{provSite}" id="provSite" placeholder="Provider Site" size="50" maxlength="100"/>
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="provUser" class="col-form-label">Provider Username:</label> 
+                       	<input type="text" th:field="*{provUser}" id="provUser" placeholder="Provider Username" size="30" maxlength="30"/>
+                       	<label for="provPass" class="col-form-label">Provider Code:</label> 
+                       	<input type="text" th:field="*{provPass}" id="provPass" placeholder="Provider Code" size="15" maxlength="20"/>
+                    </div>
+                    
+                    <div class="form-group col-md-8">
+     					<label for="type">Finance Document Type</label>
+     					<select th:field="*{type}">
+					     	<option th:value="*{type}" th:text="*{type}"></option>
+					    	<option th:value="'MPO'" th:text="MPO"></option>
+					    	<option th:value="'Request'" th:text="Request"></option>
+     					</select>    						
+					</div>
+                    
+                    <div class="form-group col-md-8">
+     					<label for="active">Status</label>
+     					<select th:field="*{status}">
+					     	<option th:value="*{status}" th:text="*{status}"></option>
+					    	<option th:value="'Active'" th:text="Active"></option>
+					    	<option th:value="'Suspended'" th:text="Suspended"></option>
+     					</select>    						
+					</div>
+                    
+                     <div class="form-group">
+      					<label for="notes">Notes/Observations:</label><br>
+      					<textarea id="notes" th:field="*{notes}" rows="7" cols="80"></textarea>
+					</div>
+                    
+                    
+                    <div class="form-group">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                       	
+                       	<a href="/procurement/Periodicals/list" class="btn btn-secondary btn-sm">
+                			<i class="fas fa-back ml-2"> Cancel </i>
+                		</a>
+                    </div>
+                            	
+                    <input type="hidden" id="id" th:field="*{periodicalid}">
+     				<input type="hidden" th:value="${seed}" th:attr="name='strobe'"> 
+                        	
+            	</form>
+  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				
