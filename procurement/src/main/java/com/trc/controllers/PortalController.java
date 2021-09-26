@@ -208,7 +208,7 @@ public class PortalController
 		List<ProjectsEntity> projects=serviceProjects.getAllHHSbyUB();
 		
 		//Preparing list of titles
-		List<TitlesEntity> titles=serviceTitles.getAllTitles();
+		List<TitlesEntity> titles=serviceTitles.getAllByName();
 				
 		model.addAttribute("projects",projects);
 		model.addAttribute("titles",titles);

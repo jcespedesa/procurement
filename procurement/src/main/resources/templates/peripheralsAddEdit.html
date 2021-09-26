@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Peripherals</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+				
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    			<ul>
+        			<li>
+           				<a th:href="@{/procurement/peripherals/list/{assetId}(assetId=${assetId})}">Back</a>
+        			</li>
+            	
+            	</ul>
+      		</nav>
+   		
+      		<div class="row">
+        		<div class="col-lg-12 text-center">
+			          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit Peripherals </p>
+			    </div>
+			</div>    
+			<div class="row">
+        		<p class="navbar-brand" style="color:#880000;font-size:14px;">Peripherals for Asset ID : <label th:text="${assetId}"></label></p>
+			</div>
+			      		
+     		
+  			<form class="form-main" th:action="@{/procurement/peripherals/createPeripheral}" th:object="${peripheral}" method="post">
+                    
+                <div class="form-group">
+                   	<label for="peripheralNum" class="col-form-label">Description : </label> 
+                   	<select th:field="*{peripheralNum}" id="peripheralNum" required>
+                   		<option th:value="*{peripheralNum}" th:text="*{description}"></option>
+                   		<option th:each="item : ${items}" th:value="${item.itemid}" th:text="${item.item}"></option>
+                   		<option value=""></option>
+                   	</select>
+               </div>
+                    
+               <div class="form-group">
+                   	<label for="assetNumber" class="col-form-label">Asset number: </label> 
+                   	<input type="text" th:field="*{assetNumber}" id="assetNumber" placeholder="Asset/Serial Number" size="15" maxlength="20"/>
+                                          	
+               </div>
+                    
+               <div class="form-group">
+      				<label for="notes">Notes/Observations:</label><br>
+      				<textarea id="notes" th:field="*{notes}" rows="7" cols="80"></textarea>
+				</div>
+                                       
+                <div class="form-group">
+                   	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                       	
+                   	
+                </div>
+                            	
+                <input type="hidden" id="id" th:field="*{itemid}">
+     			<input type="hidden" th:value="${assetId}" th:attr="name='assetId'">
+                        	
+            </form>
+  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				

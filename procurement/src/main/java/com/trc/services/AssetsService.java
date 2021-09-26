@@ -251,4 +251,15 @@ public class AssetsService
 		
 	}
 	
+	public List<AssetsEntity> getByAssetNum(String assetNumber)
+	{
+		List<AssetsEntity> result=(List<AssetsEntity>) repository.getByAssetNumber(assetNumber);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<AssetsEntity>();
+		
+	}
+	
 }

@@ -88,7 +88,8 @@ public class AssetsEntity
 		return "AssetsEntity[assetid="+ assetid +",item="+ item +",assetNumber="+ assetNumber +",maker="+ maker +",model="+ model +",datePurchased="+ datePurchased +",username="+ username +",title="+ title +",empStatus="+ empStatus +",division="+ division +",site="+ site +",active="+ active +",notes="+ notes +",realDatePurchased="+ realDatePurchased +",project="+ project +",strobe="+ strobe +",author="+ author +",authorEmail="+ authorEmail +",kluch="+ kluch +",email="+ email +",program="+ program +",klass="+ klass +",dateCreation="+ dateCreation +"]";				
 		
 	}
-
+	
+	
 	public Long getAssetid() 
 	{
 		return assetid;

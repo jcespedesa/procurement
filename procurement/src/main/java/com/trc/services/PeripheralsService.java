@@ -58,6 +58,7 @@ public class PeripheralsService
 				newEntity.setDescription(entity.getDescription());
 				newEntity.setPeripheralNum(entity.getPeripheralNum());
 				newEntity.setAssetId(entity.getAssetId());
+				newEntity.setAssetNumber(entity.getAssetNumber ());
 				newEntity.setKluch(entity.getKluch());
 				newEntity.setNotes(entity.getNotes());
 					
@@ -94,6 +95,17 @@ public class PeripheralsService
 	public List<PeripheralsEntity> getByKluch(String kluch)
 	{
 		List<PeripheralsEntity> result=(List<PeripheralsEntity>) repository.getAllByKluch(kluch);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<PeripheralsEntity>();
+		
+	}
+	
+	public List<PeripheralsEntity> getByAssetId(String assetId)
+	{
+		List<PeripheralsEntity> result=(List<PeripheralsEntity>) repository.getAllByAssetId(assetId);
 		
 		if(result.size() > 0)
 			return result;

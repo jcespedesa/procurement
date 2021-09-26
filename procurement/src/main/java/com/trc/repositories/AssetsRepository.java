@@ -62,4 +62,6 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	@Query("Update AssetsEntity u set u.notes=?2 where u.id=?1")
 	void updateNotes(Long id,String notes);
 	
+	@Query("Select u from AssetsEntity u WHERE u.assetNumber=?1")
+	List<AssetsEntity> getByAssetNumber(String assetNumber);
 }

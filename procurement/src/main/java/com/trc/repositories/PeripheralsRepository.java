@@ -16,4 +16,7 @@ public interface PeripheralsRepository extends CrudRepository<PeripheralsEntity,
 	
 	@Query("Select u from PeripheralsEntity u where u.kluch=?1")
 	List<PeripheralsEntity> getAllByKluch(String kluch);
+	
+	@Query("Select u from PeripheralsEntity u where u.assetId=?1")
+	List<PeripheralsEntity> getAllByAssetId(String assetId);
 }
