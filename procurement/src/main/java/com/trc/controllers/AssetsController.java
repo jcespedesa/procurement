@@ -1,10 +1,16 @@
 package com.trc.controllers;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +19,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import com.trc.entities.AssetsEntity;
 import com.trc.entities.ItemsEntity;
@@ -63,8 +72,7 @@ public class AssetsController
 			String itemName=null;
 			String itemNumber=null;
 			
-			Long itemNumberLong=null;
-			
+						
 			
 			for(AssetsEntity asset : list)
 			{
@@ -74,9 +82,8 @@ public class AssetsController
 				
 				itemNumber=asset.getItem();
 				
-				itemNumberLong=Long.valueOf(itemNumber);
-				
-				itemName=serviceItems.getItemDescById(itemNumberLong);
+								
+				itemName=serviceItems.getItemByNumber(itemNumber);
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
@@ -117,9 +124,7 @@ public class AssetsController
 			String titleNumber=null;
 			
 			String priznakNew=null;
-			
-			Long itemNumberLong=null;
-						
+											
 						
 			if(id.isPresent())
 			{
@@ -137,8 +142,7 @@ public class AssetsController
 				itemNumber=entity.getItem();
 				titleNumber=entity.getTitle();
 				
-				itemNumberLong=Long.valueOf(itemNumber);
-				
+								
 				priznakNew="No";
 				
 				
@@ -146,7 +150,7 @@ public class AssetsController
 				
 				site=serviceSites.getSiteByNumber(entity.getSite());
 				project=serviceProjects.getSiteBySiteNumber1(entity.getProject());
-				itemName=serviceItems.getItemDescById(itemNumberLong);
+				itemName=serviceItems.getItemByNumber(itemNumber);
 				titleName=serviceTitles.getTitleByNumber(titleNumber);
 				
 				model.addAttribute("asset",entity);
@@ -216,12 +220,19 @@ public class AssetsController
 		@RequestMapping(path="/search")
 		public String search(Model model)
 		{
-			//System.out.println("Inside the search form");
-			
+						
 			//Preparing list of items
 			List<ItemsEntity> items=serviceItems.getAllMainItems();
 			
+			//Preparing list of projects
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSprojects();
+						
+			//Preparing list of authors email
+			List<String> emails=service.getAuthorEmails();
+			
 			model.addAttribute("items",items);
+			model.addAttribute("emails",emails);
+			model.addAttribute("projects",projects);
 			
 			return "searchFormAssets";
 			
@@ -229,7 +240,7 @@ public class AssetsController
 		}
 		
 		@RequestMapping(path="/findAssetByNum", method=RequestMethod.POST)
-		public String findByPhoneNum(Model model,String stringSearch) throws RecordNotFoundException
+		public String findByAssetNum(Model model,String stringSearch) throws RecordNotFoundException
 		{
 			
 						
@@ -241,8 +252,7 @@ public class AssetsController
 			String itemName=null;
 			String itemNumber=null;
 			
-			Long itemNumberLong=null;
-			
+						
 			
 			for(AssetsEntity asset : list)
 			{
@@ -252,9 +262,8 @@ public class AssetsController
 				
 				itemNumber=asset.getItem();
 				
-				itemNumberLong=Long.valueOf(itemNumber);
-				
-				itemName=serviceItems.getItemDescById(itemNumberLong);
+								
+				itemName=serviceItems.getItemByNumber(itemNumber);
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
@@ -267,5 +276,256 @@ public class AssetsController
 			return "assetsList";
 			
 		}
+		
+		@RequestMapping(path="/findAssetsByItem", method=RequestMethod.POST)
+		public String findByKlass(Model model,String stringSearch) throws RecordNotFoundException
+		{
+			
+						
+			List<AssetsEntity> list=service.getByItem(stringSearch);
+			
+			
+			String projectNumber=null;
+			String projectName=null;
+			String itemName=null;
+			String itemNumber=null;
+			
+						
+			
+			for(AssetsEntity asset : list)
+			{
+			
+				projectNumber=asset.getProject();
+				projectName=serviceProjects.getProjectByNum(projectNumber);
+				
+				itemNumber=asset.getItem();
+				
+								
+				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				asset.setProgram(projectName);
+				asset.setSite(itemName);
+							
+			}
+				
+			model.addAttribute("stringSearch",stringSearch);												
+			model.addAttribute("assets",list);
+						
+			return "assetsList";
+			
+		}
+		
+		@RequestMapping(path="/findAssetsByAuthor", method=RequestMethod.POST)
+		public String findByAuthor(Model model,String stringSearch) throws RecordNotFoundException
+		{
+									
+			List<AssetsEntity> list=service.getByAuthor(stringSearch);
+						
+			String projectNumber=null;
+			String projectName=null;
+			String itemName=null;
+			String itemNumber=null;
+								
+			
+			for(AssetsEntity asset : list)
+			{
+			
+				projectNumber=asset.getProject();
+				projectName=serviceProjects.getProjectByNum(projectNumber);
+				
+				itemNumber=asset.getItem();
+				
+								
+				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				asset.setProgram(projectName);
+				asset.setSite(itemName);
+							
+			}
+				
+			model.addAttribute("stringSearch",stringSearch);												
+			model.addAttribute("assets",list);
+						
+			return "assetsList";
+			
+		}
+		
+		
+		@RequestMapping(path="/findAssetsByProgram", method=RequestMethod.POST)
+		public String findByProgram(Model model,String stringSearch) throws RecordNotFoundException
+		{
+									
+			List<AssetsEntity> list=service.getByProgram(stringSearch);
+						
+			String projectNumber=null;
+			String projectName=null;
+			String itemName=null;
+			String itemNumber=null;
+								
+			
+			for(AssetsEntity asset : list)
+			{
+			
+				projectNumber=asset.getProject();
+				projectName=serviceProjects.getProjectByNum(projectNumber);
+				
+				itemNumber=asset.getItem();
+									
+				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				asset.setProgram(projectName);
+				asset.setSite(itemName);
+							
+			}
+				
+			model.addAttribute("stringSearch",stringSearch);												
+			model.addAttribute("assets",list);
+						
+			return "assetsList";
+			
+		}
+		
+		
+		@RequestMapping(path="/views")
+		public String views(Model model)
+		{
+						
+			//Preparing list of items
+			List<ItemsEntity> items=serviceItems.getAllMainItems();
+			
+			//Preparing list of projects
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSprojects();
+						
+			//Preparing list of authors email
+			List<String> emails=service.getAuthorEmails();
+			
+			model.addAttribute("items",items);
+			model.addAttribute("emails",emails);
+			model.addAttribute("projects",projects);
+			
+			return "viewsMenuAssets";
+			
+			
+		}
+		
+		@RequestMapping(path="/viewAssetsByProgram", method=RequestMethod.POST)
+		public String viewByProgram(Model model,String stringSearch) throws RecordNotFoundException
+		{
+			//Retrieving assets list						
+			List<AssetsEntity> list=service.getByProgram(stringSearch);
+						
+			String projectNumber=null;
+			String projectName=null;
+			String itemName=null;
+			String itemNumber=null;
+			String titleNumber=null;
+			String titleName=null;
+			String viewTitle=null;
+			String header="Assets View by Program : ";
+			
+			for(AssetsEntity asset : list)
+			{
+			
+				projectNumber=asset.getProject();
+				projectName=serviceProjects.getProjectByNum(projectNumber);
+				
+				itemNumber=asset.getItem();
+				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				titleNumber=asset.getTitle();
+				titleName=serviceTitles.getTitleByNumber(titleNumber);
+								
+				asset.setProgram(projectName);
+				asset.setSite(itemName);
+				asset.setTitle(titleName);
+							
+			}
+			
+			viewTitle=header + stringSearch;
+			
+			model.addAttribute("stringSearch",stringSearch);
+			model.addAttribute("viewTitle",viewTitle);												
+			model.addAttribute("assets",list);
+						
+			return "assetsView";
+			
+		}
+		
+		
+		@GetMapping("/exportCSV/{stringSearch}")
+	    public void exportToCSV(HttpServletResponse response,@PathVariable("stringSearch") String stringSearch) throws IOException, RecordNotFoundException 
+		{
+	        response.setContentType("text/csv");
+	        DateFormat dateFormatter=new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+	        String currentDateTime=dateFormatter.format(new Date());
+	         
+	        String headerKey="Content-Disposition";
+	        //String headerValue="attachment; filename=assets_" + currentDateTime + ".csv";
+	        
+	        String headerValue="attachment; filename="+ stringSearch +"-"+ currentDateTime +".csv";
+	        response.setHeader(headerKey,headerValue);
+	       	            
+	       //Retrieving assets list						
+			List<AssetsEntity> list=service.getByProgram(stringSearch);
+						
+			String projectNumber=null;
+			String projectName=null;
+			String itemName=null;
+			String itemNumber=null;
+			String titleNumber=null;
+			String titleName=null;
+			String dateConverted=null;
+			String dateRaw=null;
+			String year=null;
+			String month=null;
+			String day=null;
+			String podcherk="/";
+						
+			for(AssetsEntity asset : list)
+			{
+			
+				projectNumber=asset.getProject();
+				projectName=serviceProjects.getProjectByNum(projectNumber);
+				
+				itemNumber=asset.getItem();
+				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				titleNumber=asset.getTitle();
+				titleName=serviceTitles.getTitleByNumber(titleNumber);
+				
+				dateRaw=asset.getDateCreation();
+				
+				//Converting raw date into string mm/dd/yy
+				year=dateRaw.substring(0,dateRaw.indexOf("-"));
+				month=dateRaw.substring(5,7);
+				day=dateRaw.substring(8,10);
+				
+				dateConverted=month+podcherk+day+podcherk+year;
+				
+				//System.out.println("Year is "+ year);
+				//System.out.println("Month is "+ month);
+				//System.out.println("Day is "+ day);
+								
+				asset.setProgram(projectName);
+				asset.setSite(itemName);
+				asset.setTitle(titleName);
+				asset.setDateCreation(dateConverted);			
+			}
+			
+	 
+	        ICsvBeanWriter csvWriter=new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+	        String[] csvHeader={"Item", "Maker", "Model", "Date Purchased","User","Title","Emp. Status","Project","Program","Date Inventory","Registered by","Email","Item Class"};
+	        String[] nameMapping={"site","maker","model","datePurchased","username","title","empStatus","project","program","dateCreation","author","authorEmail","klass"};
+	         
+	        csvWriter.writeHeader(csvHeader);
+	         
+	        for (AssetsEntity asset : list) 
+	        {
+	            csvWriter.write(asset, nameMapping);
+	        }
+	         
+	        csvWriter.close();
+	         
+	    }
 			
 }

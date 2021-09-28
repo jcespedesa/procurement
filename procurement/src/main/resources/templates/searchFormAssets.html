@@ -73,12 +73,12 @@
       				
       					<label class="warning">Search by Item</label>
       				
-      					<form class="utilityForm" th:action="@{/procurement/assets/findAssetItem}" method="post">
+      					<form class="utilityForm" th:action="@{/procurement/Assets/findAssetsByItem}" method="post">
 	                    
 		                    <div class="form-group">
 		                       	<label for="requester" class="col-form-label">Select item type<sup>*</sup>:</label> 
 		                       	<select name="stringSearch" required>
-                       				<option th:each="item : ${items}" th:value="${item.item}" th:text="${item.item}" ></option>
+                       				<option th:each="item : ${items}" th:value="${item.itemNumber}" th:text="${item.item}" ></option>
                        			</select>
 		                    </div>
 		                                        
@@ -98,12 +98,12 @@
       				
       					<label class="warning">Search by Author</label>
       				
-      					<form class="utilityForm" th:action="@{/procurement/assets/findAssetAuthor}" method="post">
+      					<form class="utilityForm" th:action="@{/procurement/Assets/findAssetsByAuthor}" method="post">
 	                    
 		                    <div class="form-group">
 		                       	<label for="requester" class="col-form-label">Select Author<sup>*</sup>:</label> 
 		                       	<select name="stringSearch" required>
-                       				<option th:each="authorEmail : ${authorEmails}" th:value="${authorEmail.authorEmail}" th:text="${authorEmail.authorEmail}" ></option>
+                       				<option th:each="email : ${emails}" th:value="${email}" th:text="${email}" ></option>
                        			</select>
 		                    </div>
 		                                        
@@ -119,6 +119,34 @@
       				</div>
      		
 	  				
+  				</div>
+  				
+  				<div class="row">
+  				
+  					<div class="col">
+      				
+      					<label class="warning">Search by Program</label>
+      				
+      					<form class="utilityForm" th:action="@{/procurement/Assets/findAssetsByProgram}" method="post">
+	                    
+		                    <div class="form-group">
+		                       	<label for="requester" class="col-form-label">Select Program<sup>*</sup>:</label> 
+		                       	<select name="stringSearch" required>
+                       				<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}" ></option>
+                       			</select>
+		                    </div>
+		                                        
+		                    
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		                      	
+	            		</form>
+      				
+      				
+      				</div>
+  				
   				</div>
   		</div>
   		

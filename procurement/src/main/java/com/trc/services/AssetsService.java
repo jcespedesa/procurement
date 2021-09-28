@@ -262,4 +262,54 @@ public class AssetsService
 		
 	}
 	
+	public List<AssetsEntity> getByItem(String item)
+	{
+				
+		List<AssetsEntity> result=(List<AssetsEntity>) repository.getByItem(item);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<AssetsEntity>();
+		
+	}
+	
+	public List<String> getAuthorEmails()
+	{
+				
+		List<String> result=(List<String>) repository.getDistAuthorEmails();
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<String>();
+		
+	}
+	
+	public List<AssetsEntity> getByAuthor(String authorEmail)
+	{
+				
+		List<AssetsEntity> result=(List<AssetsEntity>) repository.getByAuthor(authorEmail);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<AssetsEntity>();
+		
+	}
+	
+	public List<AssetsEntity> getByProgram(String projectNumber)
+	{
+				
+		List<AssetsEntity> result=(List<AssetsEntity>) repository.getByProgram(projectNumber);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<AssetsEntity>();
+		
+	}
+	
+	
+	
 }

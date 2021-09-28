@@ -50,8 +50,12 @@
   				<form class="form-main" th:action="@{/procurement/Items/createItem}" th:object="${item}" method="post">
                     
                     <div class="form-group">
+                       	<input type="text" th:field="*{itemid}" readOnly  size="2"/>
+                       	
                        	<label for="item" class="col-form-label">Description<sup>*</sup>:</label> 
                        	<input type="text" th:field="*{item}" id="item" placeholder="Item Description" required  size="50" maxlength="50"/>
+                       	<label for="itemNumber" class="col-form-label">Item Number<sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{itemNumber}" id="itemNumber" placeholder="Number" required  size="5" maxlength="4"/>
                     </div>
                     
                     <div class="form-group col-md-8">

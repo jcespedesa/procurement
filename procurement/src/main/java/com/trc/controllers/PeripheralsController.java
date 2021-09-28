@@ -96,16 +96,14 @@ public class PeripheralsController
 		String kluch="-";
 		String message="Peripheral was added/modified successfully...";
 		String description=null;
-		String itemId=null;
+		String itemNumber=null;
 		
-		Long itemIdLong=null;
-		
-		itemId=peripheral.getPeripheralNum();
-		
-		itemIdLong=Long.valueOf(itemId);
 				
+		itemNumber=peripheral.getPeripheralNum();
+		
+						
 		//Obtaining peripheral description
-		description=serviceItems.getItemDescById(itemIdLong);
+		description=serviceItems.getItemByNumber(itemNumber);
 		
 		peripheral.setAssetId(assetId);
 		peripheral.setKluch(kluch);

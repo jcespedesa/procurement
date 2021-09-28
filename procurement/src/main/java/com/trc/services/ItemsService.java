@@ -103,6 +103,7 @@ public class ItemsService
 				newEntity.setNotes(entity.getNotes());
 				newEntity.setKlass(entity.getKlass());
 				newEntity.setHhsForm(entity.getHhsForm());
+				newEntity.setItemNumber(entity.getItemNumber());
 				
 				newEntity=repository.save(newEntity);
 				
@@ -160,6 +161,13 @@ public class ItemsService
 		
 				
 		return item;
+	}
+	
+	public String getItemByNumber(String itemNumber) throws RecordNotFoundException
+	{
+		String description=repository.getItemByNumber(itemNumber);
+		
+		return description;
 	}
 	
 }

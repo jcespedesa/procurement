@@ -54,7 +54,7 @@
                    	<label for="peripheralNum" class="col-form-label">Description : </label> 
                    	<select th:field="*{peripheralNum}" id="peripheralNum" required>
                    		<option th:value="*{peripheralNum}" th:text="*{description}"></option>
-                   		<option th:each="item : ${items}" th:value="${item.itemid}" th:text="${item.item}"></option>
+                   		<option th:each="item : ${items}" th:value="${item.itemNumber}" th:text="${item.item}"></option>
                    		<option value=""></option>
                    	</select>
                </div>

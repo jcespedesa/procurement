@@ -26,11 +26,14 @@ public class ItemsEntity
 	
 	@Column(name="hhsform")
 	private String hhsForm;
+	
+	@Column(name="itemnumber")
+	private String itemNumber;
 		
 	@Override
 	public String toString()
 	{
-		return "ItemsEntity[itemid="+ itemid +",item="+ item +",notes="+ notes +",klass="+ klass +",hhsForm="+ hhsForm +"]";				
+		return "ItemsEntity[itemid="+ itemid +",item="+ item +",notes="+ notes +",klass="+ klass +",hhsForm="+ hhsForm +",itemNumber="+ itemNumber +"]";				
 		
 	}
 
@@ -89,6 +92,16 @@ public class ItemsEntity
 	public void setHhsForm(String hhsForm) 
 	{
 		this.hhsForm=hhsForm;
+	}
+
+	public String getItemNumber() 
+	{
+		return itemNumber;
+	}
+
+	public void setItemNumber(String itemNumber) 
+	{
+		this.itemNumber=itemNumber;
 	}
 	
 	

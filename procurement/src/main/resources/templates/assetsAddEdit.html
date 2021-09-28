@@ -66,8 +66,8 @@
                        	<label for="item" class="col-form-label">Item :</label> 
                        	<select th:field="*{item}" id="item" required>
                        		<option th:value="*{item}" th:text="${itemName}"></option>
-                       		<option th:each="item : ${items}" th:value="${item.item}" th:text="${item.item}" ></option>
-                       		<option value="Other">Other (Add notes)</option>
+                       		<option th:each="item : ${items}" th:value="${item.itemNumber}" th:text="${item.item}" ></option>
+                       		
                        	</select>
                     
                     </div>

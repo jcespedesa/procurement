@@ -64,4 +64,17 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	
 	@Query("Select u from AssetsEntity u WHERE u.assetNumber=?1")
 	List<AssetsEntity> getByAssetNumber(String assetNumber);
+	
+	@Query("Select u from AssetsEntity u WHERE u.item=?1")
+	List<AssetsEntity> getByItem(String item);
+	
+	@Query("Select distinct u.authorEmail from AssetsEntity u Order by authorEmail")
+	List<String> getDistAuthorEmails();
+	
+	@Query("Select u from AssetsEntity u WHERE u.authorEmail=?1")
+	List<AssetsEntity> getByAuthor(String authorEmail);
+	
+	@Query("Select u from AssetsEntity u WHERE u.project=?1")
+	List<AssetsEntity> getByProgram(String projectNumber);
+	
 }

@@ -28,4 +28,7 @@ public interface ItemsRepository extends CrudRepository<ItemsEntity,Long>
 	
 	@Query("Select u from ItemsEntity u Where u.item=?1")
 	ItemsEntity getByDescription(String description);
+	
+	@Query("Select u.item from ItemsEntity u Where u.itemNumber=?1")
+	String getItemByNumber(String itemNumber);
 }

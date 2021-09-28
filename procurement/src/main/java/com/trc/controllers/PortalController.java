@@ -424,13 +424,9 @@ public class PortalController
 		
 		String description=null;
 		
-		Long itemIdLong=null;
-		
-		//Converting id String to Long
-		itemIdLong=Long.parseLong(itemId);
-		
+				
 		//Retrieving peripheral description
-		description=serviceItems.getItemDescById(itemIdLong);
+		description=serviceItems.getItemByNumber(item);
 		
 		
 		//Setting the peripheral object
@@ -465,8 +461,7 @@ public class PortalController
 		if(priznak.equals("Yes"))
 		{	
 			
-			//Send the assetId
-			
+						
 			//Preparing list of items
 			List<ItemsEntity> items=serviceItems.getAllPeripheralsHHS();
 			
@@ -532,13 +527,13 @@ public class PortalController
 		String peripheralNum=null;
 		String description="Cell Phone";
 		
-		Long itemId=null;
-						
+		String itemNumber=null;
+		
 		ItemsEntity item=serviceItems.getItemByDesc(description);	
 		
-		itemId=item.getItemid();
+		itemNumber=item.getItemNumber();
 		
-		peripheralNum=Long.toString(itemId); 
+		peripheralNum=itemNumber;
 				
 		//Creating a new peripheral object as a cell phone
 		PeripheralsEntity peripheral=new PeripheralsEntity();
@@ -603,7 +598,7 @@ public class PortalController
 			
 	{
 		String division="300";
-		String item="27";
+		String itemNumber="27";
 		String assetNumber="0000";
 		
 		Long assetId=null;
@@ -612,7 +607,7 @@ public class PortalController
 		//Creating new asset
 		AssetsEntity entity=new AssetsEntity();
 		
-		entity.setItem(item);
+		entity.setItem(itemNumber);
 		entity.setUsername(cname);
 		entity.setEmail(email);
 		entity.setEmpStatus(empStatus);

@@ -53,8 +53,9 @@
   				<table class="table table-striped table-responsive-md">
   					<thead>
   						<tr>
-  							<th style="color:#006400;font-size:12px;">#</th>
+  							<th style="color:#006400;font-size:12px;">ID</th>
   							<th style="color:#006400;font-size:12px;" noWrap>Item</th>
+  							<th style="color:#006400;font-size:12px;">Item Number</th>
   							<th style="color:#006400;font-size:12px;">Class</th>
   							<th style="color:#006400;font-size:12px;">HHS Form</th>
   							<th style="color:#006400;font-size:12px;">Edit</th>
@@ -62,9 +63,10 @@
   						</tr>
   					</thead>
   					<tbody>
-  						<tr th:each="item,itemNum : ${items}">
-  							<td th:text="${itemNum.count}" style="font-size:12px;"></td>
+  						<tr th:each="item : ${items}">
+  							<td th:text="${item.itemid}" style="font-size:12px;"></td>
   							<td th:text="${item.item}" style="font-size:12px;"></td>
+  							<td th:text="${item.itemNumber}" style="font-size:12px;"></td>
   							<td th:text="${item.klass}" style="font-size:12px;"></td>
   							<td th:text="${item.hhsForm}" style="font-size:12px;"></td>  							  							
   							<td>
