@@ -52,6 +52,10 @@ public class PeripheralsService
 			
 			if(peripheral.isPresent())
 			{
+				//Setting variables to update real date quote
+				Long localId=entity.getItemid();
+				String localDatePurchased=entity.getDatePurchased();
+				
 				
 				PeripheralsEntity newEntity=peripheral.get();
 				
@@ -61,8 +65,15 @@ public class PeripheralsService
 				newEntity.setAssetNumber(entity.getAssetNumber ());
 				newEntity.setKluch(entity.getKluch());
 				newEntity.setNotes(entity.getNotes());
+				newEntity.setDatePurchased(entity.getDatePurchased());
+				newEntity.setAge(entity.getAge());
+				newEntity.setStatus(entity.getStatus());
+				newEntity.setActive(entity.getActive());
 					
 				newEntity=repository.save(newEntity);
+				
+				//Updating local date 
+				repository.setDatePurchased(localId,localDatePurchased);
 				
 				return newEntity;
 				
@@ -106,6 +117,17 @@ public class PeripheralsService
 	public List<PeripheralsEntity> getByAssetId(String assetId)
 	{
 		List<PeripheralsEntity> result=(List<PeripheralsEntity>) repository.getAllByAssetId(assetId);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<PeripheralsEntity>();
+		
+	}
+	
+	public List<PeripheralsEntity> getByProject(String project)
+	{
+		List<PeripheralsEntity> result=(List<PeripheralsEntity>) repository.getByProject(project);
 		
 		if(result.size() > 0)
 			return result;

@@ -34,12 +34,27 @@ public class PeripheralsEntity
 	@Column(name="assetnumber")
 	private String assetNumber;
 	
+	@Column(name="datepurchased")
+	private String datePurchased;
+	
+	@Column(name="realdatepurchased")
+	private String realDatePurchased;
+	
+	@Column(name="age")
+	private String age;
+	
+	@Column(name="status")
+	private String status;
+	
+	@Column(name="active")
+	private String active;
+	
 	//Constructors	
 	
 	@Override
 	public String toString()
 	{
-		return "SettingsEntity[itemid="+ itemid +",description="+ description +",peripheralNum="+ peripheralNum +",assetId="+ assetId +",kluch="+ kluch +",notes="+ notes +",assetNumber="+ assetNumber +"]";				
+		return "SettingsEntity[itemid="+ itemid +",description="+ description +",peripheralNum="+ peripheralNum +",assetId="+ assetId +",kluch="+ kluch +",notes="+ notes +",assetNumber="+ assetNumber +",datePurchased="+ datePurchased +",realDatePurchased="+ realDatePurchased +",age="+ age +",active="+ active +",status="+ status +"]";				
 		
 	}
 
@@ -112,7 +127,56 @@ public class PeripheralsEntity
 	{
 		this.assetNumber=assetNumber;
 	}
-	
-	
+
+	public String getDatePurchased() 
+	{
+		return datePurchased;
+	}
+
+	public void setDatePurchased(String datePurchased) 
+	{
+		this.datePurchased=datePurchased;
+	}
+
+	public String getRealDatePurchased() 
+	{
+		return realDatePurchased;
+	}
+
+	public void setRealDatePurchased(String realDatePurchased) 
+	{
+		this.realDatePurchased=realDatePurchased;
+	}
+
+	public String getAge() 
+	{
+		return age;
+	}
+
+	public void setAge(String age) 
+	{
+		this.age=age;
+	}
+
+	public String getStatus() 
+	{
+		return status;
+	}
+
+	public void setStatus(String status) 
+	{
+		this.status=status;
+	}
+
+	public String getActive() 
+	{
+		return active;
+	}
+
+	public void setActive(String active) 
+	{
+		this.active=active;
+	}
+		
 	
 }

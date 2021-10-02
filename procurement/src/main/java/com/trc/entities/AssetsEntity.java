@@ -81,11 +81,16 @@ public class AssetsEntity
 	@Column(name="datecreation")
 	private String dateCreation;
 	
+	@Column(name="age")
+	private String age;
+	
+	@Column(name="status")
+	private String status;
 
 	@Override
 	public String toString()
 	{
-		return "AssetsEntity[assetid="+ assetid +",item="+ item +",assetNumber="+ assetNumber +",maker="+ maker +",model="+ model +",datePurchased="+ datePurchased +",username="+ username +",title="+ title +",empStatus="+ empStatus +",division="+ division +",site="+ site +",active="+ active +",notes="+ notes +",realDatePurchased="+ realDatePurchased +",project="+ project +",strobe="+ strobe +",author="+ author +",authorEmail="+ authorEmail +",kluch="+ kluch +",email="+ email +",program="+ program +",klass="+ klass +",dateCreation="+ dateCreation +"]";				
+		return "AssetsEntity[assetid="+ assetid +",item="+ item +",assetNumber="+ assetNumber +",maker="+ maker +",model="+ model +",datePurchased="+ datePurchased +",username="+ username +",title="+ title +",empStatus="+ empStatus +",division="+ division +",site="+ site +",active="+ active +",notes="+ notes +",realDatePurchased="+ realDatePurchased +",project="+ project +",strobe="+ strobe +",author="+ author +",authorEmail="+ authorEmail +",kluch="+ kluch +",email="+ email +",program="+ program +",klass="+ klass +",dateCreation="+ dateCreation +",age="+ age +",status="+ status +"]";				
 		
 	}
 	
@@ -316,6 +321,30 @@ public class AssetsEntity
 	public void setDateCreation(String dateCreation) 
 	{
 		this.dateCreation=dateCreation;
+	}
+
+
+	public String getAge() 
+	{
+		return age;
+	}
+
+
+	public void setAge(String age) 
+	{
+		this.age=age;
+	}
+
+
+	public String getStatus() 
+	{
+		return status;
+	}
+
+
+	public void setStatus(String status) 
+	{
+		this.status=status;
 	}
 	
 	

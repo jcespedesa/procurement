@@ -84,7 +84,23 @@
                    <div class="form-group">   
                        	<label for="datePurchased" class="col-form-label">Date Purchased :</label> 
                        	<input type="text" th:field="*{datePurchased}" id="datePurchased" placeholder="Date" size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
-                    </div>
+                       	
+                    	<label for="status" class="col-form-label">Status : </label> 
+	                   	<select th:field="*{status}" id="status">
+	                   		<option th:value="*{status}" th:text="*{status}"></option>
+	                   		<option value="On line">On line</option>
+	                   		<option value="Unusable">Unusable</option>
+	                   		<option value="With missing/broken parts">With missing/broken parts</option>
+	                   		<option value="Unknown">Unknown</option>
+	                   		<option value=""></option>
+	                   	</select>
+	                   	<label for="active">Active</label>
+     					<select th:field="*{active}" id="active">
+					     	<option th:value="*{active}" th:text="*{active}"></option>
+					    	<option th:value="'Yes'" th:text="Yes"></option>
+					    	<option th:value="'No'" th:text="No"></option>
+     					</select>  
+                   </div>
                     
                     <hr>
                     
@@ -107,12 +123,7 @@
 					    	<option value="Perm">Perm</option>
 					    	<option value="Temp">Temp</option>
      					</select>    						
-						<label for="active">Active</label>
-     					<select th:field="*{active}">
-					     	<option th:value="*{active}" th:text="*{active}"></option>
-					    	<option th:value="'Yes'" th:text="Yes"></option>
-					    	<option th:value="'No'" th:text="No"></option>
-     					</select>    						
+						  						
 					</div>       	
                                        
                     <div class="form-group">
@@ -135,6 +146,8 @@
                        	</select>
                     </div>
                     
+                    
+                    
                     <hr>   	
                      
                     <div class="form-group">   	
@@ -143,7 +156,8 @@
                        	<label for="email" class="col-form-label">Email :</label> 
                        	<input type="text" th:field="*{authorEmail}" id="authorEmail" placeholder="someone@cc-dc.org" size="50" maxlength="70"/>
                     </div>
-                                        
+                    
+                                                            
                     <div class="form-group">
       					<label for="notes">Notes/Observations:</label><br>
       					<textarea id="notes" th:field="*{notes}" rows="7" cols="80"></textarea>

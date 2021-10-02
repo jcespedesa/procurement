@@ -13,13 +13,14 @@
   		
 		<!-- Custom styles for this template -->
 		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
 				
 		<!-- Bootstrap core JavaScript -->
   		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
   		  
     	<!-- Custom scripts for this template -->
   		<script th:src="@{/js/modalDelete.js}"></script>
-		
+		<script th:src="@{/js/calendarControl.js}"></script>
 		
 	</head>
 
@@ -62,7 +63,29 @@
                <div class="form-group">
                    	<label for="assetNumber" class="col-form-label">Asset number: </label> 
                    	<input type="text" th:field="*{assetNumber}" id="assetNumber" placeholder="Asset/Serial Number" size="15" maxlength="20"/>
+                   	
+                   	<label for="datePurchased" class="col-form-label">Date Purchased :</label> 
+                    <input type="text" th:field="*{datePurchased}" id="datePurchased" placeholder="Date" size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
                                           	
+               </div>
+               
+               <div class="form-group">
+                   	<label for="status" class="col-form-label">Status : </label> 
+                   	<select th:field="*{status}" id="status">
+                   		<option th:value="*{status}" th:text="*{status}"></option>
+                   		<option value="On line">On line</option>
+                   		<option value="Unusable">Unusable</option>
+                   		<option value="With missing/broken parts">With missing/broken parts</option>
+                   		<option value="Unknown">Unknown</option>
+                   		<option value=""></option>
+                   	</select>
+                   	<label for="active" class="col-form-label">Active : </label> 
+                   	<select th:field="*{active}" id="active">
+                   		<option th:value="*{active}" th:text="*{active}"></option>
+                   		<option value="Yes">Yes</option>
+                   		<option value="No">No</option>
+                   		<option value=""></option>
+                   	</select>
                </div>
                     
                <div class="form-group">

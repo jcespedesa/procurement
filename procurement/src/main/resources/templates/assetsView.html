@@ -60,32 +60,35 @@
   						<tr>
   							<th style="color:#006400;font-size:12px;">#</th>
   							<th style="color:#006400;font-size:12px;">Item</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Asset #</th>
   							<th style="color:#006400;font-size:12px;">Maker</th>
   							<th style="color:#006400;font-size:12px;">Model</th>
-  							<th style="color:#006400;font-size:12px;">Date Purchased</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Date Purchased</th>
   							
   							<th style="color:#006400;font-size:12px;">User</th>
   							<th style="color:#006400;font-size:12px;">Title</th>
-  							<th style="color:#006400;font-size:12px;">Emp. Status</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Emp Status</th>
   							
   							<th style="color:#006400;font-size:12px;">Project</th>
   							<th style="color:#006400;font-size:12px;">Program</th>
   							
-  							<th style="color:#006400;font-size:12px;">Date Inventory</th>
-  							<th style="color:#006400;font-size:12px;">Registered by</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Date Inventory</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Registered by</th>
   							<th style="color:#006400;font-size:12px;">Email</th>
   							
-  							<th style="color:#006400;font-size:12px;">Item Class</th>
-  							
+  							<th style="color:#006400;font-size:12px;">Class</th>
+  							<th style="color:#006400;font-size:12px;">Status</th>
   						</tr>
   					</thead>
   					<tbody>
   						<tr th:each="asset,itemNum : ${assets}">
   							<td th:text="${itemNum.count}" style="font-size:12px;"></td>
   							<td th:text="${asset.site}" style="font-size:12px;" noWrap></td>
+  							<td th:text="${asset.assetNumber}" style="font-size:12px;" noWrap></td>
   							<td th:text="${asset.maker}" style="font-size:12px;" noWrap></td>
   							<td th:text="${asset.model}" style="font-size:11px;" noWrap></td>
-  							<td th:text="${asset.datePurchased}" style="font-size:12px;"></td>
+  							<td th:if="${asset.age=='Old'}" th:text="${asset.datePurchased}" style="font-size:12px;background-color:#f8edeb;"></td>
+  							<td th:unless="${asset.age=='Old'}" th:text="${asset.datePurchased}" style="font-size:12px;"></td>
   							
   							<td th:text="${asset.username}" style="font-size:12px;" noWrap></td>
   							<td th:text="${asset.title}" style="font-size:12px;" noWrap></td>
@@ -99,11 +102,40 @@
   							<td th:text="${asset.authorEmail}" style="font-size:12px;" noWrap></td>
   							
   							<td th:text="${asset.klass}" style="font-size:12px;"></td>
-  												  							
+  							<td th:text="${asset.status}" style="font-size:12px;"></td>		  							
   							                                                                                   
   						</tr>	
   					</tbody>	
   				</table>
+  				
+  				<p class="navbar-brand" style="color:#880000;font-size:15px;">Peripherals Registered in this Program</p>
+  				
+  				<table class="table table-striped table-responsive-sm w-50">
+  					<thead>
+  						<tr>
+  							<th style="color:#006400;font-size:12px;">#</th>
+  							<th style="color:#006400;font-size:12px;">Description</th>
+  							<th style="color:#006400;font-size:12px;"  noWrap>Asset/Serial Number</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Item Related</th>
+  							<th style="color:#006400;font-size:12px;">User</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Date Purchased</th>
+  							<th style="color:#006400;font-size:12px;">Status</th>   							  							
+  						</tr>
+  					</thead>
+  					<tbody>
+  						<tr th:each="peripheral,itemNum : ${peripherals}">
+  							<td th:text="${itemNum.count}" style="font-size:12px;"></td>
+  							<td th:text="${peripheral.description}" style="font-size:12px;" noWrap></td>
+  							<td th:text="${peripheral.assetNumber}" style="font-size:12px;" noWrap></td>
+  							<td th:text="${peripheral.assetId}" style="font-size:12px;"></td>
+  							<td th:text="${peripheral.notes}" style="font-size:12px;"></td> 							
+  							<td th:if="${peripheral.age=='Old'}" th:text="${peripheral.datePurchased}" style="font-size:12px;background-color:#f8edeb;"></td>
+  							<td th:unless="${peripheral.age=='Old'}" th:text="${peripheral.datePurchased}" style="font-size:12px;"></td> 
+  							<td th:text="${peripheral.status}" style="font-size:12px;" noWrap></td>                                                                                  
+  						</tr>	
+  					</tbody>	
+  				</table>
+  				
   		</div>
   		
   		<!-- Footer -->

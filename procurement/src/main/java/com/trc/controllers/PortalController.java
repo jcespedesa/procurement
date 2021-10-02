@@ -288,6 +288,7 @@ public class PortalController
 			String notes,
 			String klass,
 			String item,
+			String status,
 			
 			String assetNumber)
 			
@@ -315,6 +316,7 @@ public class PortalController
 		entity.setKlass(klass);
 		entity.setStrobe(kluch);
 		entity.setDateCreation(todayDate);
+		entity.setStatus(status);
 		
 		//Not snachitelny values
 		
@@ -356,6 +358,7 @@ public class PortalController
 		model.addAttribute("klass",klass);
 		model.addAttribute("item",item);
 		model.addAttribute("assetNumber",assetNumber);
+		model.addAttribute("status",status);
 		
 		model.addAttribute("assetId",assetId);
 		
@@ -376,6 +379,7 @@ public class PortalController
 			String todayDate,
 			String active,
 			String klass,
+			
 			String assetId)
 	{
 		
@@ -416,6 +420,7 @@ public class PortalController
 			String todayDate,
 			String kluch,
 			String active,
+			String status,
 			String assetId
 	) throws RecordNotFoundException
 	
@@ -436,6 +441,7 @@ public class PortalController
 		entity.setNotes(notes);
 		entity.setDescription(description);
 		entity.setAssetNumber(assetNumber);
+		entity.setStatus(notes);
 				
 		//Save peripheral information
 		servicePeripherals.createOrUpdate(entity);

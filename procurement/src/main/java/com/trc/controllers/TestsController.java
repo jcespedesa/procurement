@@ -1,6 +1,9 @@
 package com.trc.controllers;
 
 
+import java.time.LocalDate;
+import java.time.Period;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +56,16 @@ public class TestsController
 		return "testObjectEmailSel";
 			
 	}
+	
+	
+	@GetMapping("/findAgeTwoDates")
+	public String findAgeTwoDatesSel()
+	{
+			
+		return "testFindAgeTwoDatesSel";
+			
+	}
+	
 	
 	@RequestMapping(path="/testEmailSending", method=RequestMethod.POST)
 	public String testEmail(Model model, String toEmail, String body, String subject)
@@ -117,6 +130,48 @@ public class TestsController
 		return "testEmailRedirect";	
 	}
 	
-	
+	@RequestMapping(path="/testFindAgeTwoDates", method=RequestMethod.POST)
+	public String testFindAgeTwoDates(Model model, String datePurchased, String todayDate)
+	{
+		int age=0;
+		
+		int year=0;
+		int month=0;
+		int day=0;
+		
+		String yearString=null;
+		String monthString=null;
+		String dayString=null;
+		
+		monthString=datePurchased.substring(0,datePurchased.indexOf("/"));
+		dayString=datePurchased.substring(datePurchased.indexOf("/")+1,5);
+		yearString=datePurchased.substring(6,datePurchased.length());
+		
+		year=Integer.parseInt(yearString);
+		month=Integer.parseInt(monthString);
+		day=Integer.parseInt(dayString);
+		
+		LocalDate datePurchasedLocal=LocalDate.of(year,month,day);
+		
+		monthString=todayDate.substring(0,datePurchased.indexOf("/"));
+		dayString=todayDate.substring(datePurchased.indexOf("/")+1,5);
+		yearString=todayDate.substring(6,datePurchased.length());
+		
+		year=Integer.parseInt(yearString);
+		month=Integer.parseInt(monthString);
+		day=Integer.parseInt(dayString);
+		
+		LocalDate todayDateLocal=LocalDate.of(year,month,day);
+				
+		//finding the age
+		age=Period.between(datePurchasedLocal,todayDateLocal).getYears();
+		
+		model.addAttribute("datePurchased",datePurchased);
+		model.addAttribute("todayDate",todayDate);
+		model.addAttribute("age",age);
+		
+		return "testAgeTwoDatesRedirect";
+		
+	}
 	
 }

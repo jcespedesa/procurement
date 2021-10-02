@@ -67,23 +67,33 @@ public class AssetsController
 		{
 			List<AssetsEntity> list=service.getAllAssets();
 			
+			int priznakPeripherals=0;
+			
 			String projectNumber=null;
 			String projectName=null;
 			String itemName=null;
 			String itemNumber=null;
+			String assetId=null;
 			
-						
+			Long assetIdLong=null;
 			
 			for(AssetsEntity asset : list)
 			{
+				priznakPeripherals=0;
 			
 				projectNumber=asset.getProject();
 				projectName=serviceProjects.getProjectByNum(projectNumber);
 				
 				itemNumber=asset.getItem();
-				
-								
 				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				//Finding if this current asset is having peripherals
+				assetIdLong=asset.getAssetid();
+				assetId=Long.toString(assetIdLong);
+				priznakPeripherals=service.findHowManyPeripherals(assetId);
+				
+				if(priznakPeripherals > 0)
+					asset.setStrobe("Yes");
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
@@ -246,24 +256,34 @@ public class AssetsController
 						
 			List<AssetsEntity> list=service.getByAssetNum(stringSearch);
 			
+			int priznakPeripherals=0;
 			
 			String projectNumber=null;
 			String projectName=null;
 			String itemName=null;
 			String itemNumber=null;
+			String assetId=null;
 			
+			Long assetIdLong=null;
 						
 			
 			for(AssetsEntity asset : list)
 			{
+				priznakPeripherals=0;
 			
 				projectNumber=asset.getProject();
 				projectName=serviceProjects.getProjectByNum(projectNumber);
 				
 				itemNumber=asset.getItem();
-				
-								
 				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				//Finding if this current asset is having peripherals
+				assetIdLong=asset.getAssetid();
+				assetId=Long.toString(assetIdLong);
+				priznakPeripherals=service.findHowManyPeripherals(assetId);
+				
+				if(priznakPeripherals > 0)
+					asset.setStrobe("Yes");
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
@@ -284,12 +304,15 @@ public class AssetsController
 						
 			List<AssetsEntity> list=service.getByItem(stringSearch);
 			
+			int priznakPeripherals=0;
 			
 			String projectNumber=null;
 			String projectName=null;
 			String itemName=null;
 			String itemNumber=null;
+			String assetId=null;
 			
+			Long assetIdLong=null;
 						
 			
 			for(AssetsEntity asset : list)
@@ -299,9 +322,15 @@ public class AssetsController
 				projectName=serviceProjects.getProjectByNum(projectNumber);
 				
 				itemNumber=asset.getItem();
-				
-								
 				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				//Finding if this current asset is having peripherals
+				assetIdLong=asset.getAssetid();
+				assetId=Long.toString(assetIdLong);
+				priznakPeripherals=service.findHowManyPeripherals(assetId);
+				
+				if(priznakPeripherals > 0)
+					asset.setStrobe("Yes");
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
@@ -320,12 +349,16 @@ public class AssetsController
 		{
 									
 			List<AssetsEntity> list=service.getByAuthor(stringSearch);
+			
+			int priznakPeripherals=0;
 						
 			String projectNumber=null;
 			String projectName=null;
 			String itemName=null;
 			String itemNumber=null;
-								
+			String assetId=null;
+			
+			Long assetIdLong=null;					
 			
 			for(AssetsEntity asset : list)
 			{
@@ -334,9 +367,15 @@ public class AssetsController
 				projectName=serviceProjects.getProjectByNum(projectNumber);
 				
 				itemNumber=asset.getItem();
-				
-								
 				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				//Finding if this current asset is having peripherals
+				assetIdLong=asset.getAssetid();
+				assetId=Long.toString(assetIdLong);
+				priznakPeripherals=service.findHowManyPeripherals(assetId);
+				
+				if(priznakPeripherals > 0)
+					asset.setStrobe("Yes");
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
@@ -356,12 +395,16 @@ public class AssetsController
 		{
 									
 			List<AssetsEntity> list=service.getByProgram(stringSearch);
-						
+			
+			int priznakPeripherals=0;
+			
 			String projectNumber=null;
 			String projectName=null;
 			String itemName=null;
 			String itemNumber=null;
-								
+			String assetId=null;
+			
+			Long assetIdLong=null;					
 			
 			for(AssetsEntity asset : list)
 			{
@@ -370,8 +413,15 @@ public class AssetsController
 				projectName=serviceProjects.getProjectByNum(projectNumber);
 				
 				itemNumber=asset.getItem();
-									
 				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				//Finding if this current asset is having peripherals
+				assetIdLong=asset.getAssetid();
+				assetId=Long.toString(assetIdLong);
+				priznakPeripherals=service.findHowManyPeripherals(assetId);
+				
+				if(priznakPeripherals > 0)
+					asset.setStrobe("Yes");
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
@@ -413,7 +463,13 @@ public class AssetsController
 		{
 			//Retrieving assets list						
 			List<AssetsEntity> list=service.getByProgram(stringSearch);
-						
+			
+			//Retrieving peripherals list 
+			List<PeripheralsEntity> listPeripherals=servicePeripherals.getByProject(stringSearch);
+			
+			int age=0;
+			
+			String assetId=null;
 			String projectNumber=null;
 			String projectName=null;
 			String itemName=null;
@@ -422,30 +478,88 @@ public class AssetsController
 			String titleName=null;
 			String viewTitle=null;
 			String header="Assets View by Program : ";
+			String username=null;
+			String datePurchased=null;
+			
+			String ageString=null;
+															
+			Long assetIdLong=null;
+			
+			//Testing the age generator
+			//String datePurchased="2010-04-23";
+			//age=service.priznakOldItem(datePurchased);
+			
+			//System.out.println("The asset is "+ age +" years old ");
 			
 			for(AssetsEntity asset : list)
 			{
+				age=0;
 			
 				projectNumber=asset.getProject();
 				projectName=serviceProjects.getProjectByNum(projectNumber);
 				
 				itemNumber=asset.getItem();
 				itemName=serviceItems.getItemByNumber(itemNumber);
-				
+								
 				titleNumber=asset.getTitle();
 				titleName=serviceTitles.getTitleByNumber(titleNumber);
+				
+				
+				//Checking age of the asset
+				datePurchased=asset.getRealDatePurchased();
+				
+				if((datePurchased==null)||(datePurchased.equals("1900-01-01 00:00:00")))
+					age=0;
+				else
+					age=service.priznakOldItem(datePurchased);
+							
 								
+				if((age>5)&&(age<100))
+					ageString="Old";
+				else
+					ageString="New";
+							
+				//System.out.println("Age is "+ age +" and ageString is "+ ageString);
+				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
+				asset.setAge(ageString);
+			}
+			
+			for(PeripheralsEntity peripheral : listPeripherals)
+			{
+				assetId=peripheral.getAssetId();
+				assetIdLong=Long.parseLong(assetId);
+				username=service.getUsername(assetIdLong);
+				
+				peripheral.setNotes(username);
+				
+				//Checking age of the peripheral
+				datePurchased=peripheral.getRealDatePurchased();
+				
+				if((datePurchased==null)||(datePurchased.equals("1900-01-01 00:00:00")))
+					age=0;
+				else
+					age=service.priznakOldItem(datePurchased);
 							
+								
+				if((age>5)&&(age<100))
+					ageString="Old";
+				else
+					ageString="New";
+				
+				peripheral.setAge(ageString);
+				
 			}
 			
 			viewTitle=header + stringSearch;
 			
 			model.addAttribute("stringSearch",stringSearch);
-			model.addAttribute("viewTitle",viewTitle);												
+			model.addAttribute("viewTitle",viewTitle);	
+			
 			model.addAttribute("assets",list);
+			model.addAttribute("peripherals",listPeripherals);
 						
 			return "assetsView";
 			
@@ -467,7 +581,11 @@ public class AssetsController
 	       	            
 	       //Retrieving assets list						
 			List<AssetsEntity> list=service.getByProgram(stringSearch);
-						
+			
+			//Retrieving peripherals list 
+			List<PeripheralsEntity> listPeripherals=servicePeripherals.getByProject(stringSearch);
+			
+			String assetId=null;
 			String projectNumber=null;
 			String projectName=null;
 			String itemName=null;
@@ -480,6 +598,10 @@ public class AssetsController
 			String month=null;
 			String day=null;
 			String podcherk="/";
+			String username=null;
+			
+			
+			Long assetIdLong=null;
 						
 			for(AssetsEntity asset : list)
 			{
@@ -512,16 +634,40 @@ public class AssetsController
 				asset.setDateCreation(dateConverted);			
 			}
 			
+			for(PeripheralsEntity peripheral : listPeripherals)
+			{
+				assetId=peripheral.getAssetId();
+				assetIdLong=Long.parseLong(assetId);
+				username=service.getUsername(assetIdLong);
+				
+				peripheral.setNotes(username);
+				
+			}
+			
 	 
 	        ICsvBeanWriter csvWriter=new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
-	        String[] csvHeader={"Item", "Maker", "Model", "Date Purchased","User","Title","Emp. Status","Project","Program","Date Inventory","Registered by","Email","Item Class"};
-	        String[] nameMapping={"site","maker","model","datePurchased","username","title","empStatus","project","program","dateCreation","author","authorEmail","klass"};
-	         
+	        	        
+	        String[] csvHeader={"Item","Asset Number","Maker", "Model", "Date Purchased","User","Title","Emp. Status","Project","Program","Date Inventory","Registered by","Email","Item Class"};
+	        String[] nameMapping={"site","assetNumber","maker","model","datePurchased","username","title","empStatus","project","program","dateCreation","author","authorEmail","klass"};
+	        
+	        String[] csvHeader2={"Description","Asset Number","Item Related","User"};
+	        String[] nameMapping2={"description","assetNumber","itemId","notes"};
+	        
+	        	         
 	        csvWriter.writeHeader(csvHeader);
 	         
 	        for (AssetsEntity asset : list) 
 	        {
 	            csvWriter.write(asset, nameMapping);
+	        }
+	        
+	        	        	        
+	        
+	        csvWriter.writeHeader(csvHeader2);
+	        
+	        for (PeripheralsEntity peripheral : listPeripherals) 
+	        {
+	            csvWriter.write(peripheral, nameMapping2);
 	        }
 	         
 	        csvWriter.close();

@@ -1,5 +1,7 @@
 package com.trc.services;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.trc.entities.AssetsEntity;
 import com.trc.repositories.AssetsRepository;
+import com.trc.repositories.PeripheralsRepository;
 import com.trc.repositories.ProjectsRepository;
 
 @Service
@@ -19,6 +22,9 @@ public class AssetsService
 	
 	@Autowired
 	ProjectsRepository repositoryProjects;
+	
+	@Autowired
+	PeripheralsRepository repositoryPeripherals;
 	
 	public List<AssetsEntity> getAllAssets()
 	{
@@ -119,6 +125,9 @@ public class AssetsService
 				newEntity.setEmail(entity.getEmail());
 				newEntity.setProgram(entity.getProgram());
 				
+				newEntity.setAge(entity.getAge());
+				newEntity.setStatus(entity.getStatus());
+				
 				newEntity=repository.save(newEntity);
 				
 				//Updating local date 
@@ -183,6 +192,7 @@ public class AssetsService
 		String authorEmail=null;
 		String program=null;
 		String klass=null;
+		String status=null;
 		
 		item=asset.getItem();
 		assetNumber=asset.getAssetNumber();
@@ -202,9 +212,10 @@ public class AssetsService
 		email=asset.getEmail();
 		program=asset.getProgram();
 		klass=asset.getKlass();
+		status=asset.getStatus();
 		
 		//Trying to save new record in table
-		repository.saveNewAsset(item,assetNumber,maker,model,datePurchased,username,title,site,active,notes,project,strobe,author,authorEmail,kluch,email,program,klass);
+		repository.saveNewAsset(item,assetNumber,maker,model,datePurchased,username,title,site,active,notes,project,strobe,author,authorEmail,kluch,email,program,klass,status);
 		
 		return kluch;
 	
@@ -310,6 +321,59 @@ public class AssetsService
 		
 	}
 	
+	public String getUsername(Long assetId)
+	{
+				
+		String username=repository.getUsername(assetId);
+		
+		return username;
+		
+	}
 	
+	public Integer findHowManyPeripherals(String assetId)
+	{
+				
+		int numberPeripherals=repositoryPeripherals.getNumberPeripherals(assetId);
+		
+		return numberPeripherals;
+		
+	}
+	
+	public Integer priznakOldItem(String datePurchased)
+	{
+				
+		int yearsOld=0;
+		
+		//Finding local date for today's date
+		LocalDate todayDateLocal=new java.sql.Date(new java.util.Date().getTime()).toLocalDate();
+		
+		//Converting received Date Purchased in separate Strings
+		
+		int year=0;
+		int month=0;
+		int day=0;
+		
+		String yearString=null;
+		String monthString=null;
+		String dayString=null;
+		
+		yearString=datePurchased.substring(0,datePurchased.indexOf("-"));
+		monthString=datePurchased.substring(datePurchased.indexOf("-")+1,7);
+		dayString=datePurchased.substring(8,10);
+		
+		year=Integer.parseInt(yearString);
+		month=Integer.parseInt(monthString);
+		day=Integer.parseInt(dayString);
+		
+		LocalDate datePurchasedLocal=LocalDate.of(year,month,day);
+		
+		//finding the age
+		yearsOld=Period.between(datePurchasedLocal,todayDateLocal).getYears();
+		
+		
+		
+		return yearsOld;
+		
+	}
 	
 }
