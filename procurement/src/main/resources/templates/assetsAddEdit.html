@@ -43,7 +43,12 @@
 	        		<li th:if="${priznakNew=='No'}">
 	           			<a th:href="@{/procurement/peripherals/list/{id}(id=${asset.assetid})}">Peripherals</a>
 	           		</li>
-	           		
+	           		<li th:if="${priznakNew=='No'}">
+	           			<a th:href="@{/procurement/Assets/reassign/{id}(id=${asset.assetid})}">Re-assign</a>
+	           		</li>
+	           		<li th:if="${priznakNew=='No'}">
+	           			<a th:href="@{/procurement/assetsAssig/list/{id}(id=${asset.assetid})}">History Re-assigns</a>
+	           		</li>
 	            	
 	            </ul>
       		</nav>
@@ -111,7 +116,7 @@
                        	<label for="title" class="col-form-label">Title :</label> 
                        	<select th:field="*{title}" id="title">
                        		<option th:value="*{title}" th:text="${titleName}"></option>
-                       		<option th:each="title : ${titles}" th:value="${title.titleDesc}" th:text="${title.titleDesc}" ></option>
+                       		<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
                        		<option value="Other">Other (Add notes)</option>
                        	</select>
                     </div>
@@ -173,6 +178,22 @@
       						<tbody>
       							<tr th:each="peripheral : ${peripherals}">
       								<td th:text="${peripheral.description}"></td>
+      							</tr>
+     						</tbody>		
+      					</table>
+      					
+      					<table class="table table-bordered-sm">
+      						<thead>
+      							<tr class="table-active">
+      								<td colspan="4" style="font-weight:bold">Previous Owners</td>
+      							</tr>
+      						</thead>
+      						<tbody>
+      							<tr th:each="assig : ${assigs}">
+      								<td th:text="${assig.assigName}"></td>
+      								<td th:text="${assig.assigEmail}"></td>
+      								<td th:text="${assig.assigTitle}"></td>
+      								<td th:text="${assig.assigProject}"></td>
       							</tr>
      						</tbody>		
       					</table>

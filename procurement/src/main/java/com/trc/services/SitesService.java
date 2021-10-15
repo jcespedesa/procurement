@@ -139,6 +139,12 @@ public class SitesService
 		
 	}
 	
-	
+	public List<SitesEntity> searchByDivision(String stringSearch)
+	{
+		List<SitesEntity> result=(List<SitesEntity>) repository.searchByDivision(stringSearch);
+		
+		return result;
+		
+	}
 	
 }

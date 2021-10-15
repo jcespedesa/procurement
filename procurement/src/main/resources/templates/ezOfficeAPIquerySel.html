@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>EZOffice API Query Test</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a th:href="@{/procurement/index}">Back</a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   			
+   		
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Test - retrieving Asset Info from EZ Office</p>
+				          
+        			</div>
+      			</div>
+      			
+      			<div class="row">
+      			
+	      			<div class="col">
+	     		
+	  					<form class="form-main" th:action="@{/procurement/tests/testAPIqueryToEZoffice}"  method="post">
+	                                       
+	                    		                        
+	                        <div class="form-group">
+	                        	<label for="assetNumber" class="col-form-label">Asset Number <sup>*</sup>:</label> 
+                       			<input type="text" name="assetNumber" placeholder="EZoffice Asset Number" required  size="25" maxlength="20"/>
+	                        </div> 
+	                        
+	                        <div class="form-group">
+	                        	<label for="apiUrl" class="col-form-label">API URL <sup>*</sup>:</label> 
+                       			<input type="text" name="apiUrl" placeholder="API url" required  size="50" th:value="${apiUrl}" readOnly/>
+                       			<label for="prefix" class="col-form-label">Prefix <sup>*</sup>:</label> 
+                       			<input type="text" name="prefix" placeholder="Prefix" required  size="10" th:value="${prefix}" readOnly/>
+                       		</div>
+                       		<div class="form-group">	
+                       			<label for="token" class="col-form-label">Token <sup>*</sup>:</label> 
+                       			<input type="text" name="token" placeholder="Token" required  size="50" th:value="${token}" readOnly/>
+	                        </div>
+	                        
+	                        	                      	                                                           
+	                    	<div class="form-group">
+	                       		<input type="submit" class="btn btn-primary btn-sm" value=" Query API >> ">
+	                    	</div>
+	                	                        	
+	            		</form>
+	  				</div>
+	  				
+	  				<div class="col">
+	  		
+	  				</div>
+	  			</div>
+	  	</div>
+  		
+  		<!-- Footer --> 
+  
+  		<footer class="customFooter"></footer> 
+  			
+	</body>
+</html>			
+				
+				

@@ -86,6 +86,8 @@ public class ItemsService
 	{
 		if(entity.getItemid()==null)
 		{
+			//System.out.println(entity);
+			
 			entity=repository.save(entity);
 			
 			return entity;

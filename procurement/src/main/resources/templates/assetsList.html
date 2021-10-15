@@ -34,12 +34,13 @@
    		
    			<nav id="hcssmenu">
 	    		<ul>
+	    			<li>
+	           			<a href="/procurement/index">Back</a>
+	        		</li>
 	        		<li>
 	           			<a href="/procurement/Assets/edit">Add New</a>
 	        		</li>
-	            	<li>
-	           			<a href="/procurement/index">Back</a>
-	        		</li>
+	            	
 	        		<li>
 	           			<a href="/procurement/Assets/search">Search</a>
 	        		</li>
@@ -67,10 +68,12 @@
   							<th style="color:#006400;font-size:12px;">#</th>
   							<th style="color:#006400;font-size:12px;">Item</th>
   							<th style="color:#006400;font-size:12px;">User</th>
+  							<th style="color:#006400;font-size:12px;">title</th>
   							<th style="color:#006400;font-size:12px;">Program</th>
   							<th style="color:#006400;font-size:12px;">Project Number</th>
   							<th style="color:#006400;font-size:12px;">Asset Number</th>
   							<th style="color:#006400;font-size:12px;">Peripherals</th>
+  							<th style="color:#006400;font-size:12px;">Active</th>
   							
   							<th style="color:#006400;font-size:12px;">Edit</th>
   							<th style="color:#006400;font-size:12px;">Delete</th>
@@ -82,11 +85,16 @@
   							<td th:text="${itemNum.count}" style="font-size:12px;"></td>
   							<td th:text="${asset.site}" style="font-size:12px;"></td>
   							<td th:text="${asset.username}" style="font-size:12px;"></td>
+  							<td th:text="${asset.title}" style="font-size:12px;"></td>
   							<td th:text="${asset.program}" style="font-size:11px;"></td>
   							<td th:text="${asset.project}" style="font-size:12px;"></td>
   							<td th:text="${asset.assetNumber}" style="font-size:12px;"></td>
+  							
   							<td th:if="${asset.strobe}=='Yes'" th:text="${asset.strobe}" style="font-size:12px;background-color:lightblue;text-align: center;"></td>	
-  							<td th:unless="${asset.strobe}=='Yes'" th:text="${asset.strobe}" style="font-size:12px;text-align: center;"></td>					  							
+  							<td th:unless="${asset.strobe}=='Yes'" th:text="${asset.strobe}" style="font-size:12px;text-align: center;"></td>
+  							
+  							<td th:if="${asset.active}=='Yes'" th:text="${asset.active}" style="font-size:12px;"></td>
+  							<td th:unless="${asset.active}=='Yes'" th:text="${asset.active}" style="font-size:12px;background-color:#ffccff;text-align: center;"></td>						  							
   							<td>
                             	<a th:href="@{/procurement/Assets/edit/{id}(id=${asset.assetid})}" class="btn btn-primary btn-sm">
                                 	<i class="fa fa-edit"></i>

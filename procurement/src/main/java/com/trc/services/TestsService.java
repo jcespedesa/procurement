@@ -3,10 +3,14 @@ package com.trc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.client.RestTemplate;
 import com.trc.entities.AssetsEntity;
+import com.trc.entities.SettingsEntity;
 import com.trc.repositories.AssetsRepository;
+import com.trc.repositories.SettingsRepository;
 import com.trc.repositories.TestsRepository;
 
 
@@ -19,6 +23,8 @@ public class TestsService
 	@Autowired
 	AssetsRepository repositoryAssets;
 	
+	@Autowired
+	SettingsRepository repositorySettings;
 	
 	public AssetsEntity getAssetById(Long id) throws RecordNotFoundException
 	{
@@ -30,5 +36,17 @@ public class TestsService
 			throw new RecordNotFoundException("No record exist for given id");
 	}
 	
+	public SettingsEntity getSettingBySname(String sname) throws RecordNotFoundException
+	{
+		SettingsEntity setting=repositorySettings.getBySname(sname);
+		
+		return setting;
+	}
 	
+	@Bean
+	public RestTemplate getRestTemplate() 
+	{
+	      return new RestTemplate();
+	}
+		
 }

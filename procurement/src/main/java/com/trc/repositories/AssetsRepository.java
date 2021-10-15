@@ -80,5 +80,9 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	@Query("Select username from AssetsEntity u where u.assetid=?1")
 	String getUsername(Long assetId);
 	
+	@Modifying
+	@Transactional
+	@Query("Update AssetsEntity u set u.username=?2, u.title=?3, u.empStatus=?4, u.project=?5, u.email=?6 where u.id=?1")
+	void putReassignation(Long assetId,String newUsername,String newTitle,String newEmpStatus,String newProject,String newEmail);
 		
 }

@@ -90,4 +90,34 @@ public class SitesController
 	}
 	
 	
+	@RequestMapping(path="/search")
+	public String search(Model model)
+	{
+				
+		List<DivisionsEntity> list=serviceDivisions.getAllDivisions();
+		
+		model.addAttribute("divisions",list);
+		
+		return "searchFormSites";
+		
+		
+	}
+	
+	@RequestMapping(path="/searchDivision", method=RequestMethod.POST)
+	public String searchByDivision(Model model,String stringSearch)
+	{
+				
+		List<SitesEntity> list=service.searchByDivision(stringSearch);
+		
+		//System.out.println(list);
+		
+		model.addAttribute("sites",list);
+		model.addAttribute("stringSearch",stringSearch);
+		
+		return "sitesList";
+		
+		
+	}
+	
+	
 }

@@ -23,12 +23,14 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
+import com.trc.entities.AssetAssigEntity;
 import com.trc.entities.AssetsEntity;
 import com.trc.entities.ItemsEntity;
 import com.trc.entities.PeripheralsEntity;
 import com.trc.entities.ProjectsEntity;
 import com.trc.entities.SitesEntity;
 import com.trc.entities.TitlesEntity;
+import com.trc.services.AssetsAssigService;
 import com.trc.services.AssetsService;
 import com.trc.services.ItemsService;
 import com.trc.services.PeripheralsService;
@@ -60,6 +62,9 @@ public class AssetsController
 	@Autowired
 	PeripheralsService servicePeripherals;
 	
+	@Autowired
+	AssetsAssigService serviceReassig;
+	
 	//CRUD operations for assets
 	
 		@GetMapping("/list")
@@ -71,8 +76,13 @@ public class AssetsController
 			
 			String projectNumber=null;
 			String projectName=null;
+			
 			String itemName=null;
 			String itemNumber=null;
+			
+			String titleName=null;
+			String titleNumber=null;
+			
 			String assetId=null;
 			
 			Long assetIdLong=null;
@@ -81,11 +91,17 @@ public class AssetsController
 			{
 				priznakPeripherals=0;
 			
+				//finding project name
 				projectNumber=asset.getProject();
 				projectName=serviceProjects.getProjectByNum(projectNumber);
 				
+				//finding item description
 				itemNumber=asset.getItem();
 				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				//finding title description
+				titleNumber=asset.getTitle();
+				titleName=serviceTitles.getTitleByNumber(titleNumber);
 				
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
@@ -97,6 +113,7 @@ public class AssetsController
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
+				asset.setTitle(titleName);
 							
 			}
 				
@@ -111,7 +128,8 @@ public class AssetsController
 		@RequestMapping(path={"/edit","/edit/{id}"})
 		public String editAssetsById(Model model,@PathVariable("id") Optional<Long> id) throws RecordNotFoundException 
 		{
-			
+						
+					
 			//Preparing list of items
 			List<ItemsEntity> items=serviceItems.getAllMainItems();
 			
@@ -123,6 +141,8 @@ public class AssetsController
 			
 			//Preparing list of titles
 			List<TitlesEntity> titles=serviceTitles.getAllTitles();
+			
+			
 			
 			String site=null;
 			String project=null;
@@ -149,13 +169,16 @@ public class AssetsController
 				//Retrieving related peripherals for this asset				
 				List<PeripheralsEntity> peripherals=servicePeripherals.getByAssetId(assetId);
 				
+				//Preparing history of reassignations 
+				List<AssetAssigEntity> assigs=serviceReassig.getAssigById(assetId);
+				
+				//System.out.println(assigs);
+				
 				itemNumber=entity.getItem();
 				titleNumber=entity.getTitle();
-				
-								
+												
 				priznakNew="No";
-				
-				
+								
 				//Finding names or descriptions
 				
 				site=serviceSites.getSiteByNumber(entity.getSite());
@@ -171,6 +194,7 @@ public class AssetsController
 				model.addAttribute("titleName",titleName);
 				
 				model.addAttribute("peripherals",peripherals);
+				model.addAttribute("assigs",assigs);
 			}
 			else
 			{
@@ -260,9 +284,14 @@ public class AssetsController
 			
 			String projectNumber=null;
 			String projectName=null;
+			
 			String itemName=null;
 			String itemNumber=null;
+			
 			String assetId=null;
+			
+			String titleName=null;
+			String titleNumber=null;
 			
 			Long assetIdLong=null;
 						
@@ -277,6 +306,10 @@ public class AssetsController
 				itemNumber=asset.getItem();
 				itemName=serviceItems.getItemByNumber(itemNumber);
 				
+				//finding title description
+				titleNumber=asset.getTitle();
+				titleName=serviceTitles.getTitleByNumber(titleNumber);
+				
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -287,6 +320,7 @@ public class AssetsController
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
+				asset.setTitle(titleName);
 							
 			}
 				
@@ -308,8 +342,13 @@ public class AssetsController
 			
 			String projectNumber=null;
 			String projectName=null;
+			
 			String itemName=null;
 			String itemNumber=null;
+			
+			String titleName=null;
+			String titleNumber=null;
+			
 			String assetId=null;
 			
 			Long assetIdLong=null;
@@ -324,6 +363,10 @@ public class AssetsController
 				itemNumber=asset.getItem();
 				itemName=serviceItems.getItemByNumber(itemNumber);
 				
+				//finding title description
+				titleNumber=asset.getTitle();
+				titleName=serviceTitles.getTitleByNumber(titleNumber);
+				
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -334,6 +377,7 @@ public class AssetsController
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
+				asset.setTitle(titleName);
 							
 			}
 				
@@ -354,8 +398,13 @@ public class AssetsController
 						
 			String projectNumber=null;
 			String projectName=null;
+			
 			String itemName=null;
 			String itemNumber=null;
+			
+			String titleName=null;
+			String titleNumber=null;
+			
 			String assetId=null;
 			
 			Long assetIdLong=null;					
@@ -369,6 +418,10 @@ public class AssetsController
 				itemNumber=asset.getItem();
 				itemName=serviceItems.getItemByNumber(itemNumber);
 				
+				//finding title description
+				titleNumber=asset.getTitle();
+				titleName=serviceTitles.getTitleByNumber(titleNumber);
+				
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -379,6 +432,7 @@ public class AssetsController
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
+				asset.setTitle(titleName);
 							
 			}
 				
@@ -400,8 +454,13 @@ public class AssetsController
 			
 			String projectNumber=null;
 			String projectName=null;
+			
 			String itemName=null;
 			String itemNumber=null;
+			
+			String titleName=null;
+			String titleNumber=null;
+			
 			String assetId=null;
 			
 			Long assetIdLong=null;					
@@ -415,6 +474,10 @@ public class AssetsController
 				itemNumber=asset.getItem();
 				itemName=serviceItems.getItemByNumber(itemNumber);
 				
+				//finding title description
+				titleNumber=asset.getTitle();
+				titleName=serviceTitles.getTitleByNumber(titleNumber);
+				
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -425,6 +488,7 @@ public class AssetsController
 				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
+				asset.setTitle(titleName);
 							
 			}
 				
@@ -673,5 +737,134 @@ public class AssetsController
 	        csvWriter.close();
 	         
 	    }
+		
+				
+		@RequestMapping(path="/reassign/{id}")
+		public String reassign(Model model,@PathVariable("id") Long id) throws RecordNotFoundException
+		{
+			String itemName=null;
+			String itemNumber=null;
+			String titleName=null;
+			String titleNumber=null;
+			String projectName=null;
+			String projectNumber=null;
+			
+			//Retrieving asset entity
+			AssetsEntity entity=service.getAssetById(id);
+			
+			itemNumber=entity.getItem();
+			titleNumber=entity.getTitle();
+			projectNumber=entity.getProject();
+			
+			//Retrieving item description
+			itemName=serviceItems.getItemByNumber(itemNumber);
+			
+			//Retrieving title description
+			titleName=serviceTitles.getTitleByNumber(titleNumber);
+			
+			//Retrieving project description
+			projectName=serviceProjects.getProjectByNum(projectNumber);
+			
+			//Preparing list of titles
+			List<TitlesEntity> titles=serviceTitles.getAllTitles();
+						
+			//Preparing list of projects
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSprojects();
+			
+			//System.out.println("title number is "+ titleNumber);
+			//System.out.println("title is "+ titleName);
+			//System.out.println("notes are "+ entity.getNotes());
+			
+			model.addAttribute("assetReassig",new AssetAssigEntity());
+						
+			model.addAttribute("asset",entity);
+			model.addAttribute("projects",projects);
+			model.addAttribute("titles",titles);
+			
+			model.addAttribute("itemName",itemName);
+			model.addAttribute("titleName",titleName);
+			model.addAttribute("projectName",projectName);
+			
+			return "assetsReassigForm";
+			
+		}
+		
+		@RequestMapping(path="/reassignAsset", method=RequestMethod.POST)
+		public String reassignAsset(Model model,Long id, AssetAssigEntity assetReassig,
+				
+				String username,
+				String email,
+				String empStatus,
+				String title,
+				String project,
+				
+				String assetNumber,
+				String kluch
+				
+		) throws RecordNotFoundException
+		{
+									
+			String assetIdString=null;
+			String todayDate=null;
+			
+			String newUsername=null;
+			String newTitle=null;
+			String newEmpStatus=null;
+			String newProject=null;
+			String newEmail=null;
+			String reassignedBy=null;
+			String emailReassigner=null;
+			
+			newUsername=assetReassig.getNewAssigName();
+			newTitle=assetReassig.getNewAssigTitle();
+			newEmpStatus=assetReassig.getNewAssigEmpStatus();
+			newProject=assetReassig.getNewAssigProject();
+			newEmail=assetReassig.getNewAssigEmail();
+			reassignedBy=assetReassig.getReassignedBy();
+			emailReassigner=assetReassig.getEmailReassigner();
+						
+			//Converting Long to String
+			assetIdString=String.valueOf(id);
+			
+			LocalDateTime now=LocalDateTime.now(); 
+			
+			//Generating today's date
+			DateTimeFormatter dtfRecord=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
+						
+			todayDate=dtfRecord.format(now);
+			
+			//Complementing the Re-Assignation object
+			assetReassig.setAssetId(assetIdString);
+			assetReassig.setAssetNumber(assetNumber);
+			assetReassig.setAssigName(username);
+			assetReassig.setAssigEmail(email);
+			assetReassig.setAssigEmpStatus(empStatus);
+			assetReassig.setAssigProject(project);
+			assetReassig.setAssigTitle(title);
+					
+			assetReassig.setDateReassignation(todayDate);
+			assetReassig.setKluch(kluch);
+			
+			//System.out.println(assetReassig);
+			
+			//Saving re-assignation information
+			serviceReassig.createReassig(assetReassig);
+			
+			//Saving changes to the asset object
+			service.assetReassignation(id,newUsername,newTitle,newEmpStatus,newProject,newEmail,reassignedBy,emailReassigner);
+			
+			model.addAttribute("assetReassig",assetReassig);
+			
+			model.addAttribute("username",username);
+			model.addAttribute("email",email);
+			model.addAttribute("empStatus",empStatus);
+			model.addAttribute("title",title);
+			model.addAttribute("project",project);
+			
+			model.addAttribute("assetNumber",assetNumber);
+						
+			return "assetsReassigRedirect";
+
+		}
 			
 }

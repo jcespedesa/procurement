@@ -3,6 +3,9 @@ package com.trc.controllers;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,16 +13,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.trc.entities.AssetsEntity;
 import com.trc.entities.ReceiptsEntity;
+import com.trc.repositories.SettingsRepository;
 import com.trc.services.EmailService;
 import com.trc.services.ProjectsService;
 import com.trc.services.ReceiptsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.TestsService;
 import com.trc.services.TitlesService;
+import com.trc.entities.SettingsEntity;
+
+import org.json.JSONArray;  
+import org.json.JSONObject;  
 
 
 @Controller
@@ -40,6 +49,12 @@ public class TestsController
 	
 	@Autowired
 	ReceiptsService serviceReceipts;
+	
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	@Autowired
+	SettingsRepository repositorySettings;
 	
 	@GetMapping("/emailSel")
 	public String testEmailSel()
@@ -63,6 +78,32 @@ public class TestsController
 	{
 			
 		return "testFindAgeTwoDatesSel";
+			
+	}
+	
+	@GetMapping("/ezOffAPIquerySel")
+	public String ezOfficeAPIquerySel(Model model) throws RecordNotFoundException
+	{
+		
+		//Retrieving setting
+		SettingsEntity setting=service.getSettingBySname("APIezOffice");
+		
+		String apiUrl=null;
+		String token=null;
+		String prefix=null;
+		
+			
+		//Retrieving the url from parameters
+		apiUrl=setting.getPath();
+		prefix=setting.getParam1();
+		token=setting.getParam2();
+		
+				
+		model.addAttribute("apiUrl",apiUrl);
+		model.addAttribute("prefix",prefix);
+		model.addAttribute("token",token);
+		
+		return "ezOfficeAPIquerySel";
 			
 	}
 	
@@ -173,5 +214,32 @@ public class TestsController
 		return "testAgeTwoDatesRedirect";
 		
 	}
+	
+	@RequestMapping(path="/testAPIqueryToEZoffice", method=RequestMethod.POST)
+	public Object testAPIqueryToEZoffice(Model model,String apiUrl,String prefix,String token,String assetNumber)
+	{
+				
+		String url=null;
+		String questionMark="?";
+		String tokenEqual="token=";
+		
+		url=apiUrl+assetNumber+prefix+questionMark+tokenEqual+token;
+		
+		
+		System.out.println(url);
+		
+		Object resultingAsset=restTemplate.getForObject(url,Object.class);
+		
+		System.out.println(resultingAsset);
+		
+		model.addAttribute("assetNumber",assetNumber);
+		model.addAttribute("asset",resultingAsset);
+		
+		return "testAPIredirect";
+		
+	}
+	
+	
+	
 	
 }

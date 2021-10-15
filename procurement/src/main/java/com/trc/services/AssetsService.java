@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.entities.AssetsEntity;
+import com.trc.repositories.AssetAssigRepository;
 import com.trc.repositories.AssetsRepository;
 import com.trc.repositories.PeripheralsRepository;
 import com.trc.repositories.ProjectsRepository;
@@ -25,6 +26,9 @@ public class AssetsService
 	
 	@Autowired
 	PeripheralsRepository repositoryPeripherals;
+	
+	@Autowired
+	AssetAssigRepository repositoryReassig;
 	
 	public List<AssetsEntity> getAllAssets()
 	{
@@ -369,10 +373,17 @@ public class AssetsService
 		
 		//finding the age
 		yearsOld=Period.between(datePurchasedLocal,todayDateLocal).getYears();
-		
-		
-		
+				
 		return yearsOld;
+		
+	}
+	
+	public void assetReassignation(Long id,String newUsername,String newTitle,String newEmpStatus,String newProject,String newEmail,String reassignedBy,String emailReassigner)
+	{
+					
+		//Making changes and saving information
+		repository.putReassignation(id,newUsername,newTitle,newEmpStatus,newProject,newEmail);
+		
 		
 	}
 	

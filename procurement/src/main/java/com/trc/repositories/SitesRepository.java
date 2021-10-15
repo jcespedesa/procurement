@@ -21,4 +21,7 @@ public interface SitesRepository extends CrudRepository<SitesEntity,Long>
 	@Query("Select u from SitesEntity u Where division='300' Order by sname")
 	List<SitesEntity>  findAllHHSsites();
 	
+	@Query("Select u from SitesEntity u WHERE (u.division=?1) Order by u.sname")
+	List<SitesEntity>  searchByDivision(String stringSearch);
+	
 }

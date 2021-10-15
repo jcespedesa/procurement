@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Assets</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+	    		<ul>
+	        		<li>
+	           			<a href="/procurement/Assets/list">Back</a>
+	        		</li>
+	        			            	
+	            </ul>
+      		</nav>
+   			
+   		
+   		
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Reassign Form</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<div class="form-group">
+                   	<label for="assetNumber" class="col-form-label" style="font-weight: bold;">Asset Number:</label> 
+                   	<label class="primary" th:text="${asset.assetNumber}"></label>
+                </div>
+                <div class="form-group">   	
+                   	<label for="assetNumber" class="col-form-label" style="font-weight: bold;">Item :</label> 
+                   	<label class="primary" th:text="${itemName}"></label>
+                       	
+                   	<label class="primary" th:text="${asset.maker}"></label>
+                   	<label class="primary" th:text="${asset.model}"></label>
+                </div>   	
+                       	    
+                <hr>
+                
+                <div class="form-group">   	
+                   	<label for="assetNumber" class="col-form-label" style="font-weight: bold;">Currently Assigned to :</label> 
+                   	<label class="primary" th:text="${asset.username}"></label>/
+                       	
+                   	<label class="primary" th:text="${asset.title}"></label>/
+                   	<label class="primary" th:text="${asset.email}"></label>/
+                   	<label class="primary" th:text="${asset.project}"></label>/
+                </div>   	
+                       	    
+                <hr>
+                    
+                <form class="form-main" th:action="@{/procurement/Assets/reassignAsset}" th:object="${assetReassig}" method="post">    
+                    
+                    <div class="form-group">
+                       	<label for="newAssigName" class="col-form-label">New User Name:</label> 
+                       	<input type="text" th:field="*{newAssigName}" id="newAssigName" placeholder="User name" size="50" maxlength="50" required/>
+                    
+                       	<label for="newAssigTitle" class="col-form-label">Title :</label> 
+                       	<select th:field="*{newAssigTitle}" id="newAssigTitle">
+                       		<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
+                       		
+                       	</select>
+                    </div>
+                    
+                    <div class="form-group">
+     					<label for="newAssigEmpStatus">Employment Status</label>
+     					<select th:field="*{newAssigEmpStatus}" id="newAssigEmpStatus">
+					     	<option value="Perm">Perm</option>
+					    	<option value="Temp">Temp</option>
+     					</select>    						
+						  						
+					</div>       	
+                                       
+                    <div class="form-group">
+                       	<label for="newAssigProject" class="col-form-label">Project :</label> 
+                       	<select th:field="*{newAssigProject}" id="newAssigProject">
+                       		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}" ></option>
+                       	</select>
+                       	<label for="newAssigEmail" class="col-form-label">Email :</label> 
+                       	<input type="email" th:field="*{newAssigEmail}" id="newAssigEmail" placeholder="newuser@cc-dc.org" size="50" maxlength="70" required/>
+                    </div>
+                                        
+                    <hr>   	
+                     
+                    <div class="form-group">   	
+                       	<label for="reassignedBy" class="col-form-label"> Reassigned by :</label> 
+                       	<input type="text" th:field="*{reassignedBy}" id="reassignedBy" placeholder="Your name" required size="50" maxlength="50"/>
+                       	<label for="emailReassigner" class="col-form-label">Your email :</label> 
+                       	<input type="text" th:field="*{emailReassigner}" id="emailReassigner" placeholder="myemail@cc-dc.org" size="50" maxlength="70" required/>
+                    </div>
+                    
+                                                            
+                    <div class="form-group">
+      					<label for="notes">Please Add Notes/Observations:</label><br>
+      					<textarea id="notes" th:field="*{notes}" th:value="${asset.notes}" rows="5" cols="80"></textarea>
+      				</div>	
+      									                                       
+                    <div class="form-group">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                       	
+                       	<a href="/procurement/Assets/list" class="btn btn-secondary btn-sm">
+                			<i class="fas fa-back ml-2"> Cancel </i>
+                		</a>
+                    </div>
+                            	
+                    <input type="hidden" name="id" th:value="${asset.assetid}"> 
+                    <input type="hidden" name="assetNumber" th:value="${asset.assetNumber}"> 
+                    <input type="hidden" name="kluch" th:value="${asset.kluch}"> 
+                    
+                    <input type="hidden" name="username" th:value="${asset.username}"> 
+                    <input type="hidden" name="title" th:value="${asset.title}"> 
+                    <input type="hidden" name="project" th:value="${asset.project}"> 
+                    <input type="hidden" name="email" th:value="${asset.email}">
+                    <input type="hidden" name="empStatus" th:value="${asset.empStatus}">    
+                       				                        	
+            	</form>
+            	            	  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				
