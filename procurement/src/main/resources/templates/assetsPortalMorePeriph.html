@@ -6,7 +6,7 @@
   		<meta charset="utf-8">
   		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   		
-  		<title>Assets Portal Form4B</title>
+  		<title>Assets - Peripherals</title>
   		
   		<!-- Bootstrap core CSS -->
   		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
@@ -53,40 +53,37 @@
       			<div class="row">
       			
       				<p class="navbar-brand" style="color:teal;font-size:14px;">Do you have more peripherals to input?</p>
+      			</div>	
+      			<div class="row">
       			
 	      			<div class="col">
 	     		
-	  					<form class="form-main" th:action="@{/portal/assets/form6}"  method="post">
+	  					<form class="form-main" th:action="@{/portal/assets/periphForm}"  method="post">
 	                                       
-	                    	<input type="submit" class="btn btn-primary btn-sm" value="Yes, I will continue inputing associated peripherals">	                        
-	                        
-	                    	<input type="hidden" th:value="${assetId}" th:attr="name='assetId'">
-	                    	<input type="hidden" th:value="${kluch}" th:attr="name='kluch'">
+	                    	<input type="submit" class="btn btn-primary btn-sm" value="Yes, I will continue inputing associated peripherals">	
 	                    	
-	                    	<input type="hidden" th:value="Yes" th:attr="name='priznak'">
-	                    		                         				                        	
+	                    	<input type="hidden" th:value="${assetId}" th:attr="name='assetId'">
+	                    		                    		                         				                        	
 	            		</form>
 	  				</div>
 	  				
 	  				<div class="col">
 	  				
-	  					<form class="form-main" th:action="@{/portal/assets/form6}"  method="post">
+	  					<form class="form-main" th:action="@{/portal/assets/moreAssets}"  method="post">
 	                                       
-	                    	<input type="submit" class="btn btn-primary btn-sm" value="No, that was the last peripheral">	                        
+	                    	<input type="submit" class="btn btn-primary btn-sm" value="No, no more peripherals">	                        
 	                        
 	                    	<input type="hidden" th:value="${assetId}" th:attr="name='assetId'">
-	                    	<input type="hidden" th:value="${kluch}" th:attr="name='kluch'">
 	                    	
-	                    	<input type="hidden" th:value="No" th:attr="name='priznak'">
 	                         				                        	
 	            		</form>
 	  					
 	  				</div>
 	  				<div class="col">
-	  					<label style="font-size:10px;font-weight: bold;color:teal;">So far input peripherals:</label>
+	  					<label style="font-size:11px;font-weight: bold;color:teal;">So far input peripherals:</label>
 	  					<table>
 	  						<tr th:each="peripheral : ${peripherals}">
-	  							<td style="font-size:9px;" th:text="${peripheral.description}"></td>
+	  							<td style="font-size:11px;" th:text="${peripheral.description}"></td>
 	  						</tr>
 	  						
 	  					</table>

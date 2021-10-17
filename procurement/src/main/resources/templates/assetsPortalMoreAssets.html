@@ -6,7 +6,7 @@
   		<meta charset="utf-8">
   		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   		
-  		<title>Assets Portal Form4C</title>
+  		<title>Assets Portal</title>
   		
   		<!-- Bootstrap core CSS -->
   		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
@@ -52,32 +52,29 @@
       			
       			<div class="row">
       			
-      				<label class="col-form-label">Do you have a Cell Phone to Report?</label> 
+      				<label class="col-form-label">Do you have more assets to report?</label> 
       			
 	      			<div class="col">
 	     		
-	  					<form class="form-main" th:action="@{/portal/assets/form7}"  method="post">
+	  					<form class="form-main" th:action="@{/portal/assets/init}"  method="post">
 	                         
 	                                                                                   
 	                    	<div class="form-group">
-	                       		<input type="submit" class="btn btn-primary btn-sm" value="Yes, I will input the phone information now">
+	                       		<input type="submit" class="btn btn-primary btn-sm" value="Yes, I will input more assets now">
 	                    	</div>
-	                        
-	                        <input type="hidden" th:value="${assetId}" th:attr="name='assetId'">                     
-	                    	<input type="hidden" th:value="${kluch}" th:attr="name='kluch'">
-	                    	 	                    	
-	                    		                         				                        	
+	                    	
+	                    	<input type="hidden" th:value="${assetId}" name="assetId">  
+	                        	                         				                        	
 	            		</form>
 	            		
-	            		<form class="form-main" th:action="@{/portal/assets/form10}"  method="post">
+	            		<form class="form-main" th:action="@{/portal/assets/byeForm}"  method="post">
 	                        	                                                                                   
 	                    	<div class="form-group">
-	                       		<input type="submit" class="btn btn-primary btn-sm" value="No, I would like to end the session">
+	                       		<input type="submit" class="btn btn-primary btn-sm" value="No, that was the last one">
 	                    	</div>
 	                        
-	                        <input type="hidden" th:value="${assetId}" th:attr="name='assetId'">  	                        	                        	                            	
-	                    	<input type="hidden" th:value="${kluch}" th:attr="name='kluch'">
-	                    	                    	
+	                        <input type="hidden" th:value="${assetId}" name="assetId">  	                        	                        	                            	
+	                    		                    	                    	
 	                    		                         				                        	
 	            		</form>
 	            		

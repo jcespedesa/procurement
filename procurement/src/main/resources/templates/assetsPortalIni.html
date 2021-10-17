@@ -6,7 +6,7 @@
   		<meta charset="utf-8">
   		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   		
-  		<title>Assets Portal Form1</title>
+  		<title>Assets Portal Init</title>
   		
   		<!-- Bootstrap core CSS -->
   		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
@@ -49,9 +49,13 @@
 				          
         			</div>
       			</div>
-     		
-  				<form class="form-main" th:action="@{/portal/assets/form2}"  method="post">
+      			
+      			    		
+  				<form class="form-main" th:action="@{/portal/assets/itForm}" th:object="${asset}"  method="post">
                     
+                    <div class="form-group">
+      					<label style="color:brown;">Information of the person in charge of the equipment to be registered</label>
+      				</div>	
                     
                     <div class="form-group">
                        	<label for="firstName" class="col-form-label">First Name:</label> 
@@ -64,16 +68,16 @@
                     
                     <div class="form-group">
                        	<label for="email" class="col-form-label">CC Email:</label> 
-                       	<input type="email" name="email" placeholder="Email" required size="50" maxlength="50"/>
+                       	<input type="email" th:field="*{email}" id="email" placeholder="Email" required size="50" maxlength="50"/>
                     
                     	<label for="empStatus">Employee Status</label>
-     					<select size="1" name="empStatus" required>
+     					<select th:field="*{empStatus}">
 					     	<option value="Perm">Perm</option>
 					    	<option value="Temp">Temp</option>
      					</select> 
      					
      					<label for="title" class="col-form-label">Title :</label> 
-                       	<select size="1" name="title" required>
+                       	<select th:field="*{title}">
                        		<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
                        		<option value="Other">Other (Add in notes)</option>
                        	</select>
@@ -82,7 +86,7 @@
                     
                     <div class="form-group">
                        	<label for="project" class="col-form-label">Program :</label> 
-                       	<select size="1" name="project" required>
+                       	<select th:field="*{project}" id="project">
                        		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project} +' - '+ ${project.projectNumber}" ></option>
                        	</select>
                                         
@@ -91,15 +95,14 @@
                    
                     					                                       
                     <div class="form-group">
-                       	<input type="submit" class="btn btn-primary btn-sm" value=" Next >> ">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Press here to continue >> ">
                        	
                        
                     </div>
                             	
-                    <input type="hidden" th:value="${todayDate}" th:attr="name='todayDate'"> 
-                    <input type="hidden" th:value="${kluch}" th:attr="name='kluch'">
-                    <input type="hidden" th:value="Yes" th:attr="name='active'">
-                         				                        	
+                    <input type="hidden" th:value="${todayDate}" name="todayDate">
+                    <input type="hidden" th:value="${kluch}" name="kluch">
+                                             				                        	
             	</form>
   				
   		</div>

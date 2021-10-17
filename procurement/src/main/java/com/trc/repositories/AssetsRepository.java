@@ -51,8 +51,8 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	
 	@Modifying
 	@Transactional
-	@Query("Update AssetsEntity u set u.author=?2, u.authorEmail=?3 where u.id=?1")
-	void updateAuthorInfo(Long id,String author, String authorEmail);
+	@Query("Update AssetsEntity u set u.author=?2, u.authorEmail=?3 where u.kluch=?1")
+	void updateAuthorInfo(String kluch,String author, String authorEmail);
 	
 	@Query("Select u from AssetsEntity u WHERE u.kluch=?1")
 	AssetsEntity  getAssetByKluch(String kluch);
@@ -84,5 +84,10 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	@Transactional
 	@Query("Update AssetsEntity u set u.username=?2, u.title=?3, u.empStatus=?4, u.project=?5, u.email=?6 where u.id=?1")
 	void putReassignation(Long assetId,String newUsername,String newTitle,String newEmpStatus,String newProject,String newEmail);
-		
+	
+	@Query("Select assetid from AssetsEntity u where u.kluch=?1")
+	Long getIdByKluch(String kluch);
+	
+	
+	
 }

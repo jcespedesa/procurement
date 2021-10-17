@@ -3,9 +3,7 @@ package com.trc.controllers;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +25,6 @@ import com.trc.services.TestsService;
 import com.trc.services.TitlesService;
 import com.trc.entities.SettingsEntity;
 
-import org.json.JSONArray;  
-import org.json.JSONObject;  
 
 
 @Controller
@@ -127,38 +123,20 @@ public class TestsController
 		
 		String description="Receipt confirmation for IT Asset Inventory Input";
 		
-		String assetIdString=null;
-		String program=null;
-		String titleName=null;
-		
+				
 		//Retrieving asset information	
 		AssetsEntity asset=service.getAssetById(assetId );
 		
-		//Converting assetId from long to string
-		assetIdString=Long.toString(asset.getAssetid());
-		
-		//Retrieving program name
-		program=serviceProjects.getProjectByNum(asset.getProject());
-				
-		//Retrieving title name
-		titleName=serviceTitles.getTitleByNumber(asset.getTitle());
-				
 		//Creating new receipt object to be sent
 		ReceiptsEntity receipt=new ReceiptsEntity();
 				
 		//Adapting asset information for the receipt 
 		receipt.setDescription(description);
-		receipt.setAssetId(assetIdString);
 		receipt.setDateReceipt(asset.getDateCreation());
-		receipt.setCname(asset.getUsername());
-		receipt.setEmail(asset.getEmail());
-		receipt.setTitle(titleName);
-		receipt.setEmpStatus(asset.getEmpStatus());
-		receipt.setProgram(program);
-		receipt.setProjectNum(asset.getProject());
 		receipt.setSignedBy(asset.getAuthor());
 		receipt.setSemail(asset.getAuthorEmail());
 		receipt.setNotes(asset.getNotes());
+		receipt.setKluch(asset.getKluch());
 		
 		//Saving the receipt
 		ReceiptsEntity newReceipt=serviceReceipts.create(receipt);

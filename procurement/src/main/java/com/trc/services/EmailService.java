@@ -1,5 +1,7 @@
 package com.trc.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,6 +27,8 @@ public class EmailService
 	@Autowired
 	ItemsService serviceItems;
 	
+	@Autowired
+	AssetsService serviceAssets;
 	
 	private JavaMailSender javaMailSender;
 
@@ -65,63 +69,47 @@ public class EmailService
         javaMailSender.send(mailMessage);
     }
     
-    public void sendInventoryReceipt(String toEmail, AssetsEntity asset) throws JsonProcessingException, RecordNotFoundException 
+    public void sendInventoryReceipt(String toEmail, AssetsEntity asset, String author, String authorEmail) throws JsonProcessingException, RecordNotFoundException 
     {
+    		
     	
     	String description="Receipt confirmation for IT Asset Inventory Input";
-		
-		String assetIdString=null;
-		
-		String program=null;
-		String titleName=null;
-		String itemName=null;
-		
-		String notes="See notes in peripherals";
-		
-		Long itemIdLong=null;
-		
-    	
-		//Converting assetId from long to string
-		assetIdString=Long.toString(asset.getAssetid());
-		
-		//Converting itemId from string to long
-		itemIdLong=Long.parseLong(asset.getItem());
-				
-		//Retrieving program name
-		program=serviceProjects.getProjectByNum(asset.getProject());
-						
-		//Retrieving title name
-		titleName=serviceTitles.getTitleByNumber(asset.getTitle());
-				
-		//Retrieving item name
-		itemName=serviceItems.getItemDescById(itemIdLong);
-		
-		
+    	String notes="Input items in this session: ";
+		String repitaya=", ";
+		String kluch=null;
+		String listAssetNumbers="";
+								
 		//Creating new receipt object to be sent
 		ReceiptsEntity receipt=new ReceiptsEntity();
 						
 		//Adapting asset information for the receipt 
 		receipt.setDescription(description);
-		receipt.setAssetId(assetIdString);
-		receipt.setAssetName(itemName);
 		receipt.setDateReceipt(asset.getDateCreation());
-		receipt.setCname(asset.getUsername());
-		receipt.setEmail(asset.getEmail());
-		receipt.setTitle(titleName);
-		receipt.setEmpStatus(asset.getEmpStatus());
-		receipt.setProgram(program);
-		receipt.setProjectNum(asset.getProject());
-		receipt.setSignedBy(asset.getAuthor());
-		receipt.setSemail(asset.getAuthorEmail());
-		receipt.setNotes(asset.getNotes());
+		receipt.setSignedBy(author);
+		receipt.setSemail(authorEmail);
+		receipt.setKluch(asset.getKluch());
 		
-		//Correcting notes for a cell phone asset
-		if(asset.getItem().equals("27"))
-			receipt.setNotes(notes);
-		
-				
+						
 		//Saving the receipt
 		ReceiptsEntity newReceipt=serviceReceipts.create(receipt);
+				
+		//Getting the session kluch
+		kluch=receipt.getKluch();
+		
+		//Retrieving list of assets within this session
+		List<AssetsEntity> assets=serviceAssets.findThisSessionAssets(kluch);
+		
+		for(AssetsEntity object : assets)
+		{
+			
+			listAssetNumbers=listAssetNumbers+repitaya+object.getAssetNumber();
+			
+		}
+		//Assembling notes strings
+		notes=notes+listAssetNumbers;
+		
+		//Registering notes in the object
+		receipt.setNotes(notes);
 				   	
     	//Email sending process
     	

@@ -236,14 +236,11 @@ public class AssetsService
 		
 	}
 	
-	public void updatePortalAuthorInfo(String assetId, String author, String authorEmail)
+	public void updatePortalAuthorInfo(String kluch, String author, String authorEmail)
 	{
 		
-		Long assetIdLong=null;
-		
-		assetIdLong=Long.parseLong(assetId);
-		
-		repository.updateAuthorInfo(assetIdLong,author,authorEmail);
+				
+		repository.updateAuthorInfo(kluch,author,authorEmail);
 		
 	}
 	
@@ -386,5 +383,25 @@ public class AssetsService
 		
 		
 	}
+	
+	public String getAssetIdByKluch(String kluch)
+	{
+		String assetId=null;
+		
+		Long assetIdLong=repository.getIdByKluch(kluch);
+		
+		assetId=String.valueOf(assetIdLong);
+		
+		return assetId;
+		
+	}
+	
+	public AssetsEntity createAsset(AssetsEntity entity)
+	{
+		entity=repository.save(entity);
+		
+		return entity;
+	}
+	
 	
 }

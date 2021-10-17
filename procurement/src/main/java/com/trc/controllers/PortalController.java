@@ -176,487 +176,299 @@ public class PortalController
 
 	}
 	
-	@RequestMapping(path={"/form1"})
-	public String portalForm1(Model model)
+	@RequestMapping(path={"/init"})
+	public String portalForm1(Model model,String assetId) throws RecordNotFoundException
 	{
 		String kluch=null;
-		String todayDate=null;
-		String kluchDate=null;
 		
-		LocalDateTime now=LocalDateTime.now(); 
+		//System.out.println(assetId);
 		
-		//Generating a random value for record identification
-		Random r=new Random();
-		int seed=r.nextInt();
+		//Checking if this is the first input in the session
+		if(assetId==null)
+		{	
 		
-		//Converting seed in always a positive number
-		if(seed<0)
-			seed=-seed;
+			String kluchDate=null;
 		
-		//Generating date for the key
-		DateTimeFormatter dtfRecord=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
-		kluchDate=dtfRecord.format(now);
+			LocalDateTime now=LocalDateTime.now(); 
 		
-		//Generating today's date
-		DateTimeFormatter dtfToday=DateTimeFormatter.ofPattern("MM/dd/yyyy");  
-		todayDate=dtfToday.format(now);
+			//Generating a random value for record identification
+			Random r=new Random();
+			int seed=r.nextInt();
 		
-		//Creating unique identifier for this session
-		kluch=kluchDate +"-"+ seed;
+			//Converting seed in always a positive number
+			if(seed<0)
+				seed=-seed;
+		
+			//Generating date for the key
+			DateTimeFormatter dtfRecord=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+			kluchDate=dtfRecord.format(now);
+			
+		
+			//Creating unique identifier for this session
+			kluch=kluchDate +"-"+ seed;
+			
+		}
+		else
+		{
+			//As it is not the first input, then we can retrieve the kluch for this session
+			Long assetIdLong=Long.parseLong(assetId);
+			
+			AssetsEntity firstAsset=service.getAssetById(assetIdLong);
+			
+			kluch=firstAsset.getKluch();
+						
+		}
+		
 		
 		//Preparing list of projects according to their udelny bes
 		List<ProjectsEntity> projects=serviceProjects.getAllHHSbyUB();
 		
 		//Preparing list of titles
 		List<TitlesEntity> titles=serviceTitles.getAllByName();
-				
+		
+		//Creating the object
+		model.addAttribute("asset",new AssetsEntity());
+		
 		model.addAttribute("projects",projects);
 		model.addAttribute("titles",titles);
-		model.addAttribute("todayDate",todayDate);
 		model.addAttribute("kluch",kluch);
 		
-		return "assetsPortalForm1";
+		return "assetsPortalIni";
 		
 		
 	}
 	
-	@RequestMapping(path="/form2", method=RequestMethod.POST)
-	public String portalForm2(Model model,RedirectAttributes redirectAttributes,
-			String firstName,
-			String lastName,
-			String email,
-			String empStatus,
-			String title,
-			String project,
-			String kluch,
-			String todayDate,
-			String active)
+	
+	
+	
+	
+	@RequestMapping(path="/itForm", method=RequestMethod.POST)
+	public String portalForm4(Model model,AssetsEntity asset,String firstName,String lastName)
 	{
-		String cname=null;
-		String repitaya=",";
-		String pustoy=" ";
-		String program=" ";
 		String titleName=null;
+		String projectName=null;
+		
+		String username=null;
+		String repitaya=", ";
+		
+		username=lastName+repitaya+firstName;
+		
+		asset.setUsername(username);
 		
 		//Preparing list of items
 		List<ItemsEntity> items=serviceItems.getAllMainItems();
-		
-		cname=lastName+repitaya+pustoy+firstName;
-		
-		//System.out.println("Captured name is "+ cname);
+				
+		//Retrieving title name
+		titleName=serviceTitles.getTitleByNumber(asset.getTitle());
 		
 		//Retrieving program name
-		program=serviceProjects.getProjectByNum(project);
+		projectName=serviceProjects.getProjectByNum(asset.getProject());
 		
-		//Retrieving title name
-		titleName=serviceTitles.getTitleByNumber(title);
-				
-		model.addAttribute("cname",cname);
-		model.addAttribute("email",email);
-		model.addAttribute("empStatus",empStatus);
-		model.addAttribute("title",title);
+		model.addAttribute("asset",asset);
+		
 		model.addAttribute("titleName",titleName);
-		
-		model.addAttribute("project",project);
-		model.addAttribute("program",program);
-		model.addAttribute("kluch",kluch);
-		model.addAttribute("todayDate",todayDate);
-		model.addAttribute("active",active);
-		
+		model.addAttribute("projectName",projectName);
+				
 		model.addAttribute("items",items);
 		
-		//return "redirect:/portal/assets/form2";
-		
-		return "assetsPortalForm3A";
-
-	}
-	
-	
-	
-	@RequestMapping(path="/form3", method=RequestMethod.POST)
-	public String portalForm4(Model model,RedirectAttributes redirectAttributes,
-			
-			String cname,
-			String email,
-			String empStatus,
-			String title,
-			String division,
-			String project,
-			String kluch,
-			String todayDate,
-			String active,
-			String notes,
-			String klass,
-			String item,
-			String status,
-			
-			String assetNumber)
-			
-	{
-		Long assetId=null;
-		
-		String program=" ";
-		String titleName=null;
-		
-		//Here we need to save main asset information
-		
-		AssetsEntity entity=new AssetsEntity();
-		
-		entity.setItem(item);
-		entity.setAssetNumber(assetNumber);
-		entity.setUsername(cname);
-		entity.setTitle(title);
-		entity.setEmpStatus(empStatus);
-		entity.setDivision(division);
-		entity.setActive(active);
-		entity.setNotes(notes);
-		entity.setProject(project);
-		entity.setKluch(kluch);
-		entity.setEmail(email);
-		entity.setKlass(klass);
-		entity.setStrobe(kluch);
-		entity.setDateCreation(todayDate);
-		entity.setStatus(status);
-		
-		//Not snachitelny values
-		
-		entity.setMaker("");
-		entity.setModel("");
-		entity.setDatePurchased("");
-		entity.setSite("");
-		
-		entity.setProgram("");
-			
-		
-		//Saving new asset
-		AssetsEntity newAsset=service.createOrUpdate(entity);
-		
-		//getting the client ID
-		assetId=newAsset.getAssetid();
-		
-		//Retrieving program name
-		program=serviceProjects.getProjectByNum(project);
-				
-		//Retrieving title name
-		titleName=serviceTitles.getTitleByNumber(title);
-		
-		
-		model.addAttribute("asset",newAsset);
-		
-		model.addAttribute("cname",cname);
-		model.addAttribute("email",email);
-		model.addAttribute("empStatus",empStatus);
-		model.addAttribute("title",title);
-		model.addAttribute("titleName",titleName);
-		model.addAttribute("project",project);
-		model.addAttribute("program",program);
-		
-		model.addAttribute("kluch",kluch);
-		model.addAttribute("todayDate",todayDate);
-		model.addAttribute("active",active);
-		
-		model.addAttribute("klass",klass);
-		model.addAttribute("item",item);
-		model.addAttribute("assetNumber",assetNumber);
-		model.addAttribute("status",status);
-		
-		model.addAttribute("assetId",assetId);
-		
-		return "assetsPortalForm4";
+		return "assetsPortalItForm";
 		
 	}	
 	
 	
-	@RequestMapping(path="/form4", method=RequestMethod.POST)
-	public String portalForm3(Model model,RedirectAttributes redirectAttributes,
-			
-			String cname,
-			String email,
-			String empStatus,
-			String title,
-			String project,
-			String kluch,
-			String todayDate,
-			String active,
-			String klass,
-			
-			String assetId)
+	@RequestMapping(path="/periphOrNot", method=RequestMethod.POST)
+	public String portalForm3(Model model,AssetsEntity asset)
 	{
-		
-		
-		model.addAttribute("cname",cname);
-		model.addAttribute("email",email);
-		model.addAttribute("empStatus",empStatus);
-		model.addAttribute("title",title);
-		model.addAttribute("project",project);
-		
-		model.addAttribute("kluch",kluch);
-		model.addAttribute("todayDate",todayDate);
-		model.addAttribute("active",active);
-		model.addAttribute("assetId",assetId);
+		//System.out.println(asset);
+				
+		String assetId=null;
+		String todayDate=null;
 		
 				
-		//Preparing list of peripheral items
-		List<ItemsEntity> items=serviceItems.getAllPeripheralsHHS();
+		String division="300";
+		String active="Yes";
+		String klass="IT";
 		
-		model.addAttribute("items",items);		
-									
 			
-		return "assetsPortalForm4A";
+		LocalDateTime now=LocalDateTime.now(); 
+		
+				
+		//Generating today's date
+		DateTimeFormatter dtfToday=DateTimeFormatter.ofPattern("MM/dd/yyyy");  
+		todayDate=dtfToday.format(now);
+								
+		//Adding asset information
+		asset.setDivision(division);
+		asset.setActive(active);
+		asset.setKlass(klass);
+		asset.setDateCreation(todayDate);
+		
+		//Creating the object
+		AssetsEntity newAsset=new AssetsEntity();
+		
+		newAsset.setItem(asset.getItem());
+		newAsset.setAssetNumber(asset.getAssetNumber());
+		
+		newAsset.setUsername(asset.getUsername());
+		newAsset.setEmail(asset.getEmail());
+		newAsset.setProject(asset.getProject());
+		newAsset.setTitle(asset.getTitle());
+		newAsset.setEmpStatus(asset.getEmpStatus());
+		
+		newAsset.setNotes(asset.getNotes());
+		newAsset.setKluch(asset.getKluch());
+		newAsset.setDateCreation(asset.getDateCreation());
+		newAsset.setStatus(asset.getStatus());
+		
+		newAsset.setDivision(division);
+		newAsset.setActive(active);
+		newAsset.setKlass(klass);
+				
+		
+		//Saving the asset
+		service.createAsset(newAsset);
+				
+		//Retrieving asset ID
+		Long assetIdLong=newAsset.getAssetid();
+		
+		assetId=String.valueOf(assetIdLong);
+				
+		model.addAttribute("assetId",assetId);
+		
+		//System.out.println("Asset ID : "+ assetId);
+			
+		return "assetsPortalPeriphOrNot";
 
 	}
 	
 	
 	
-	@RequestMapping(path="/form4B", method=RequestMethod.POST)
-	public String portalForm4B(Model model, String itemId,String notes,String priznak,String assetNumber,
-			String cname,
-			String email,
-			String empStatus,
-			String title,
-			String project,
-			String item,
-						
-			String todayDate,
-			String kluch,
-			String active,
-			String status,
-			String assetId
-	) throws RecordNotFoundException
-	
+	@RequestMapping(path="/periphForm", method=RequestMethod.POST)
+	public String portalForm10(Model model, String assetId) throws RecordNotFoundException
 	{
-		PeripheralsEntity entity=new PeripheralsEntity();
+		//Preparing list of already input peripherals
+		List<PeripheralsEntity> periphs=servicePeripherals.getByAssetId(assetId);
+		
+		List<ItemsEntity> list=serviceItems.getAllPeripheralsHHS();
 		
 		String description=null;
+		String peripheralNum=null;
 		
+		//Retrieving the list of descriptions
+		for(PeripheralsEntity periph : periphs)
+		{
+			peripheralNum=periph.getPeripheralNum();
+			description=serviceItems.getItemByNumber(peripheralNum);
+			periph.setKluch(description);
+		}
+		
+		//Creating the object
+		model.addAttribute("peripheral",new PeripheralsEntity());
+			
+		model.addAttribute("items",list);
+		model.addAttribute("periphs",periphs);
+		model.addAttribute("assetId",assetId);
+		
+		return "assetsPortalPeriphForm";
+		
+	}
+	
+	
+	
+	@RequestMapping(path="/morePeriph", method=RequestMethod.POST)
+	public String portalForm4B(Model model, PeripheralsEntity peripheral, String assetId) throws RecordNotFoundException
+	{
 				
+		String description=null;
+		String peripheralNum=null;
+		String active="Yes";
+		
 		//Retrieving peripheral description
-		description=serviceItems.getItemByNumber(item);
-		
-		
-		//Setting the peripheral object
-		entity.setPeripheralNum(itemId);
-		entity.setAssetId(assetId);
-		entity.setKluch(kluch);
-		entity.setNotes(notes);
-		entity.setDescription(description);
-		entity.setAssetNumber(assetNumber);
-		entity.setStatus(notes);
-				
+		peripheralNum=peripheral.getPeripheralNum();
+		description=serviceItems.getItemByNumber(peripheralNum);
+						
+		//Setting the connection with the original asset, active 
+		peripheral.setAssetId(assetId);
+		peripheral.setActive(active);
+						
 		//Save peripheral information
-		servicePeripherals.createOrUpdate(entity);
-				
+		servicePeripherals.createOrUpdate(peripheral);
+		
 		
 		//Generating the list of already input peripherals
-		List<PeripheralsEntity> list=servicePeripherals.getByKluch(kluch);
+		List<PeripheralsEntity> list=servicePeripherals.getByAssetId(assetId);
+		
+		//Retrieving the list of descriptions
+		for(PeripheralsEntity periph : list)
+		{
+			peripheralNum=periph.getPeripheralNum();
+			description=serviceItems.getItemByNumber(peripheralNum);
+			periph.setDescription(description);
+		}
 		
 		model.addAttribute("peripherals",list);
 		
 		model.addAttribute("assetId",assetId);
-		model.addAttribute("kluch",kluch);
+		model.addAttribute("description",description);
 							
-		return "assetsPortalForm4B";
+		return "assetsPortalMorePeriph";
 				
 	}
 	
 	
-	@RequestMapping(path="/form6", method=RequestMethod.POST)
-	public String portalForm7(Model model, String assetId, String kluch, String priznak)
+	@RequestMapping(path="/moreAssets", method=RequestMethod.POST)
+	public String portalForm7b(Model model, String assetId) throws RecordNotFoundException
 	{
 		
-		if(priznak.equals("Yes"))
-		{	
-			
-						
-			//Preparing list of items
-			List<ItemsEntity> items=serviceItems.getAllPeripheralsHHS();
-			
-			model.addAttribute("items",items);
-			
-			model.addAttribute("assetId",assetId);
-			model.addAttribute("kluch",kluch);
-			
-			return "assetsPortalForm4A";
-			
-		}
-		else
-		{
-			
-			
-			model.addAttribute("assetId",assetId);
-			model.addAttribute("kluch",kluch);
-			
-			return "assetsPortalForm4C";
-			
-		}
 		
+		model.addAttribute("assetId",assetId);
+			
+			
+		return "assetsPortalMoreAssets";
+			
+	
 	}	
 	
 	
-	@RequestMapping(path="/form7", method=RequestMethod.POST)
-	public String portalForm7(Model model,RedirectAttributes redirectAttributes,String assetId,
+	@RequestMapping(path="/byeForm", method=RequestMethod.POST)
+	public String portalForm7(Model model,String assetId)
+	{		
 			
-			String cname,
-			String email,
-			String empStatus,
-			String title,
-			String project,
-			String kluch,
-			String todayDate,
-			String active,
-			String klass)
-			
-			
-	{
-		
-		model.addAttribute("cname",cname);
-		model.addAttribute("email",email);
-		model.addAttribute("empStatus",empStatus);
-		model.addAttribute("title",title);
-		model.addAttribute("project",project);
-		
-		model.addAttribute("kluch",kluch);
-		model.addAttribute("todayDate",todayDate);
-		model.addAttribute("active",active);
-		
-		model.addAttribute("klass",klass);
 		model.addAttribute("assetId",assetId);
 		
-		return "assetsPortalForm3B";
+		return "assetsPortalByeForm";
 		
 	}
 	
+		
 	
-	@RequestMapping(path="/form8", method=RequestMethod.POST)
-	public String portalForm6(Model model, String assetNumber, String notes, String assetId, String kluch) throws RecordNotFoundException
-	{
-		String peripheralNum=null;
-		String description="Cell Phone";
-		
-		String itemNumber=null;
-		
-		ItemsEntity item=serviceItems.getItemByDesc(description);	
-		
-		itemNumber=item.getItemNumber();
-		
-		peripheralNum=itemNumber;
-				
-		//Creating a new peripheral object as a cell phone
-		PeripheralsEntity peripheral=new PeripheralsEntity();
-		
-		peripheral.setDescription(description);
-		peripheral.setPeripheralNum(peripheralNum);
-		peripheral.setAssetId(assetId);
-		peripheral.setKluch(kluch);
-		peripheral.setNotes(notes);
-		peripheral.setAssetNumber(assetNumber);
-		
-		//saving the peripheral
-		servicePeripherals.createOrUpdate(peripheral);
-		
-		//Updating notes field in table assets
-		//service.updateNotesInfo(assetId,notes);
-		
-		
-		model.addAttribute("kluch",kluch);
-		model.addAttribute("assetId",assetId);
-				
-		return "assetsPortalForm5";
-		
-	}
-	
-	
-	@RequestMapping(path="/form9", method=RequestMethod.POST)
-	public String portalForm6a(Model model, String assetId, String kluch, String author, String authorEmail) throws JsonProcessingException, RecordNotFoundException
+	@RequestMapping(path="/endForm", method=RequestMethod.POST)
+	public String portalForm6a(Model model, String assetId, String author, String authorEmail) throws JsonProcessingException, RecordNotFoundException
 	{
 		String toEmail=null;
+		String kluch=null;
 		
 		Long assetIdLong=Long.parseLong(assetId);
 		
-		//Updating fields in table assets
-		service.updatePortalAuthorInfo(assetId,author,authorEmail);
-		
 		AssetsEntity asset=service.getAssetById(assetIdLong);
 		
-		toEmail=asset.getAuthorEmail();
+		//Obtaining the kluch of this session
+		kluch=asset.getKluch();
+		
+		//Updating fields in table assets
+		service.updatePortalAuthorInfo(kluch,author,authorEmail);
+		
+		toEmail=authorEmail;
+		
+		//Obtaining recipient email
+		//toEmail=asset.getAuthorEmail();
 		
 		//Sending the receipt email
-		serviceEmails.sendInventoryReceipt(toEmail,asset);
+		serviceEmails.sendInventoryReceipt(toEmail,asset,author,authorEmail);
 		
-		return "assetsPortalForm6";
-		
-	}
-	
-		
-	@RequestMapping(path="/form5", method=RequestMethod.POST)
-	public String portalForm3B(Model model,RedirectAttributes redirectAttributes,
-			
-			String cname,
-			String email,
-			String empStatus,
-			String title,
-			
-			String project,
-			String kluch,
-			String todayDate,
-			String active,
-			String klass)
-			
-	{
-		String division="300";
-		String itemNumber="27";
-		String assetNumber="0000";
-		
-		Long assetId=null;
-		
-		
-		//Creating new asset
-		AssetsEntity entity=new AssetsEntity();
-		
-		entity.setItem(itemNumber);
-		entity.setUsername(cname);
-		entity.setEmail(email);
-		entity.setEmpStatus(empStatus);
-		entity.setTitle(title);
-		entity.setProject(project);
-		entity.setKlass(klass);
-		
-		entity.setDateCreation(todayDate);
-		entity.setDivision(division);
-		entity.setKluch(kluch);
-		entity.setActive(active);
-		entity.setStrobe(kluch);
-		entity.setAssetNumber(assetNumber);
-		
-		
-		//Saving new asset
-		AssetsEntity newAsset=service.createOrUpdate(entity);
-		
-		//getting the client ID
-		assetId=newAsset.getAssetid();
-				
-		model.addAttribute("kluch",kluch);
-		model.addAttribute("assetId",assetId);
-		
-		return "assetsPortalForm3B";
-		
-
-	}
-	
-	
-	
-	
-	
-	@RequestMapping(path="/form10", method=RequestMethod.POST)
-	public String portalForm10(Model model, String assetId, String kluch)
-	{
-		
-		model.addAttribute("assetId",assetId);
-		model.addAttribute("kluch",kluch);
-		
-		return "assetsPortalForm5";
+		return "assetsPortalEndForm";
 		
 	}
-	
+			
 	
 }

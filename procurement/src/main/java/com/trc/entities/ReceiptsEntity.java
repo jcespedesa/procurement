@@ -18,32 +18,8 @@ public class ReceiptsEntity
 	@Column(name="description")
 	private String description;
 	
-	@Column(name="assetid")
-	private String assetId;
-	
-	@Column(name="assetname")
-	private String assetName;
-	
 	@Column(name="datereceipt")
 	private String dateReceipt;
-	
-	@Column(name="cname")
-	private String cname;
-	
-	@Column(name="email")
-	private String email;
-	
-	@Column(name="title")
-	private String title;
-	
-	@Column(name="empstatus")
-	private String empStatus;
-	
-	@Column(name="program")
-	private String program;
-	
-	@Column(name="projectnum")
-	private String projectNum;
 	
 	@Column(name="signedby")
 	private String signedBy;
@@ -54,11 +30,14 @@ public class ReceiptsEntity
 	@Column(name="notes")
 	private String notes;
 	
+	@Column(name="kluch")
+	private String kluch;
+	
 	
 	@Override
 	public String toString()
 	{
-		return "ReceiptsEntity[receiptid="+ receiptid +",description="+ description +",assetId="+ assetId +",assetName="+ assetName +",dateReceipt="+ dateReceipt +",cname="+ cname +",email="+ email +",title="+ title +",empStatus="+ empStatus +",program="+ program +",projectNum="+ projectNum +",sgnedBy="+ signedBy +",semail="+ semail +",notes="+ notes +"]";				
+		return "ReceiptsEntity[receiptid="+ receiptid +",description="+ description +",dateReceipt="+ dateReceipt +",signedBy="+ signedBy +",semail="+ semail +",notes="+ notes +",kluch="+ kluch +"]";				
 		
 	}
 
@@ -87,18 +66,6 @@ public class ReceiptsEntity
 	}
 
 
-	public String getAssetId() 
-	{
-		return assetId;
-	}
-
-
-	public void setAssetId(String assetId) 
-	{
-		this.assetId=assetId;
-	}
-
-
 	public String getDateReceipt() 
 	{
 		return dateReceipt;
@@ -108,78 +75,6 @@ public class ReceiptsEntity
 	public void setDateReceipt(String dateReceipt) 
 	{
 		this.dateReceipt=dateReceipt;
-	}
-
-
-	public String getCname() 
-	{
-		return cname;
-	}
-
-
-	public void setCname(String cname) 
-	{
-		this.cname=cname;
-	}
-
-
-	public String getEmail() 
-	{
-		return email;
-	}
-
-
-	public void setEmail(String email) 
-	{
-		this.email=email;
-	}
-
-
-	public String getTitle() 
-	{
-		return title;
-	}
-
-
-	public void setTitle(String title) 
-	{
-		this.title=title;
-	}
-
-
-	public String getEmpStatus() 
-	{
-		return empStatus;
-	}
-
-
-	public void setEmpStatus(String empStatus) 
-	{
-		this.empStatus=empStatus;
-	}
-
-
-	public String getProgram() 
-	{
-		return program;
-	}
-
-
-	public void setProgram(String program) 
-	{
-		this.program=program;
-	}
-
-
-	public String getProjectNum() 
-	{
-		return projectNum;
-	}
-
-
-	public void setProjectNum(String projectNum) 
-	{
-		this.projectNum=projectNum;
 	}
 
 
@@ -219,16 +114,16 @@ public class ReceiptsEntity
 	}
 
 
-	public String getAssetName() 
+	public String getKluch() 
 	{
-		return assetName;
+		return kluch;
 	}
 
 
-	public void setAssetName(String assetName) 
+	public void setKluch(String kluch) 
 	{
-		this.assetName=assetName;
+		this.kluch=kluch;
 	}
 
-		
+			
 }
