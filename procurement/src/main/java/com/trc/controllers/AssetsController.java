@@ -208,6 +208,7 @@ public class AssetsController
 				DateTimeFormatter dtfToday=DateTimeFormatter.ofPattern("MM/dd/yyyy");  
 				todayDate=dtfToday.format(now);
 				
+				//Generating the object
 				model.addAttribute("asset",new AssetsEntity());
 				
 				//Generating a random value for record identification

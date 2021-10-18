@@ -35,6 +35,9 @@
         			<li>
            				<a th:href="@{/procurement/peripherals/list/{assetId}(assetId=${assetId})}">Back</a>
         			</li>
+        			<li>
+           				<a th:href="@{/procurement/peripherals/promote(assetId=${assetId},itemId=${peripheral.itemid})}">Promote to Asset</a>
+        			</li>
             	
             	</ul>
       		</nav>

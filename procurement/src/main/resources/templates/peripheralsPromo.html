@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Peripheral Promotion</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+		
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+	    		<ul>
+	        		<li>
+           				<a th:href="@{/procurement/Assets/edit/{assetId}(assetId=${assetId})}">Back</a>
+        			</li>
+	        			            	
+	            </ul>
+      		</nav>
+   			
+   		
+   		
+      		<div class="row">
+        		<div class="col-lg-12 text-center">
+			          <p class="navbar-brand" style="color:#880000;font-size:15px;">Peripheral Promotion</p>
+				          
+        		</div>
+      		</div>
+     		
+     		<div class="row">
+     		
+     			<div class="col">
+     		
+	  			<form class="form-main" th:action="@{/procurement/peripherals/promoteAsset}" th:object="${asset}" method="post">
+	                    
+	                <div class="form-group">
+	                   	<label for="assetNumber" class="col-form-label">Asset Number <sup>*</sup>:</label> 
+	                   	<input type="text" th:field="*{assetNumber}" id="assetNumber" placeholder="Asset Number" required  size="25" maxlength="50"/>
+	                       	
+	                   	<label for="item" class="col-form-label">Item :</label> 
+	                   	<select th:field="*{item}" id="item" required>
+	                   		<option th:each="item : ${items}" th:value="${item.itemNumber}" th:text="${item.item}" ></option>
+	                    </select>
+	                    
+	                </div>
+	                    
+	                <div class="form-group">    	
+	                   	<label for="maker" class="col-form-label">Maker/Brand <sup>*</sup>:</label> 
+	                   	<input type="text" th:field="*{maker}" id="maker" placeholder="Maker/Brand" size="15" maxlength="15"/>
+	                       	                     
+	                   	<label for="model" class="col-form-label">Model<sup>*</sup>:</label> 
+	                   	<input type="text" th:field="*{model}" id="model" placeholder="Model" size="15" maxlength="50"/>
+	                </div>    	
+	                        	
+	                
+	                <div class="form-group">   
+	                   	<label for="datePurchased" class="col-form-label">Date Purchased :</label> 
+	                   	<input type="text" th:field="*{datePurchased}" id="datePurchased" placeholder="Date" size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
+	                       	
+	                   	<label for="status" class="col-form-label">Status : </label> 
+		               	<select th:field="*{status}" id="status">
+		               		<option value="On line">On line</option>
+		               		<option value="Unusable">Unusable</option>
+		               		<option value="With missing/broken parts">With missing/broken parts</option>
+		               		<option value="Unknown">Unknown</option>
+		              		<option value=""></option>
+		               	</select>
+		               	
+		             </div>
+		             <div class="form-group">  	
+		               	
+		               	<label for="active">Active</label>
+	     				<select th:field="*{active}" id="active">
+					     	<option th:value="'Yes'" th:text="Yes"></option>
+					    	<option th:value="'No'" th:text="No"></option>
+	     				</select>  
+	                 </div>
+	                    
+	                    <hr>
+	                    
+	                 <div class="form-group">
+	                   	<label for="username" class="col-form-label">User Name:</label> 
+	                   	<input type="text" th:field="*{username}" id="username" placeholder="User name" size="15" maxlength="50"/>
+	                    
+	                   	<label for="title" class="col-form-label">Title :</label> 
+	                   	<select th:field="*{title}" id="title">
+	                   		<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
+	                   		<option value="Other">Other (Add notes)</option>
+	                   	</select>
+	                    </div>
+	                    
+	                    <div class="form-group">
+	     					<label for="active">Employment Status</label>
+	     					<select th:field="*{empStatus}">
+						     	<option value="Perm">Perm</option>
+						    	<option value="Temp">Temp</option>
+	     					</select>    						
+							  						
+						</div>       	
+	                                       
+	                    <div class="form-group">
+	                       	<label for="project" class="col-form-label">Project :</label> 
+	                       	<select th:field="*{project}" id="project">
+	                       		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}" ></option>
+	                       		<option value="Other">Other (Add notes)</option>
+	                       	</select>
+	                       	<label for="email" class="col-form-label">Email :</label> 
+	                       	<input type="text" th:field="*{email}" id="email" placeholder="someone@cc-dc.org" size="50" maxlength="70"/>
+	                    </div>
+	                    
+	                    <div class="form-group">
+	                       	<label for="site" class="col-form-label">Site :</label> 
+	                       	<select th:field="*{site}" id="site">
+	                       		<option value=""></option>
+	                       		<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}" ></option>
+	                       		<option value="Other">Other (Add notes)</option>
+	                       	</select>
+	                    </div>
+	                    
+	                    
+	                    
+	                    <hr>   	
+	                     
+	                    <div class="form-group">   	
+	                       	<label for="author" class="col-form-label"> Form Completed by :</label> 
+	                       	<input type="text" th:field="*{author}" id="author" placeholder="" required size="50" maxlength="50"/>
+	                       	
+	                    </div>
+  	                    <div class="form-group">  
+	                       	<label for="email" class="col-form-label">Email :</label> 
+	                       	<input type="text" th:field="*{authorEmail}" id="authorEmail" placeholder="someone@cc-dc.org" size="50" maxlength="70"/>
+	                    </div>
+	                    
+	                                                            
+	                    <div class="form-group">
+	      					<label for="notes">Notes/Observations:</label><br>
+	      					<textarea id="notes" th:field="*{notes}" rows="7" cols="80"></textarea>
+	      				</div>
+	      				
+	      				<div class="form-group">  
+	                       	<label for="email" class="col-form-label">Key (kluch) :</label> 
+	                       	<input type="text" th:field="*{kluch}" id="kluch" placeholder="Unique register key " size="50"/>
+	                    </div>
+	                    
+	                    <div class="form-group">  
+	                       	<label for="dateCreation" class="col-form-label">Date Creation :</label> 
+	                       	<input type="text" th:field="*{dateCreation}" id="dateCreation" placeholder="Asset Date Creation" size="20"/>
+	                       	<label for="division" class="col-form-label">Division (number) :</label> 
+	                       	<input type="text" th:field="*{division}" id="division" placeholder="Type" size="10"/>
+	                    </div>
+	                    
+	                    <div class="form-group">  
+	                       	<label for="klass" class="col-form-label">Class (klass) :</label> 
+	                       	<input type="text" th:field="*{klass}" id="klass" placeholder="Type" size="10"/>
+	                    </div>
+	      					
+	      				<div th:if="${priznakNew=='No'}" class="form-group">
+	      					
+	      					<table class="table table-bordered" style="width:30%">
+	      						<thead>
+	      							<tr class="table-active">
+	      								<td style="font-weight:bold">Related peripherals</td>
+	      							</tr>
+	      						</thead>
+	      						<tbody>
+	      							<tr th:each="peripheral : ${peripherals}">
+	      								<td th:text="${peripheral.description}"></td>
+	      							</tr>
+	     						</tbody>		
+	      					</table>
+	      					
+	      					<table class="table table-bordered-sm">
+	      						<thead>
+	      							<tr class="table-active">
+	      								<td colspan="4" style="font-weight:bold">Previous Owners</td>
+	      							</tr>
+	      						</thead>
+	      						<tbody>
+	      							<tr th:each="assig : ${assigs}">
+	      								<td th:text="${assig.assigName}"></td>
+	      								<td th:text="${assig.assigEmail}"></td>
+	      								<td th:text="${assig.assigTitle}"></td>
+	      								<td th:text="${assig.assigProject}"></td>
+	      							</tr>
+	     						</tbody>		
+	      					</table>
+	      					
+	      					<table class="table table-bordered">
+	      						<thead>
+	      							<tr class="table-active">
+	      								<td style="font-weight:bold">Asset Date Creation</td>
+	      								<td style="font-weight:bold">Key Record ID</td>
+	      							</tr>
+	      						</thead>
+	      						<tbody>
+	      							<tr>
+	      								<td th:text="*{dateCreation}"></td>
+	      								<td th:text="*{kluch}"></td>
+	      							</tr>
+	      						</tbody>		
+	      					</table>
+	      					
+						</div>
+						
+						                                       
+	                    <div class="form-group">
+	                       	<input type="submit" class="btn btn-primary btn-sm" value=" Promote ">
+	                       		                       	
+	                    </div>
+	                    	                         				                        	
+	            	</form>
+	            </div>
+	            <div class="col">
+	               	<label style="font-size:11px;font-weight: bold;color:teal;">Original Peripheral Info:</label>
+	  				<table>
+	  					<tr><td style="font-size:11px;" th:text="'Peripheral Number: '+ ${periph.peripheralNum}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Item : '+ ${periphName}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Related Asset ID : '+ ${periph.assetId}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'key : '+ ${periph.kluch}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Notes : '+ ${periph.notes}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Asset Number : '+ ${periph.assetNumber}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Date Purchased : '+ ${periph.datePurchased}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Status : '+ ${periph.status}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Active : '+ ${periph.active}"></td></tr>
+	  				</table>
+	           </div>	
+	           <div class="col">
+	               	<label style="font-size:11px;font-weight: bold;color:teal;">Parent Asset:</label>
+	  				<table>
+	  					<tr><td style="font-size:11px;" th:text="'Asset ID : '+ ${oldAsset.assetid}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Asset Number : '+ ${oldAsset.assetNumber}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Item : '+ ${itemName}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Brand/Maker : '+ ${oldAsset.maker}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Model : '+ ${oldAsset.model}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Date Purchased : '+ ${oldAsset.datePurchased}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Assig User : '+ ${oldAsset.username}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'User Email : '+ ${oldAsset.email}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Title : '+ ${titleName}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Employment Status : '+ ${oldAsset.empStatus}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Project : '+ ${projectName}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Division : '+ ${oldAsset.division}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Site : '+ ${oldAsset.site}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Active : '+ ${oldAsset.active}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Notes : '+ ${oldAsset.notes}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Reported By : '+ ${oldAsset.author}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Reporter Email : '+ ${oldAsset.authorEmail}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Class : '+ ${oldAsset.klass}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Date Creation : '+ ${oldAsset.dateCreation}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Status : '+ ${oldAsset.status}"></td></tr>
+	  					<tr><td style="font-size:11px;" th:text="'Key : '+ ${oldAsset.kluch}"></td></tr>
+	  				</table>
+	           </div>
+	        </div>   	
+  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				
