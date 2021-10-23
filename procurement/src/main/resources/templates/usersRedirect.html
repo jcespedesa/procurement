@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+ 
+	<head>
+    	<title>Utility Operations</title>
+		
+			<meta charset="utf-8">
+    		<meta http-equiv="x-ua-compatible" content="ie=edge">
+    		<meta name="viewport" content="width=device-width, initial-scale=1">
+    	
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  			<script type="text/javascript" th:src="@{/js/citiesDropDown.js}" src="../static/js/citiesDropDown.js"></script>
+					
+  			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+  			<link th:href="@{/css/style.css}" rel="stylesheet">
+  			  		
+    	
+	</head>
+ 
+	<body>
+    	<div class="container my-5">
+        	
+        	<div class="card">
+				<div class="card-body">
+					
+					<div class="simpleFrame" th:text="${message}"></div>
+					
+					
+                	<div th:if="${priznak}=='1'" class="form-group col-md-4">
+                        <a href="/pbb/MainMenu" class="btn btn-secondary btn-sm">
+                			<i class="fas fa-back ml-2"> Back to Main View </i>
+                		</a>
+                    </div>
+                    
+                    <div th:unless="${priznak}=='1'" class="form-group col-md-4">
+                        <a th:href="@{/pbb/users/resetMyPass/{username}(username=${username})}" class="btn btn-secondary btn-sm">
+                			<i class="fas fa-back ml-2"> Back to form </i>
+                		</a>
+                    </div>
+  					                	                    
+                </div>
+            </div>
+           	<div style="color:#000088; font-size:10px;font-weight: bold;" class="card-footer text-muted">TRC Corp</div>
+         </div>   
+	</body>
+ 
+</html>

@@ -15,4 +15,7 @@ public interface SettingsRepository extends CrudRepository<SettingsEntity,Long>
 	
 	@Query("Select u from SettingsEntity u where u.sname=?1")
 	SettingsEntity getBySname(String sname);
+	
+	@Query("Select u.path from SettingsEntity u where u.sname=?1")
+	String getDefaultPass(String sname);
 }

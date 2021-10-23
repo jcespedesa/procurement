@@ -72,8 +72,10 @@
   							<th style="color:#006400;font-size:12px;">Program</th>
   							<th style="color:#006400;font-size:12px;">Project Number</th>
   							<th style="color:#006400;font-size:12px;">Asset Number</th>
+  							<th style="color:#006400;font-size:12px;">Date Purchased</th>
   							<th style="color:#006400;font-size:12px;">Peripherals</th>
   							<th style="color:#006400;font-size:12px;">Active</th>
+  							<th style="color:#006400;font-size:12px;">Rep.By</th>
   							
   							<th style="color:#006400;font-size:12px;">Edit</th>
   							<th style="color:#006400;font-size:12px;">Delete</th>
@@ -83,18 +85,20 @@
   					<tbody>
   						<tr th:each="asset,itemNum : ${assets}">
   							<td th:text="${itemNum.count}" style="font-size:12px;"></td>
-  							<td th:text="${asset.site}" style="font-size:12px;"></td>
-  							<td th:text="${asset.username}" style="font-size:12px;"></td>
+  							<td th:text="${asset.site}" style="font-size:12px;" noWrap></td>
+  							<td th:text="${asset.username}" style="font-size:12px;" noWrap></td>
   							<td th:text="${asset.title}" style="font-size:12px;"></td>
   							<td th:text="${asset.program}" style="font-size:11px;"></td>
   							<td th:text="${asset.project}" style="font-size:12px;"></td>
   							<td th:text="${asset.assetNumber}" style="font-size:12px;"></td>
+  							<td th:text="${asset.datePurchased}" style="font-size:12px;"></td>
   							
   							<td th:if="${asset.strobe}=='Yes'" th:text="${asset.strobe}" style="font-size:12px;background-color:lightblue;text-align: center;"></td>	
   							<td th:unless="${asset.strobe}=='Yes'" th:text="${asset.strobe}" style="font-size:12px;text-align: center;"></td>
   							
   							<td th:if="${asset.active}=='Yes'" th:text="${asset.active}" style="font-size:12px;"></td>
-  							<td th:unless="${asset.active}=='Yes'" th:text="${asset.active}" style="font-size:12px;background-color:#ffccff;text-align: center;"></td>						  							
+  							<td th:unless="${asset.active}=='Yes'" th:text="${asset.active}" style="font-size:12px;background-color:#ffccff;text-align: center;"></td>
+  							<td th:text="${asset.author}" style="font-size:12px;" noWrap></td>						  							
   							<td>
                             	<a th:href="@{/procurement/Assets/edit/{id}(id=${asset.assetid})}" class="btn btn-primary btn-sm">
                                 	<i class="fa fa-edit"></i>
