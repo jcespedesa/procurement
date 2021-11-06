@@ -34,48 +34,88 @@
    		
    			<nav id="hcssmenu">
 	    		<ul>
-	        		<li>
-	           			<a href="/procurement/Assets/list">Back</a>
+	    			<li th:if="${priznak==null}">
+	           			<a th:href="@{/procurement/Assets/menu}">Back</a>
+	           			           			
 	        		</li>
+	    			<li th:unless="${priznak==null}">
+	    			
+	    				<form th:action="@{/procurement/Assets/{priznak}(priznak=${priznak})}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           			</form>
+	    			
+	    			</li>
+	        		
+	        		
 	        		<li th:if="${priznakNew=='Yes'}">
 	           			<a th:href:disabled="@{/procurement/peripherals/list/{id}(id=${asset.assetid})}">Peripherals</a>
+	           			
 	        		</li>
 	        		<li th:if="${priznakNew=='No'}">
-	           			<a th:href="@{/procurement/peripherals/list/{id}(id=${asset.assetid})}">Peripherals</a>
+	           			<form th:action="@{/procurement/peripherals/list}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Peripherals</button>
+	           				
+	           				<input type="hidden" th:value="${asset.assetid}" name="assetId">	
+	           			
+	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           			</form>
 	           		</li>
 	           		<li th:if="${priznakNew=='No'}">
-	           			<a th:href="@{/procurement/Assets/reassign/{id}(id=${asset.assetid})}">Re-assign</a>
+	           			<form th:action="@{/procurement/Assets/reassign}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Re-assign</button>
+	           				
+	           				<input type="hidden" th:value="${asset.assetid}" name="assetId">	
+	           			
+	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           			</form>
 	           		</li>
 	           		<li th:if="${priznakNew=='No'}">
-	           			<a th:href="@{/procurement/assetsAssig/list/{id}(id=${asset.assetid})}">History Re-assigns</a>
+	           			
+	           			<form th:action="@{/procurement/assetsAssig/list}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">History Re-assigns</button>
+	           				
+	           				<input type="hidden" th:value="${asset.assetid}" name="assetId">	
+	           			
+	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           			</form>
 	           		</li>
-	            	
+	           			            	
 	            </ul>
       		</nav>
-   			
-   		
-   		
-      			<div class="row">
-        			<div class="col-lg-12 text-center">
-				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit Assets</p>
-				          
-        			</div>
-      			</div>
+      		
+      		   		
+      		<div class="row">
+        		<div class="col-lg-12 text-center">
+			          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit Assets</p>
+			          <p th:unless="${stringSearch==null}" class="navbar-brand" style="color:#000088;font-size:15px;" th:text="${stringSearch}" ></p>
+			          <p th:text="'Priznak is '+ ${priznak}"></p>
+			    </div>
+      		</div>
      		
-  				<form class="form-main" th:action="@{/procurement/Assets/createAsset}" th:object="${asset}" method="post">
+  			<form class="form-main" th:action="@{/procurement/Assets/createAsset}" th:object="${asset}" method="post">
                     
-                    <div class="form-group">
-                       	<label for="assetNumber" class="col-form-label">Asset Number <sup>*</sup>:</label> 
-                       	<input type="text" th:field="*{assetNumber}" id="assetNumber" placeholder="Asset Number" required  size="25" maxlength="50"/>
+                <div class="form-group">
+                   	<label for="assetNumber" class="col-form-label">Asset Number <sup>*</sup>:</label> 
+                   	<input type="text" th:field="*{assetNumber}" id="assetNumber" placeholder="Asset Number" required  size="25" maxlength="50"/>
                        	
-                       	<label for="item" class="col-form-label">Item :</label> 
-                       	<select th:field="*{item}" id="item" required>
-                       		<option th:value="*{item}" th:text="${itemName}"></option>
-                       		<option th:each="item : ${items}" th:value="${item.itemNumber}" th:text="${item.item}" ></option>
+                   	<label for="item" class="col-form-label">Item :</label> 
+                   	<select th:field="*{item}" id="item" required>
+                   		<option th:value="*{item}" th:text="${itemName}"></option>
+                   		<option th:each="item : ${items}" th:value="${item.itemNumber}" th:text="${item.item}" ></option>
                        		
-                       	</select>
+                   	</select>
                     
-                    </div>
+                </div>
                     
                     <div class="form-group">    	
                     	<label for="maker" class="col-form-label">Maker/Brand <sup>*</sup>:</label> 
@@ -219,17 +259,16 @@
                     <div class="form-group">
                        	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
                        	
-                       	<a href="/procurement/Assets/list" class="btn btn-secondary btn-sm">
-                			<i class="fas fa-back ml-2"> Cancel </i>
-                		</a>
-                    </div>
-                            	
+                    </div>   	
+                                                	
                     <input type="hidden" id="id" th:field="*{assetid}"> 
                     <input type="hidden" th:value="${seed}" th:attr="name='strobe'"> 
                     <input type="hidden" th:value="${kluch}" th:attr="name='kluch'"> 
+                    <input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+                    <input type="hidden" th:value="${priznak}" name="priznak"> 
                          				                        	
             	</form>
-  				
+            	  				
   		</div>
   		
   		<!-- Footer -->

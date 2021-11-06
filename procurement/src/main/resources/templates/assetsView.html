@@ -115,7 +115,7 @@
   						<tr>
   							<th style="color:#006400;font-size:12px;">#</th>
   							<th style="color:#006400;font-size:12px;">Description</th>
-  							<th style="color:#006400;font-size:12px;"  noWrap>Asset/Serial Number</th>
+  							
   							<th style="color:#006400;font-size:12px;" noWrap>Item Related</th>
   							<th style="color:#006400;font-size:12px;">User</th>
   							<th style="color:#006400;font-size:12px;" noWrap>Date Purchased</th>
@@ -126,7 +126,7 @@
   						<tr th:each="peripheral,itemNum : ${peripherals}">
   							<td th:text="${itemNum.count}" style="font-size:12px;"></td>
   							<td th:text="${peripheral.description}" style="font-size:12px;" noWrap></td>
-  							<td th:text="${peripheral.assetNumber}" style="font-size:12px;" noWrap></td>
+  							
   							<td th:text="${peripheral.assetId}" style="font-size:12px;"></td>
   							<td th:text="${peripheral.notes}" style="font-size:12px;"></td> 							
   							<td th:if="${peripheral.age=='Old'}" th:text="${peripheral.datePurchased}" style="font-size:12px;background-color:#f8edeb;"></td>

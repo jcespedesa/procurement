@@ -49,10 +49,19 @@
      			     			
 					<hr/>
 				
-					<div th:text="${message}"></div>
+					<div class="row" th:text="${message}"></div>
 				
-					<a th:href="@{/procurement/peripherals/list/{id}(id=${assetId})}" class="btn btn-primary btn-sm"  title="Back to main view">Back to main view</a>
-				
+					<div class="row">
+						<form th:action="@{/procurement/peripherals/list}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-primary">Back</button>
+	           				
+	           				<input type="hidden" th:value="${assetId}" name="assetId"> 	
+	           			
+	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           			</form>
+					</div>
   					<hr/>
   				  				  						
   				</div>

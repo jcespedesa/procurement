@@ -33,10 +33,28 @@
    			<nav id="hcssmenu">
     			<ul>
         			<li>
-           				<a th:href="@{/procurement/peripherals/list/{assetId}(assetId=${assetId})}">Back</a>
+           				
+           				<form th:action="@{/procurement/peripherals/list}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Back</button>
+	           				
+	           				<input type="hidden" th:value="${assetId}" name="assetId"> 	
+	           			
+	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           			</form>
         			</li>
         			<li>
-           				<a th:href="@{/procurement/peripherals/promote(assetId=${assetId},itemId=${peripheral.itemid})}">Promote to Asset</a>
+           				<form th:action="@{/procurement/peripherals/promote}" method="post">
+                            	
+	           			    <button type="submit" class="btn btn-light">Promote to Asset</button>	
+	           			
+	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           				<input type="hidden" th:value="${peripheral.itemid}" name="itemid"> 
+	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           				<input type="hidden" th:value="${assetId}" name="assetId">
+	           						 
+	           			</form>
         			</li>
             	
             	</ul>
@@ -49,6 +67,12 @@
 			</div>    
 			<div class="row">
         		<p class="navbar-brand" style="color:#880000;font-size:14px;">Peripherals for Asset ID : <label th:text="${assetId}"></label></p>
+			</div>
+			<div class="col-lg-12">
+				 <p class="navbar-brand" style="color:#880000;font-size:15px;">String Search : </p><span th:text="${stringSearch}"></span>
+			</div>
+			<div class="col-lg-12">
+			    <p class="navbar-brand" style="color:#880000;font-size:15px;">Priznak : </p><span th:text="${priznak}"></span>
 			</div>
 			      		
      		
@@ -103,7 +127,10 @@
                 </div>
                             	
                 <input type="hidden" id="id" th:field="*{itemid}">
-     			<input type="hidden" th:value="${assetId}" th:attr="name='assetId'">
+     			<input type="hidden" th:value="${assetId}" name="assetId">
+     			
+     			<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+                <input type="hidden" th:value="${priznak}" name="priznak"> 
                         	
             </form>
   				

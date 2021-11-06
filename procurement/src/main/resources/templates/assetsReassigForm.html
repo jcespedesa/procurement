@@ -35,7 +35,15 @@
    			<nav id="hcssmenu">
 	    		<ul>
 	        		<li>
-	           			<a href="/procurement/Assets/list">Back</a>
+	           			
+	           			<form th:action="@{/procurement/Assets/{priznak}(priznak=${priznak})}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           			</form>
+	           			
 	        		</li>
 	        			            	
 	            </ul>
@@ -124,9 +132,7 @@
                     <div class="form-group">
                        	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
                        	
-                       	<a href="/procurement/Assets/list" class="btn btn-secondary btn-sm">
-                			<i class="fas fa-back ml-2"> Cancel </i>
-                		</a>
+                       
                     </div>
                             	
                     <input type="hidden" name="id" th:value="${asset.assetid}"> 
@@ -137,7 +143,10 @@
                     <input type="hidden" name="title" th:value="${asset.title}"> 
                     <input type="hidden" name="project" th:value="${asset.project}"> 
                     <input type="hidden" name="email" th:value="${asset.email}">
-                    <input type="hidden" name="empStatus" th:value="${asset.empStatus}">    
+                    <input type="hidden" name="empStatus" th:value="${asset.empStatus}"> 
+                    
+                    <input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           		<input type="hidden" th:value="${priznak}" name="priznak">   
                        				                        	
             	</form>
             	            	  				

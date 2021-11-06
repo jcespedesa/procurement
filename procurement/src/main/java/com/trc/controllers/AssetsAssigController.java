@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.AssetAssigEntity;
 import com.trc.services.AssetsAssigService;
@@ -21,13 +21,16 @@ public class AssetsAssigController
 	@Autowired
 	AssetsAssigService service;
 	
-	@GetMapping("/list/{id}")
-	public String getAssigsByAssetId(Model model, @PathVariable("id") String id)
+	@RequestMapping(path="/list", method=RequestMethod.POST)
+	public String getAssigsByAssetId(Model model,String assetId,String stringSearch,String priznak)
 	{
-		List<AssetAssigEntity> list=service.getAssigById(id);
+		List<AssetAssigEntity> list=service.getAssigById(assetId);
 					
 		model.addAttribute("assigs",list);
-		model.addAttribute("assetId",id);
+		model.addAttribute("assetId",assetId);
+		
+		model.addAttribute("stringSearch",stringSearch);
+		model.addAttribute("priznak",priznak);
 		
 		return "assigsView";
 		

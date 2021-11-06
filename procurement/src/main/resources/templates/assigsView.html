@@ -34,7 +34,16 @@
 	    		<ul>
 	        		
 	            	<li>
-	           			<a th:href="@{/procurement/Assets/edit/{id}(id=${assetId})}">Back</a>
+	           			
+	           			<form th:action="@{/procurement/Assets/edit}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Back</button>
+	           				
+	           				<input type="hidden" th:value="${assetId}" name="id">	
+	           			
+	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           			</form>
 	        		</li>
 	        		
 	        		

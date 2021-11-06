@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletResponse;
@@ -67,8 +66,33 @@ public class AssetsController
 	
 	//CRUD operations for assets
 	
-		@GetMapping("/list")
-		public String getAllAssets(Model model) throws RecordNotFoundException
+		@RequestMapping(path="/menu")
+		public String menuAssets(Model model)
+		{
+						
+			//Preparing list of items
+			List<ItemsEntity> items=serviceItems.getAllMainItems();
+			
+			//Preparing list of projects
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSprojects();
+						
+			//Preparing list of authors email
+			List<String> emails=service.getAuthorEmails();
+			
+			model.addAttribute("items",items);
+			model.addAttribute("emails",emails);
+			model.addAttribute("projects",projects);
+			
+			return "assetsMenu";
+			
+			
+		}
+		
+		
+	
+		
+		@RequestMapping(path="/list",method=RequestMethod.POST)
+		public String getAllAssets(Model model,String stringSearch,String priznak) throws RecordNotFoundException
 		{
 			List<AssetsEntity> list=service.getAllAssets();
 			
@@ -85,7 +109,9 @@ public class AssetsController
 			
 			String assetId=null;
 			
+					
 			Long assetIdLong=null;
+									
 			
 			for(AssetsEntity asset : list)
 			{
@@ -116,20 +142,21 @@ public class AssetsController
 				asset.setTitle(titleName);
 							
 			}
-				
 															
 			model.addAttribute("assets",list);
-						
+			model.addAttribute("stringSearch",stringSearch);
+			model.addAttribute("priznak",priznak);
+			
 			return "assetsList";
 			
 			
 		}
 		
-		@RequestMapping(path={"/edit","/edit/{id}"})
-		public String editAssetsById(Model model,@PathVariable("id") Optional<Long> id) throws RecordNotFoundException 
+		@RequestMapping(path={"/new/{stringSearch}"})
+		public String newAsset(Model model,@PathVariable("stringSearch") String stringSearch)
 		{
-						
-					
+			
+								
 			//Preparing list of items
 			List<ItemsEntity> items=serviceItems.getAllMainItems();
 			
@@ -141,8 +168,61 @@ public class AssetsController
 			
 			//Preparing list of titles
 			List<TitlesEntity> titles=serviceTitles.getAllTitles();
+						
 			
+			String priznakNew=null;
+					
 			
+			String todayDate=null;
+				
+			LocalDateTime now=LocalDateTime.now(); 
+				
+			priznakNew="Yes";
+				
+			//Generating today's date
+			DateTimeFormatter dtfToday=DateTimeFormatter.ofPattern("MM/dd/yyyy");  
+			todayDate=dtfToday.format(now);
+				
+			//Generating the object
+			model.addAttribute("asset",new AssetsEntity());
+				
+			//Generating a random value for record identification
+			Random r=new Random();
+			int seed=r.nextInt();
+				
+			model.addAttribute("seed",seed);
+			model.addAttribute("kluch",todayDate);
+						
+			model.addAttribute("items",items);
+			model.addAttribute("sites",sites);
+			model.addAttribute("projects",projects);
+			model.addAttribute("titles",titles);
+			
+			model.addAttribute("priznakNew",priznakNew);
+			model.addAttribute("stringSearch",stringSearch);
+			
+			return "assetsAddEdit";
+		}
+
+		
+		
+		@RequestMapping(path={"/edit"},method=RequestMethod.POST)
+		public String editAssetsById(Model model,Long id,String stringSearch,String priznak) throws RecordNotFoundException 
+		{
+			
+								
+			//Preparing list of items
+			List<ItemsEntity> items=serviceItems.getAllMainItems();
+			
+			//Preparing list of sites
+			List<SitesEntity> sites=serviceSites.getAllHHSsites();
+			
+			//Preparing list of active projects by udelny bes
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSbyUB();
+			
+			//Preparing list of titles
+			List<TitlesEntity> titles=serviceTitles.getAllTitles();
+						
 			
 			String site=null;
 			String project=null;
@@ -155,70 +235,42 @@ public class AssetsController
 			
 			String priznakNew=null;
 											
+			AssetsEntity entity=service.getAssetById(id);
+				
+			String assetId=null;
+			
 						
-			if(id.isPresent())
-			{
-				AssetsEntity entity=service.getAssetById(id.get());
+			assetId=String.valueOf(id);
 				
-				String assetId=null;
+			//Retrieving related peripherals for this asset				
+			List<PeripheralsEntity> peripherals=servicePeripherals.getByAssetId(assetId);
 				
-				Long assetIdLong=id.get();
+			//Preparing history of re-assignations 
+			List<AssetAssigEntity> assigs=serviceReassig.getAssigById(assetId);
 				
-				assetId=String.valueOf(assetIdLong);
-				
-				//Retrieving related peripherals for this asset				
-				List<PeripheralsEntity> peripherals=servicePeripherals.getByAssetId(assetId);
-				
-				//Preparing history of reassignations 
-				List<AssetAssigEntity> assigs=serviceReassig.getAssigById(assetId);
-				
-				//System.out.println(assigs);
-				
-				itemNumber=entity.getItem();
-				titleNumber=entity.getTitle();
-												
-				priznakNew="No";
 								
-				//Finding names or descriptions
+			itemNumber=entity.getItem();
+			titleNumber=entity.getTitle();
+												
+			priznakNew="No";
+								
+			//Finding names or descriptions
 				
-				site=serviceSites.getSiteByNumber(entity.getSite());
-				project=serviceProjects.getSiteBySiteNumber1(entity.getProject());
-				itemName=serviceItems.getItemByNumber(itemNumber);
-				titleName=serviceTitles.getTitleByNumber(titleNumber);
+			site=serviceSites.getSiteByNumber(entity.getSite());
+			project=serviceProjects.getSiteBySiteNumber1(entity.getProject());
+			itemName=serviceItems.getItemByNumber(itemNumber);
+			titleName=serviceTitles.getTitleByNumber(titleNumber);
 				
-				model.addAttribute("asset",entity);
+			model.addAttribute("asset",entity);
 				
-				model.addAttribute("siteName",site);
-				model.addAttribute("projectName",project);
-				model.addAttribute("itemName",itemName);
-				model.addAttribute("titleName",titleName);
-				
-				model.addAttribute("peripherals",peripherals);
-				model.addAttribute("assigs",assigs);
-			}
-			else
-			{
-				String todayDate=null;
-				
-				LocalDateTime now=LocalDateTime.now(); 
-				
-				priznakNew="Yes";
-				
-				//Generating today's date
-				DateTimeFormatter dtfToday=DateTimeFormatter.ofPattern("MM/dd/yyyy");  
-				todayDate=dtfToday.format(now);
-				
-				//Generating the object
-				model.addAttribute("asset",new AssetsEntity());
-				
-				//Generating a random value for record identification
-				Random r=new Random();
-				int seed=r.nextInt();
-				
-				model.addAttribute("seed",seed);
-				model.addAttribute("kluch",todayDate);
-				
-			}
+			model.addAttribute("siteName",site);
+			model.addAttribute("projectName",project);
+			model.addAttribute("itemName",itemName);
+			model.addAttribute("titleName",titleName);
+			
+			model.addAttribute("peripherals",peripherals);
+			model.addAttribute("assigs",assigs);
+			
 			
 			model.addAttribute("items",items);
 			model.addAttribute("sites",sites);
@@ -226,30 +278,46 @@ public class AssetsController
 			model.addAttribute("titles",titles);
 			
 			model.addAttribute("priznakNew",priznakNew);
+			model.addAttribute("stringSearch",stringSearch);
+			model.addAttribute("priznak",priznak);
 			
 			return "assetsAddEdit";
 		}
 		
-		@RequestMapping(path="/delete/{id}")
-		public String deleteAssetById(Model model, @PathVariable("id") Long id) throws RecordNotFoundException
+		@RequestMapping(path="/delete", method=RequestMethod.POST)
+		public String deleteAssetById(Model model,Long id,String stringSearch,String priznak) throws RecordNotFoundException
 		{
+			String message="Record was deleted...";
 			
+			//Deleting the record
 			service.deleteAssetById(id);
 			
-			return "redirect:/procurement/Assets/list";
+			model.addAttribute("message",message);
+			model.addAttribute("stringSearch",stringSearch);
+			model.addAttribute("priznak",priznak);
+			
+			return "assetsRedirect";
 			
 		}
 		
 		@RequestMapping(path="/createAsset", method=RequestMethod.POST)
-		public String createOrUpdateAsset(AssetsEntity asset)
+		public String createOrUpdateAsset(Model model,AssetsEntity asset,String stringSearch,String priznak)
 		{
-			//System.out.println("Inside the controller to update or create. Object is: "+ asset);
+			//System.out.println("Inside the controller, arrived string search was: "+ stringSearch);
 			
+			String message="Asset was updated successfully...";
+			
+						
 			service.createOrUpdate(asset);
 			
-			return "redirect:/procurement/Assets/list";
+			model.addAttribute("message",message);
+			model.addAttribute("stringSearch",stringSearch);
+			model.addAttribute("priznak",priznak);
+			
+			return "assetsRedirect";
 
 		}
+		
 		
 		
 		@RequestMapping(path="/search")
@@ -275,7 +343,7 @@ public class AssetsController
 		}
 		
 		@RequestMapping(path="/findAssetByNum", method=RequestMethod.POST)
-		public String findByAssetNum(Model model,String stringSearch) throws RecordNotFoundException
+		public String findByAssetNum(Model model,String stringSearch,String priznak) throws RecordNotFoundException
 		{
 			
 						
@@ -327,13 +395,14 @@ public class AssetsController
 				
 			model.addAttribute("stringSearch",stringSearch);												
 			model.addAttribute("assets",list);
-						
+			model.addAttribute("priznak",priznak);
+									
 			return "assetsList";
 			
 		}
 		
 		@RequestMapping(path="/findAssetsByItem", method=RequestMethod.POST)
-		public String findByKlass(Model model,String stringSearch) throws RecordNotFoundException
+		public String findByKlass(Model model,String stringSearch,String priznak) throws RecordNotFoundException
 		{
 			
 						
@@ -384,13 +453,14 @@ public class AssetsController
 				
 			model.addAttribute("stringSearch",stringSearch);												
 			model.addAttribute("assets",list);
+			model.addAttribute("priznak",priznak);
 						
 			return "assetsList";
 			
 		}
 		
 		@RequestMapping(path="/findAssetsByAuthor", method=RequestMethod.POST)
-		public String findByAuthor(Model model,String stringSearch) throws RecordNotFoundException
+		public String findByAuthor(Model model,String stringSearch,String priznak) throws RecordNotFoundException
 		{
 									
 			List<AssetsEntity> list=service.getByAuthor(stringSearch);
@@ -439,6 +509,7 @@ public class AssetsController
 				
 			model.addAttribute("stringSearch",stringSearch);												
 			model.addAttribute("assets",list);
+			model.addAttribute("priznak",priznak);
 						
 			return "assetsList";
 			
@@ -446,7 +517,7 @@ public class AssetsController
 		
 		
 		@RequestMapping(path="/findAssetsByProgram", method=RequestMethod.POST)
-		public String findByProgram(Model model,String stringSearch) throws RecordNotFoundException
+		public String findByProgram(Model model,String stringSearch,String priznak) throws RecordNotFoundException
 		{
 									
 			List<AssetsEntity> list=service.getByProgram(stringSearch);
@@ -495,6 +566,7 @@ public class AssetsController
 				
 			model.addAttribute("stringSearch",stringSearch);												
 			model.addAttribute("assets",list);
+			model.addAttribute("priznak",priznak);
 						
 			return "assetsList";
 			
@@ -546,6 +618,9 @@ public class AssetsController
 			String username=null;
 			String datePurchased=null;
 			
+			String periphNumber=null;
+			String periphName=null;
+			
 			String ageString=null;
 															
 			Long assetIdLong=null;
@@ -560,16 +635,18 @@ public class AssetsController
 			{
 				age=0;
 			
+				//Finding project name
 				projectNumber=asset.getProject();
 				projectName=serviceProjects.getProjectByNum(projectNumber);
 				
+				//Finding item name
 				itemNumber=asset.getItem();
 				itemName=serviceItems.getItemByNumber(itemNumber);
-								
+				
+				//Finding title name
 				titleNumber=asset.getTitle();
 				titleName=serviceTitles.getTitleByNumber(titleNumber);
-				
-				
+								
 				//Checking age of the asset
 				datePurchased=asset.getRealDatePurchased();
 				
@@ -598,7 +675,11 @@ public class AssetsController
 				assetIdLong=Long.parseLong(assetId);
 				username=service.getUsername(assetIdLong);
 				
-				peripheral.setNotes(username);
+				//Finding item name
+				periphNumber=peripheral.getPeripheralNum();
+				periphName=serviceItems.getItemByNumber(periphNumber);
+												
+				//System.out.println("Periph was found with number "+ periphNumber +" and was identify as "+ periphName);
 				
 				//Checking age of the peripheral
 				datePurchased=peripheral.getRealDatePurchased();
@@ -615,6 +696,9 @@ public class AssetsController
 					ageString="New";
 				
 				peripheral.setAge(ageString);
+				
+				peripheral.setNotes(username);
+				peripheral.setDescription(periphName);
 				
 			}
 			
@@ -665,6 +749,8 @@ public class AssetsController
 			String podcherk="/";
 			String username=null;
 			
+			String periphNumber=null;
+			String periphName=null;
 			
 			Long assetIdLong=null;
 						
@@ -679,6 +765,8 @@ public class AssetsController
 				
 				titleNumber=asset.getTitle();
 				titleName=serviceTitles.getTitleByNumber(titleNumber);
+				
+				
 				
 				dateRaw=asset.getDateCreation();
 				
@@ -696,7 +784,8 @@ public class AssetsController
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
-				asset.setDateCreation(dateConverted);			
+				asset.setDateCreation(dateConverted);	
+				
 			}
 			
 			for(PeripheralsEntity peripheral : listPeripherals)
@@ -705,7 +794,12 @@ public class AssetsController
 				assetIdLong=Long.parseLong(assetId);
 				username=service.getUsername(assetIdLong);
 				
+				//Finding item name
+				periphNumber=peripheral.getPeripheralNum();
+				periphName=serviceItems.getItemByNumber(periphNumber);
+				
 				peripheral.setNotes(username);
+				peripheral.setDescription(periphName);
 				
 			}
 			
@@ -715,8 +809,8 @@ public class AssetsController
 	        String[] csvHeader={"Item","Asset Number","Maker", "Model", "Date Purchased","User","Title","Emp. Status","Project","Program","Date Inventory","Registered by","Email","Item Class"};
 	        String[] nameMapping={"site","assetNumber","maker","model","datePurchased","username","title","empStatus","project","program","dateCreation","author","authorEmail","klass"};
 	        
-	        String[] csvHeader2={"Description","Asset Number","Item Related","User"};
-	        String[] nameMapping2={"description","assetNumber","itemId","notes"};
+	        String[] csvHeader2={"Description","Item Related","User"};
+	        String[] nameMapping2={"description","itemId","notes"};
 	        
 	        	         
 	        csvWriter.writeHeader(csvHeader);
@@ -740,8 +834,8 @@ public class AssetsController
 	    }
 		
 				
-		@RequestMapping(path="/reassign/{id}")
-		public String reassign(Model model,@PathVariable("id") Long id) throws RecordNotFoundException
+		@RequestMapping(path="/reassign", method=RequestMethod.POST)
+		public String reassign(Model model,Long assetId, String stringSearch, String priznak) throws RecordNotFoundException
 		{
 			String itemName=null;
 			String itemNumber=null;
@@ -751,7 +845,7 @@ public class AssetsController
 			String projectNumber=null;
 			
 			//Retrieving asset entity
-			AssetsEntity entity=service.getAssetById(id);
+			AssetsEntity entity=service.getAssetById(assetId);
 			
 			itemNumber=entity.getItem();
 			titleNumber=entity.getTitle();
@@ -786,12 +880,15 @@ public class AssetsController
 			model.addAttribute("titleName",titleName);
 			model.addAttribute("projectName",projectName);
 			
+			model.addAttribute("stringSearch",stringSearch);												
+			model.addAttribute("priznak",priznak);
+			
 			return "assetsReassigForm";
 			
 		}
 		
 		@RequestMapping(path="/reassignAsset", method=RequestMethod.POST)
-		public String reassignAsset(Model model,Long id, AssetAssigEntity assetReassig,
+		public String reassignAsset(Model model,Long id, AssetAssigEntity assetReassig, String stringSearch, String priznak,
 				
 				String username,
 				String email,
@@ -863,6 +960,9 @@ public class AssetsController
 			model.addAttribute("project",project);
 			
 			model.addAttribute("assetNumber",assetNumber);
+			
+			model.addAttribute("stringSearch",stringSearch);												
+			model.addAttribute("priznak",priznak);
 						
 			return "assetsReassigRedirect";
 

@@ -50,10 +50,12 @@ public class PeripheralsController
 	
 	//CRUD operations for peripherals
 	
-	@GetMapping("/list")
-	public String getAllPeripherals(Model model) throws RecordNotFoundException
+	
+	
+	@RequestMapping(path="/list",method=RequestMethod.POST)
+	public String getPeripheralsByAssetId(Model model,String assetId,String priznak,String stringSearch) throws RecordNotFoundException
 	{
-		List<PeripheralsEntity> list=service.getAllPeripherals();
+		List<PeripheralsEntity> list=service.getByAssetId(assetId);
 		
 		String description=null;
 		
@@ -62,23 +64,25 @@ public class PeripheralsController
 		{
 			description=serviceItems.getItemByNumber(periph.getPeripheralNum());
 			periph.setDescription(description);
-			
-			System.out.println(description);
+				
 		}
 			
-		model.addAttribute("peripherals",list);	
+		model.addAttribute("peripherals",list);
+		model.addAttribute("assetId",assetId);
+		model.addAttribute("priznak",priznak);
+		model.addAttribute("stringSearch",stringSearch);
 		
 		return "peripheralsList";
 		
 		
 	}
 	
-	@RequestMapping(path={"/edit/{id}"})
-	public String editPeripheral(Model model,@PathVariable("id") Optional<Long> id, String assetId) throws RecordNotFoundException 
+	@RequestMapping(path={"/edit"}, method=RequestMethod.POST)
+	public String editPeripheral(Model model,Long id, String assetId,String stringSearch,String priznak) throws RecordNotFoundException 
 	{
 		List<ItemsEntity> items=serviceItems.getAllPeripheralsHHS();		
 		
-		PeripheralsEntity entity=service.getPeripheralById(id.get());
+		PeripheralsEntity entity=service.getPeripheralById(id);
 		model.addAttribute("peripheral",entity);
 			
 		//System.out.println("modifying old item");
@@ -86,11 +90,14 @@ public class PeripheralsController
 		model.addAttribute("items",items);
 		model.addAttribute("assetId",assetId);
 		
+		model.addAttribute("stringSearch",stringSearch);
+		model.addAttribute("priznak",priznak);
+		
 		return "peripheralsAddEdit";
 	}
 	
-	@RequestMapping(path={"/create/{assetId}"})
-	public String newPeripheral(Model model,@PathVariable("assetId") String assetId) throws RecordNotFoundException 
+	@RequestMapping(path={"/create"}, method=RequestMethod.POST)
+	public String newPeripheral(Model model,String assetId, String stringSearch, String priznak) throws RecordNotFoundException 
 	{
 		List<ItemsEntity> items=serviceItems.getAllPeripheralsHHS();		
 		
@@ -101,12 +108,15 @@ public class PeripheralsController
 		model.addAttribute("items",items);
 		model.addAttribute("assetId",assetId);
 		
+		model.addAttribute("stringSearch",stringSearch);
+		model.addAttribute("priznak",priznak);
+		
 		return "peripheralsAddEdit";
 	}
 	
 	
-	@RequestMapping(path="/delete/{id}")
-	public String deletePeripheralById(Model model, @PathVariable("id") Long id, String assetId) throws RecordNotFoundException
+	@RequestMapping(path="/delete", method=RequestMethod.POST)
+	public String deletePeripheralById(Model model, Long id, String assetId, String stringSearch, String priznak) throws RecordNotFoundException
 	{
 		String message="Peripheral was deleted successfully...";
 		
@@ -115,12 +125,15 @@ public class PeripheralsController
 		 model.addAttribute("assetId",assetId);
 		 model.addAttribute("message",message);
 		 
+		 model.addAttribute("stringSearch",stringSearch);
+		 model.addAttribute("priznak",priznak);
+		 
 		 return "peripheralsRedirect";
 		
 	}
 	
 	@RequestMapping(path="/createPeripheral", method=RequestMethod.POST)
-	public String createOrUpdatePeripheral(Model model, PeripheralsEntity peripheral, String assetId) throws RecordNotFoundException
+	public String createOrUpdatePeripheral(Model model, PeripheralsEntity peripheral, String assetId,String priznak,String stringSearch,String id) throws RecordNotFoundException
 	{
 		//System.out.println("Inside the controller to update or create. Object is: "+ peripheral);
 		
@@ -145,33 +158,15 @@ public class PeripheralsController
 		model.addAttribute("assetId",assetId);
 		model.addAttribute("message",message);
 		
+		model.addAttribute("priznak",priznak);
+		model.addAttribute("stringSearch",stringSearch);
+		
 		return "peripheralsRedirect";
 		
 		
 	}
 	
-	@GetMapping("/list/{id}")
-	public String getPeripheralsByAssetId(Model model, @PathVariable("id") String id) throws RecordNotFoundException
-	{
-		List<PeripheralsEntity> list=service.getByAssetId(id);
-		
-		String description=null;
-		
-		//Obtaining descriptions
-		for(PeripheralsEntity periph : list)
-		{
-			description=serviceItems.getItemByNumber(periph.getPeripheralNum());
-			periph.setDescription(description);
-				
-		}
-			
-		model.addAttribute("peripherals",list);
-		model.addAttribute("assetId",id);
-		
-		return "peripheralsList";
-		
-		
-	}
+/*	
 	
 	@GetMapping("/promote")
 	public String promotePeriphToAsset(Model model, String assetId, String itemId) throws RecordNotFoundException
@@ -240,6 +235,27 @@ public class PeripheralsController
 		
 	}
 	
+*/	
+	
+	@RequestMapping(path="/promote", method=RequestMethod.POST)
+	public String voidPromote(Model model, String itemid, String assetId, String stringSearch, String priznak) throws RecordNotFoundException
+	{
+		String message="This option was disabled by your administrator...";
+		
+		model.addAttribute("message",message);
+		
+		model.addAttribute("itemid",itemid);
+		model.addAttribute("assetId",assetId);
+		
+		model.addAttribute("stringSearch",stringSearch);
+		model.addAttribute("priznak",priznak);
+		  
+		 
+		 return "peripheralsRedirect";
+		
+	}
+
+	
 	@RequestMapping(path="/promoteAsset", method=RequestMethod.POST)
 	public String promoteAsset(Model model, AssetsEntity asset)
 	{
@@ -249,4 +265,5 @@ public class PeripheralsController
 		return "assetsList";
 	}
 
+	
 }

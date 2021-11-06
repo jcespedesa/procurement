@@ -46,6 +46,9 @@
 				         	<div th:text="${assetNumber}"></div>
         				</div>
       				</div>
+      				
+      				<p th:text="'Priznak is '+ ${priznak}"></p>
+      				<p th:text="'StringSearch is '+ ${stringSearch}"></p>
      			     			
 					<hr/>
 				
@@ -79,7 +82,13 @@
 					
 					<br>
 				
-					<a th:href="@{/procurement/Assets/list}" class="btn btn-primary btn-sm"  title="Back to main view">Back to main view</a>
+					<form th:action="@{/procurement/Assets/list}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-primary">Back</button>	
+	           			
+	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           			</form>
 				
   					<hr/>
   				  				  						
