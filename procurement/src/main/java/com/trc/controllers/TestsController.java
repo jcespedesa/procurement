@@ -10,19 +10,30 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tomcat.util.json.JSONParser;
+import org.aspectj.weaver.ast.Test;
 import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParser;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,6 +48,7 @@ import com.trc.services.RecordNotFoundException;
 import com.trc.services.TestsService;
 import com.trc.services.TitlesService;
 import com.trc.entities.SettingsEntity;
+import com.trc.entities.TestSitesEntity;
 
 
 
@@ -68,6 +80,9 @@ public class TestsController
 	
 	@Autowired
 	AssetsService serviceAssets;
+	
+	@Autowired
+	TestsService serviceTests;
 	
 	
 	@GetMapping("/emailSel")
@@ -268,7 +283,62 @@ public class TestsController
 		
 	}
 	
+	@GetMapping("/excelFileUploadSel")
+	public String excelFileInput()
+	{
+			
+		return "excelFileUploadSel";
+			
+	}
 	
 	
+	@RequestMapping(value="/excelFileUpload", method=RequestMethod.POST)
+    public ResponseEntity<List<TestSitesEntity>> importExcelFile(@RequestParam("file") MultipartFile files) throws IOException 
+	{
+        HttpStatus status=HttpStatus.OK;
+        
+        int index=0;
+        Integer phone=0;
+        Integer division=0;
+        
+        List<TestSitesEntity> siteList=new ArrayList<>();
+        
+        
+
+        XSSFWorkbook workbook=new XSSFWorkbook(files.getInputStream());
+        XSSFSheet worksheet=workbook.getSheetAt(0);
+
+        for(index=0; index < worksheet.getPhysicalNumberOfRows(); index++) 
+        {
+            if(index > 0) 
+            {
+            	TestSitesEntity site=new TestSitesEntity();
+
+                XSSFRow row=worksheet.getRow(index);
+                //Integer id=(int) row.getCell(0).getNumericCellValue();
+
+                //product.setId(id.toString());
+                site.setSname(row.getCell(1).getStringCellValue());
+                site.setAddress(row.getCell(2).getStringCellValue());
+                
+                phone=(int) row.getCell(3).getNumericCellValue();
+                site.setPhone(phone.toString());
+                
+                site.setActive(row.getCell(4).getStringCellValue());
+                //site.setDivision(row.getCell(5).getStringCellValue());
+                
+                division=(int) row.getCell(5).getNumericCellValue();
+                site.setDivision(division.toString());
+
+                siteList.add(site);
+                serviceTests.create(site);
+                
+            }
+        }
+        
+        workbook.close();
+
+        return new ResponseEntity<>(siteList, status);
+    }
 	
 }
