@@ -169,6 +169,32 @@
 		                    <input type="hidden" th:value="findAssetsByProgram" name="priznak">
 		                      	
 	            		</form>
+      				      				
+      				</div>
+      				
+      				<div class="col">
+      				
+      					<label class="warning">Search by Assignee</label>
+      				
+      					<form class="utilityForm" th:action="@{/procurement/Assets/findAssetsByAssignee}" method="post">
+	                    
+		                    <div class="form-group">
+		                       	<label for="requester" class="col-form-label">Select Assignee<sup>*</sup>:</label> 
+		                       	<select name="stringSearch" required>
+		                       		<option value=""></option>
+                       				<option th:each="email : ${assigEmails}" th:value="${email}" th:text="${email}" ></option>
+                       			</select>
+		                    </div>
+		                                        
+		                    
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		                    
+		                    <input type="hidden" th:value="findAssetsByAssignee" name="priznak">
+		                      	
+	            		</form>
       				
       				
       				</div>

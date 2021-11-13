@@ -79,9 +79,14 @@ public class AssetsController
 			//Preparing list of authors email
 			List<String> emails=service.getAuthorEmails();
 			
+			//Preparing list of assignees
+			List<String> assigEmails=service.getAssigneeEmails();
+			
+			
 			model.addAttribute("items",items);
 			model.addAttribute("emails",emails);
 			model.addAttribute("projects",projects);
+			model.addAttribute("assigEmails",assigEmails);
 			
 			return "assetsMenu";
 			
@@ -571,6 +576,64 @@ public class AssetsController
 			return "assetsList";
 			
 		}
+		
+		
+		@RequestMapping(path="/findAssetsByAssignee", method=RequestMethod.POST)
+		public String findByAssignee(Model model,String stringSearch,String priznak) throws RecordNotFoundException
+		{
+									
+			List<AssetsEntity> list=service.getByAssignee(stringSearch);
+			
+			int priznakPeripherals=0;
+						
+			String projectNumber=null;
+			String projectName=null;
+			
+			String itemName=null;
+			String itemNumber=null;
+			
+			String titleName=null;
+			String titleNumber=null;
+			
+			String assetId=null;
+			
+			Long assetIdLong=null;					
+			
+			for(AssetsEntity asset : list)
+			{
+			
+				projectNumber=asset.getProject();
+				projectName=serviceProjects.getProjectByNum(projectNumber);
+				
+				itemNumber=asset.getItem();
+				itemName=serviceItems.getItemByNumber(itemNumber);
+				
+				//finding title description
+				titleNumber=asset.getTitle();
+				titleName=serviceTitles.getTitleByNumber(titleNumber);
+				
+				//Finding if this current asset is having peripherals
+				assetIdLong=asset.getAssetid();
+				assetId=Long.toString(assetIdLong);
+				priznakPeripherals=service.findHowManyPeripherals(assetId);
+				
+				if(priznakPeripherals > 0)
+					asset.setStrobe("Yes");
+				
+				asset.setProgram(projectName);
+				asset.setSite(itemName);
+				asset.setTitle(titleName);
+							
+			}
+				
+			model.addAttribute("stringSearch",stringSearch);												
+			model.addAttribute("assets",list);
+			model.addAttribute("priznak",priznak);
+						
+			return "assetsList";
+			
+		}
+		
 		
 		
 		@RequestMapping(path="/views")

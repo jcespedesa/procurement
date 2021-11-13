@@ -298,6 +298,18 @@ public class AssetsService
 		
 	}
 	
+	public List<String> getAssigneeEmails()
+	{
+				
+		List<String> result=(List<String>) repository.getDistAssigneeEmails();
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<String>();
+		
+	}
+	
 	public List<AssetsEntity> getByAuthor(String authorEmail)
 	{
 				
@@ -401,6 +413,18 @@ public class AssetsService
 		entity=repository.save(entity);
 		
 		return entity;
+	}
+	
+	public List<AssetsEntity> getByAssignee(String email)
+	{
+				
+		List<AssetsEntity> result=(List<AssetsEntity>) repository.getByAssignee(email);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<AssetsEntity>();
+		
 	}
 	
 	

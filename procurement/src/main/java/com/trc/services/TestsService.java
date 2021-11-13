@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.web.client.RestTemplate;
 import com.trc.entities.AssetsEntity;
-import com.trc.entities.DivisionsEntity;
 import com.trc.entities.SettingsEntity;
 import com.trc.entities.TestSitesEntity;
 import com.trc.repositories.AssetsRepository;

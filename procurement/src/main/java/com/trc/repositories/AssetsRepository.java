@@ -71,6 +71,9 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	@Query("Select distinct u.authorEmail from AssetsEntity u Order by authorEmail")
 	List<String> getDistAuthorEmails();
 	
+	@Query("Select distinct u.email from AssetsEntity u Order by email")
+	List<String> getDistAssigneeEmails();
+	
 	@Query("Select u from AssetsEntity u WHERE u.authorEmail=?1")
 	List<AssetsEntity> getByAuthor(String authorEmail);
 	
@@ -88,6 +91,7 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	@Query("Select assetid from AssetsEntity u where u.kluch=?1")
 	Long getIdByKluch(String kluch);
 	
-	
+	@Query("Select u from AssetsEntity u WHERE u.email=?1")
+	List<AssetsEntity> getByAssignee(String email);
 	
 }
