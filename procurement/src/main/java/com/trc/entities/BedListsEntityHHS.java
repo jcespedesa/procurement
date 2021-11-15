@@ -24,6 +24,9 @@ public class BedListsEntityHHS
 	@Column(name="bed")
 	private String bed;
 	
+	@Column(name="bedcorrection")
+	private String bedCorrection;
+	
 	@Column(name="cname")
 	private String cname;
 	
@@ -60,10 +63,11 @@ public class BedListsEntityHHS
 	@Column(name="notes")
 	private String notes;
 	
+	
 	@Override
 	public String toString()
 	{
-		return "BedListsEntity[itemid="+ itemid +",floor="+ floor +",room="+ room +",bed="+ bed +",cname="+ cname +",groupId="+ groupId +",gender="+ gender +",dob="+ dob +",ssn="+ ssn +",checkedId="+ checkedIn +",checkedOut="+ checkedOut +",status="+ status +",screeningDate="+ screeningDate +",issac="+ issac +",kluch="+ kluch +",notes+"+ notes +"]";				
+		return "BedListsEntity[itemid="+ itemid +",floor="+ floor +",room="+ room +",bed="+ bed +",bedCorrection="+ bedCorrection +",cname="+ cname +",groupId="+ groupId +",gender="+ gender +",dob="+ dob +",ssn="+ ssn +",checkedId="+ checkedIn +",checkedOut="+ checkedOut +",status="+ status +",screeningDate="+ screeningDate +",issac="+ issac +",kluch="+ kluch +",notes+"+ notes +"]";				
 		
 	}
 
@@ -225,6 +229,16 @@ public class BedListsEntityHHS
 	public void setNotes(String notes) 
 	{
 		this.notes=notes;
+	}
+
+	public String getBedCorrection() 
+	{
+		return bedCorrection;
+	}
+
+	public void setBedCorrection(String bedCorrection) 
+	{
+		this.bedCorrection=bedCorrection;
 	}
 	
 	

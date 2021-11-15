@@ -60,10 +60,13 @@ public class BedListsEntityHMIS
 	@Column(name="notes")
 	private String notes;
 	
+	@Column(name="hhscname")
+	private String hhsCname;
+	
 	@Override
 	public String toString()
 	{
-		return "BedListsEntity[itemid="+ itemid +",floor="+ floor +",room="+ room +",bed="+ bed +",cname="+ cname +",groupId="+ groupId +",gender="+ gender +",dob="+ dob +",ssn="+ ssn +",checkedId="+ checkedIn +",checkedOut="+ checkedOut +",status="+ status +",screeningDate="+ screeningDate +",issac="+ issac +",kluch="+ kluch +",notes+"+ notes +"]";				
+		return "BedListsEntity[itemid="+ itemid +",floor="+ floor +",room="+ room +",bed="+ bed +",cname="+ cname +",groupId="+ groupId +",gender="+ gender +",dob="+ dob +",ssn="+ ssn +",checkedId="+ checkedIn +",checkedOut="+ checkedOut +",status="+ status +",screeningDate="+ screeningDate +",issac="+ issac +",kluch="+ kluch +",notes+"+ notes +",hhsCname="+ hhsCname +"]";				
 		
 	}
 	
@@ -225,6 +228,16 @@ public class BedListsEntityHMIS
 	public void setNotes(String notes) 
 	{
 		this.notes=notes;
+	}
+
+	public String getHhsCname() 
+	{
+		return hhsCname;
+	}
+
+	public void setHhsCname(String hhsCname) 
+	{
+		this.hhsCname = hhsCname;
 	}
 	
 	
