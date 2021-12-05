@@ -1,6 +1,7 @@
 package com.trc.services;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -126,6 +127,25 @@ public class EmailService
         mailMessage.setFrom("javaOperator@cc-dc.org");
 
         javaMailSender.send(mailMessage);
+    }
+    
+    
+    public int generateRandomIntIntRange(int min, int max) 
+    {
+        Random r=new Random();
+        return r.nextInt((max-min)+1)+ min;
+    }
+    
+    
+    public String generateRandomSymbol() 
+    {
+    	String[] arr={"!","@","#","$","%","*","&","?"};
+    	
+    	int idx=new Random().nextInt(arr.length);
+    	String s=(arr[idx]);
+    	
+    	
+        return s;
     }
 	
 }

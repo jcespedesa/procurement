@@ -8,6 +8,7 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,10 +28,11 @@ import com.trc.services.PeripheralsService;
 import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.SitesService;
+import com.trc.services.TempUsersService;
 import com.trc.services.TitlesService;
 
 @Controller
-@RequestMapping("/portal/assets")
+@RequestMapping("/portal")
 public class PortalController 
 {
 	@Autowired
@@ -53,6 +55,9 @@ public class PortalController
 	
 	@Autowired
 	EmailService serviceEmails;
+	
+	@Autowired
+	TempUsersService serviceTempUsers;
 	
 
 	@RequestMapping(path={"/menu"})
@@ -469,6 +474,104 @@ public class PortalController
 		return "assetsPortalEndForm";
 		
 	}
+	
+	@GetMapping("/passSendForm")
+	public String sendPassForm()
+	{
+		
+		return "usersSendPass";
+		
+		
+	}
+	
+	
+	@RequestMapping(path="/passSendCon", method=RequestMethod.POST)
+	public String sendPass(Model model,String toEmail)
+	{
+		Boolean priznakNewUser=false;
+		
+		int passwordInt=0;
+		
+		String password=null;
+		String domain="@cc-dc.org";
+		String message="An email was sent to your address. Please review your inbox and use that code as your password...";
+		String subject="Sending pass code for the HHS App";
+		String body="Your passcode is : ";
+		String pustoy="";
+		String trail=null;
+		String role="user";
+		
+		//Email address concatenation
+		toEmail=toEmail+domain;
+		
+		//Generating a random password of 4 digits
+		passwordInt=serviceEmails.generateRandomIntIntRange(1000,9999);
+		
+		//Generating a random symbol as trailer
+		trail=serviceEmails.generateRandomSymbol();
+		
+		//Converting the password int to password string
+		password=Integer.toString(passwordInt);
+		
+		//Finalizing the password formation
+		password=password+trail;
+		
+		//Body message concatenation
+		body=body+pustoy+password;
+		
+		//System.out.println("The password is "+ password);
+		//System.out.println("The subject is "+ subject);
+		//System.out.println("The message is "+ body);
+		
+		//Checking if this is a new user
+		priznakNewUser=serviceTempUsers.checkNewUser(toEmail);
+		
+		if(priznakNewUser)
+		{	
+			//Updating password for this user
+			serviceTempUsers.updatePass(toEmail,password);
 			
+		}
+		else
+		{
+			//Registering the new user in the temp table
+			serviceTempUsers.saveNewTempUser(toEmail,password,role);
+		}
+			
+			
+		//Sending the email
+		serviceEmails.sendMail(toEmail, subject, body);
+		
+		model.addAttribute("message",message);
+		
+		return "login";
+		
+		
+	}
+			
+	@RequestMapping(path="/userLogin", method=RequestMethod.POST)
+	public String clientLogin(Model model,String email,String password)
+	{
+		Boolean priznakSuccess=false;
+		String message="Invalid username/password...";
+				
+		//Retrieving stored password
+		priznakSuccess=serviceTempUsers.checkPass(email,password);
+		
+		if(priznakSuccess)
+		{	
+			//System.out.println("User has the right password...");
+			return "redirect:/procurement/index";
+					
+		}
+		else
+		{
+			//System.out.println("User has not the right password...");
+			model.addAttribute("message",message);
+			return "login";
+			
+		}	
+		
+	}
 	
 }

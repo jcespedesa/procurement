@@ -32,6 +32,8 @@ public class servicesController
 	@Autowired
 	ServicesService service;
 	
+	//Bed list comparison 
+	
 	@GetMapping("/bedListHHSsel")
 	public String bedListCompHHSsel()
 	{
@@ -232,6 +234,68 @@ public class servicesController
 		
 		return "servicesBedListView";
 	}
+	
+	
+	
+	//Billables report process
+	
+	@GetMapping("/billableFileSel")
+	public String billableUploadSel()
+	{
+			
+		return "servicesBillRepSel";
+			
+	}
+	
+	@RequestMapping(value="/billableFileUpload", method=RequestMethod.POST)
+    public String billableFileUpload(Model model, @RequestParam("file") MultipartFile files, String kluch) throws IOException 
+	{
+        //HttpStatus status=HttpStatus.OK;
+        
+        int index=0;
+        
+                       
+        String message="I could not open the file...";
+        
+       		
+		//Opening and importing the selected file
+
+        XSSFWorkbook workbook=new XSSFWorkbook(files.getInputStream());
+        XSSFSheet worksheet=workbook.getSheetAt(0);
+        
+        
+        for(index=7; index < worksheet.getPhysicalNumberOfRows(); index++)
+        {
+           
+        	BedListsEntityHMIS bedList=new BedListsEntityHMIS();
+
+        	XSSFRow row=worksheet.getRow(index);
+        	
+        	if(row != null) 
+        	{
+                
+	        	bedList.setFloor(row.getCell(0).getStringCellValue());
+	        	bedList.setRoom(row.getCell(1).getStringCellValue());
+	            bedList.setBed(row.getCell(2).getStringCellValue());
+	            bedList.setCname(row.getCell(3).getStringCellValue());
+	                
+	            bedList.setKluch(kluch);
+	                                            
+	            service.createHMIS(bedList);
+	            
+	            //System.out.println("index is "+ index);
+	            message="HMIS Bed List File was imported successfully. Total of rows is "+ index;
+        	}                          
+        }
+        
+        workbook.close();
+        
+        model.addAttribute("message",message);
+        model.addAttribute("kluch",kluch);
+
+        return "servicesBedListComp";
+    }
+
 	
 }
 

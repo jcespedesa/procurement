@@ -56,6 +56,12 @@ public class ClientsService
 	{
 		if(entity.getClientid()==null)
 		{
+			
+			//Trying to save special fields
+			entity.setRealCompletionTime(entity.getCompletionTime());
+			entity.setRealDateSecondDose(entity.getDateSecondDose());
+			entity.setRealDateCreation(entity.getDateCreation());
+			
 			entity=repository.save(entity);
 			
 			return entity;
@@ -80,7 +86,15 @@ public class ClientsService
 				newEntity.setCompletionTime(entity.getCompletionTime());
 				newEntity.setNotes(entity.getNotes());
 				newEntity.setDateSecondDose(entity.getDateSecondDose());
-					
+				newEntity.setDateCreation(entity.getDateCreation());
+				newEntity.setType(entity.getType());
+				newEntity.setHmisNum(entity.getHmisNum());
+				
+				//Special fields setup
+				newEntity.setRealCompletionTime(entity.getCompletionTime());
+				newEntity.setRealDateSecondDose(entity.getDateSecondDose());
+				newEntity.setRealDateCreation(entity.getDateCreation());
+				
 				newEntity=repository.save(newEntity);
 				
 				return newEntity;

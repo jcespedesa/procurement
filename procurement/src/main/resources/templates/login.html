@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+ 
+	<head>
+    	<title>Procurement - Login</title>
+		
+			<meta charset="utf-8">
+    		<meta http-equiv="x-ua-compatible" content="ie=edge">
+    		<meta name="viewport" content="width=device-width, initial-scale=1">
+    	
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  			<script type="text/javascript" th:src="@{/js/citiesDropDown.js}" src="../static/js/citiesDropDown.js"></script>
+					
+  			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+  			<link th:href="@{/css/style.css}" rel="stylesheet">
+  			  		
+    	
+	</head>
+ 
+	<body>
+    	<div class="container my-5">
+        	
+        	<div class="card">
+				<div class="card-body">
+										        			
+        			<div style="color:#880000;background-color:yellow;" th:text="${message}"></div>
+        			
+        			<form th:action="@{/portal/userLogin}" method="post">
+        				<table class="table-striped">
+        					<tr><td colspan="2">&nbsp;</td></tr>
+            				<tr><td><label> Email : </label></td><td><input type="text" name="email" required/></td></tr>
+            				<tr><td><label> Password : </label></td><td><input type="password" name="password" required/></td></tr>
+            				<tr><td colspan="2">&nbsp;</td></tr>
+            				<tr>
+            					<td style="background-color:lightGreen;">
+            						<label>I am not a robot : </label> 
+            						<input type="checkbox" name="captcha" value="true" required>
+            					</td>
+            				</tr>
+            				<tr><td colspan="2">&nbsp;</td></tr>
+            				<tr><td colspan="2"><input class="btn btn-primary" type="submit" value="Sign In"/></td></tr>
+            				
+            				<tr><td colspan="2">&nbsp;</td></tr>
+            				<tr><td colspan="2">&nbsp;</td></tr>
+            				<tr><td colspan="2"><a href="/portal/passSendForm">I do not have a password. Please send me a code to login</a></td></tr>
+            			</table>	
+        			</form>
+					     	                    
+                </div>
+            </div>
+           	<div style="color:#000088; font-size:10px;font-weight: bold;" class="card-footer text-muted">TRC Corp</div>
+         </div>   
+	</body>
+ 
+</html>

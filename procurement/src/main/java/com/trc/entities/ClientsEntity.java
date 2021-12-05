@@ -42,17 +42,34 @@ public class ClientsEntity
 	@Column(name="completiontime")
 	private String completionTime;
 	
+	@Column(name="realcompletiontime")
+	private String realCompletionTime;
+	
 	@Column(name="notes")
 	private String notes;
 	
 	@Column(name="dateseconddose")
 	private String dateSecondDose;
 	
+	@Column(name="realdateseconddose")
+	private String realDateSecondDose;
+	
+	@Column(name="datecreation")
+	private String dateCreation;
+	
+	@Column(name="realdatecreation")
+	private String realDateCreation;
+	
+	@Column(name="type")
+	private String type;
+	
+	@Column(name="hmisnum")
+	private String hmisNum;
 	
 	@Override
 	public String toString()
 	{
-		return "ClientsEntity[clientid="+ clientid +",cname="+ cname +",division="+ division +",program="+ program +",projectNumber="+ projectNumber +",hhsDivision="+ hhsDivision +",email="+ email +",active="+ active +",vacStatus="+ vacStatus +",completionTime="+ completionTime +",notes="+ notes +",dateSecondDose="+ dateSecondDose +"]";				
+		return "ClientsEntity[clientid="+ clientid +",cname="+ cname +",division="+ division +",program="+ program +",projectNumber="+ projectNumber +",hhsDivision="+ hhsDivision +",email="+ email +",active="+ active +",vacStatus="+ vacStatus +",completionTime="+ completionTime +",realCompletionTime="+ realCompletionTime +",notes="+ notes +",dateSecondDose="+ dateSecondDose +",realDateSecondDose="+ realDateSecondDose +",type="+ type +",dateCreation="+ dateCreation +",realDateCreation="+ realDateCreation +",hmisNum="+ hmisNum +"]";				
 		
 	}
 
@@ -198,6 +215,78 @@ public class ClientsEntity
 	public void setDateSecondDose(String dateSecondDose) 
 	{
 		this.dateSecondDose=dateSecondDose;
+	}
+
+
+	public String getDateCreation() 
+	{
+		return dateCreation;
+	}
+
+
+	public void setDateCreation(String dateCreation) 
+	{
+		this.dateCreation=dateCreation;
+	}
+
+
+	public String getType() 
+	{
+		return type;
+	}
+
+
+	public void setType(String type) 
+	{
+		this.type=type;
+	}
+
+
+	public String getHmisNum() 
+	{
+		return hmisNum;
+	}
+
+
+	public void setHmisNum(String hmisNum) 
+	{
+		this.hmisNum=hmisNum;
+	}
+
+
+	public String getRealCompletionTime() 
+	{
+		return realCompletionTime;
+	}
+
+
+	public void setRealCompletionTime(String realCompletionTime) 
+	{
+		this.realCompletionTime=realCompletionTime;
+	}
+
+
+	public String getRealDateSecondDose() 
+	{
+		return realDateSecondDose;
+	}
+
+
+	public void setRealDateSecondDose(String realDateSecondDose) 
+	{
+		this.realDateSecondDose=realDateSecondDose;
+	}
+
+
+	public String getRealDateCreation() 
+	{
+		return realDateCreation;
+	}
+
+
+	public void setRealDateCreation(String realDateCreation) 
+	{
+		this.realDateCreation=realDateCreation;
 	}
 	
 	

@@ -57,7 +57,6 @@ public class UsersService
 				UsersEntity newEntity=user.get();
 				
 				newEntity.setUsername(entity.getUsername());
-				newEntity.setEmail(entity.getEmail());
 				newEntity.setRole(entity.getRole());
 				newEntity.setDomain(entity.getDomain());
 				

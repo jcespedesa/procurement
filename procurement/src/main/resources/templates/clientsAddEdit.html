@@ -54,32 +54,48 @@
                 	<div class="form-group">
                        	<label for="cname" class="col-form-label">Client Name<sup>*</sup>:</label> 
                        	<input type="text" th:field="*{cname}" id="cname" placeholder="Last, First" required  size="50" maxlength="70"/>
-                    
+                       	
+                       	<label  for="hmisNum" class="col-form-label">HMIS Number<sup></sup>:</label> 
+                       	<input type="text" th:field="*{hmisNum}" id="hmisNum" placeholder="HMIS Number" size="10" maxlength="10"/>
+                       	
+                       	<label for="type">Type</label>
+     					<select th:field="*{type}">
+					     	<option th:value="*{type}" th:text="*{type}"></option>
+					    	<option value="client">client</option> 
+					    	<option value="staff">staff</option>
+					    	<option value="volunteer">volunteer</option>
+					  	</select>
+                    </div> 
+                       	
+                    <div class="form-group">
                        	<label for="division" class="col-form-label">Division:</label> 
-                       	<input type="text" th:field="*{division}" id="division" placeholder="Division" size="10" maxlength="10"/>
-                    </div>
+                       	<input type="text" th:field="*{division}" id="division" placeholder="Division" size="5" maxlength="5"/>
+                                      
                     
-                    <div class="form-group">
                        	<label for="program" class="col-form-label">Program:</label> 
-                       	<input type="text" th:field="*{program}" id="program" placeholder="Program" size="50" maxlength="50"/>
-                    
-                       	<label for="projectNumber" class="col-form-label">Project Number:</label> 
-                       	<input type="text" th:field="*{projectNumber}" id="projectNumber" placeholder="Project Number" size="10" maxlength="10"/>
+                       	<select th:field="*{projectNumber}" id="projectNumber">
+                       		<option th:value="*{projectNumber}" th:text="*{program}"></option>
+                       		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}" ></option>
+                       		<option value="Unknown">Unknown</option>
+                       	</select>
+                       	
                     </div>
                     
                     <div class="form-group">
-                       	<label for="hhsDivision" class="col-form-label">HHS Division<sup></sup>:</label> 
-                       	<input type="text" th:field="*{hhsDivision}" id="hhsDivision" placeholder="HHS Division" size="10" maxlength="10"/>
-                    </div>
+                       	<label for="hhsDivision" class="col-form-label">HHS Division (Staff Only):</label> 
+                       	<select th:field="*{hhsDivision}">
+					     	<option th:value="*{hhsDivision}" th:text="*{hhsDivision}"></option>
+					    	<option value="10">10</option>
+					    	<option value="20">20</option>
+					    	<option value="30">30</option>
+					    	<option value="40">40</option>
+					    	<option value="50">50</option>
+					    	<option value="60">60</option>
+     					</select>
                     
-                    
-                    <div class="form-group">
                        	<label for="email" class="col-form-label">CC Email<sup></sup>:</label> 
                        	<input type="text" th:field="*{email}" id="email" placeholder="Email" size="50" maxlength="60"/>
-                    </div>
                     
-                    
-                    <div class="form-group col-md-8">
      					<label for="active">Active</label>
      					<select th:field="*{active}">
 					     	<option th:value="*{active}" th:text="*{active}"></option>
@@ -103,13 +119,28 @@
 					
 					<div class="form-group col-md-12">
 					
+						
 						<label for="completionTime" class="col-form-label">VAX Completion Date<sup></sup>:</label> 
-                       	<input type="text" th:field="*{completionTime}" id="completionTime" size="20" maxlength="20"/>
+                       	<input type="text" th:field="*{completionTime}" id="completionTime" size="20" maxlength="20" onfocus="showCalendarControl(this);"/>
+                       	<label style="font-size:10px;font-weight: bold;" th:text="*{realCompletionTime}"></label> 
+                       	
                        	
                        	<label for="dateSecondDose" class="col-form-label">VAX Second Dose Date<sup></sup>:</label> 
-                       	<input type="text" th:field="*{dateSecondDose}" id="dateSecondDose" size="20" maxlength="20"/>
-                    
+                       	<input type="text" th:field="*{dateSecondDose}" id="dateSecondDose" size="20" maxlength="20" onfocus="showCalendarControl(this);"/>
+                    	<label style="font-size:10px;font-weight: bold;" th:text="*{realDateSecondDose}"></label> 
                     </div>
+                    
+                    <hr>
+                    
+                    <div class="form-group col-md-8">
+                    
+                    		
+					  	<label for="dateCreation" class="col-form-label">Date Creation<sup></sup>:</label> 
+                       	<input type="text" th:field="*{dateCreation}" id="dateCreation" size="20" maxlength="20" onfocus="showCalendarControl(this);"/>
+                       	<label style="font-size:10px;font-weight: bold;" th:text="*{realDateCreation}"></label>  
+     				</div>	
+     				
+     				  
                     
                     <div class="form-group">
       					<label for="notes">Notes/Observations:</label><br>
@@ -124,7 +155,7 @@
                 		</a>
                     </div>
                             	
-                    <!--  <input type="hidden" id="id" th:field="*{clientid}"> -->
+                    <input type="hidden" id="id" th:field="*{clientid}"> 
      
                         	
             	</form>

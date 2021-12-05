@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+ 
+	<head>
+    	<title>Procurement - Login</title>
+		
+			<meta charset="utf-8">
+    		<meta http-equiv="x-ua-compatible" content="ie=edge">
+    		<meta name="viewport" content="width=device-width, initial-scale=1">
+    	
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  			<script type="text/javascript" th:src="@{/js/citiesDropDown.js}" src="../static/js/citiesDropDown.js"></script>
+					
+  			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+  			<link th:href="@{/css/style.css}" rel="stylesheet">
+  			  		
+    	
+	</head>
+	
+	<script>
+    	$("#sendForm").submit(function(event) 
+    	{
+        	$("#submitButton").prop("disabled", true).addClass("disabled");
+    	});
+	</script>
+	 
+	<body>
+    	<div class="container my-5">
+        	
+        	<div class="card">
+				<div class="card-body">
+					
+					<div style="color:#880000;" th:text="${message}"></div>
+					        			        			
+        			<form th:action="@{/portal/passSendCon}" name="sendForm" method="post">
+        				<table class="table-striped">
+            				<tr>
+            					<td colspan="2">
+            						<label>CC Email : </label>
+            						<input type="text" name="toEmail" pattern="[a-zA-Z0-9.]+" title="Type only your name dot your last name" required><b>@cc-dc.org</b>
+            					</td>
+            				</tr>
+            				<tr><td colspan="2"><label>Please provide a valid CC email where to receive the code</label></td></tr>
+            				<tr>
+            					<td colspan="2" style="background-color: lightGreen;">
+            						<label>And I am not a robot : </label> 
+            						<input type="checkbox" name="captcha" value="true" required>
+            					</td>
+            				</tr>
+            				<tr><td colspan="2">&nbsp;</td></tr>	
+            				<tr>
+            					<td><input class="btn btn-primary" type="submit" name="submitButton" value="Send me the code"/></td>
+            					<td><a href="/login" class="btn btn-secondary" role="button">Back</a></td>
+            				</tr>
+            				<tr><td colspan="2">&nbsp;</td></tr>
+            				
+            			</table>	
+        			</form>
+					     	                    
+                </div>
+            </div>
+           	<div style="color:#000088; font-size:10px;font-weight: bold;" class="card-footer text-muted">TRC Corp</div>
+         </div>   
+	</body>
+	
+	
+ 
+</html>

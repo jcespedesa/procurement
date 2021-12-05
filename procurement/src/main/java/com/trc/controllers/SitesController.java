@@ -28,6 +28,8 @@ public class SitesController
 	@Autowired
 	DivisionsService serviceDivisions;
 	
+	
+	
 	//CRUD operations for sites
 	
 	@GetMapping("/list")
@@ -119,5 +121,5 @@ public class SitesController
 		
 	}
 	
-	
+		
 }

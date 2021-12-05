@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.ClientsEntity;
 import com.trc.entities.HhsDivisionsEntity;
+import com.trc.entities.ProjectsEntity;
 import com.trc.services.ClientsService;
 import com.trc.services.HhsDivisionsService;
+import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
 
 
@@ -28,6 +30,9 @@ public class ClientsController
 	@Autowired
 	HhsDivisionsService serviceHhsDivisions;
 	
+	@Autowired
+	ProjectsService serviceProjects;
+	
 	//CRUD operations for Clients
 	
 	@GetMapping("/list")
@@ -35,6 +40,22 @@ public class ClientsController
 	{
 		List<ClientsEntity> list=service.getAllClientsAlphab();
 		
+		String projectNumber=null;
+		String projectName=null;
+		
+		for(ClientsEntity client : list)
+		{
+			
+			//finding project name
+			projectNumber=client.getProjectNumber();
+			projectName=serviceProjects.getProjectByNum(projectNumber);
+			
+			client.setProgram(projectName);
+			
+		}
+		
+		
+				
 		model.addAttribute("clients",list);
 		
 		return "clientsList";
@@ -46,9 +67,20 @@ public class ClientsController
 	public String editClientsById(Model model,@PathVariable("id") Optional<Long> id) throws RecordNotFoundException 
 	{
 		
+		//Preparing list of projects
+		List<ProjectsEntity> projects=serviceProjects.getAllHHSprojects();
+		
 		if(id.isPresent())
 		{
 			ClientsEntity entity=service.getClientById(id.get());
+			
+			String project=null;
+			
+			//Retrieving project description
+			project=serviceProjects.getSiteBySiteNumber1(entity.getProjectNumber());
+			
+			entity.setProgram(project);
+			
 			model.addAttribute("client",entity);
 		}
 		else
@@ -56,6 +88,9 @@ public class ClientsController
 			model.addAttribute("client",new ClientsEntity());
 			
 		}
+		
+		model.addAttribute("projects",projects);
+		
 		return "clientsAddEdit";
 	}
 	

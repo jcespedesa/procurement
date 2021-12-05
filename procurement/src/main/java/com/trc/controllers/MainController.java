@@ -7,8 +7,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/procurement")
-public class Main 
+public class MainController 
 {
+	@GetMapping("/login")
+	public String login()
+	{
+				
+		return "login";
+		
+		
+	}
+	
 	@GetMapping("/index")
 	public String index()
 	{
@@ -26,6 +35,7 @@ public class Main
 		
 		
 	}
+	
 	
 	
 }

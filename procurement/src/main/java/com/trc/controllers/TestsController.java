@@ -334,4 +334,17 @@ public class TestsController
         return new ResponseEntity<>(siteList, status);
     }
 	
+	@RequestMapping(path="/ajaxTestForm")
+	public String formAjaxTest(Model model)
+	{
+				
+		List<AssetsEntity> list=serviceAssets.getAllAssets();
+		
+		model.addAttribute("assets",list);
+		
+		return "testAjaxForm";
+		
+		
+	}
+	
 }
