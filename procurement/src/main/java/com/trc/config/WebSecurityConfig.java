@@ -26,7 +26,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter
 			//Login Form Details
 			.and()
 			.formLogin()
-			.defaultSuccessUrl("/procurement/index", true)
+			.defaultSuccessUrl("/procurement/login", true)
 			
 			//Logout Form Details
 			.and()

@@ -18,6 +18,9 @@ public class UsersEntity
 	@Column(name="username")
 	private String username;
 	
+	@Column(name="email")
+	private String email;
+	
 	@Column(name="role")
 	private String role;
 	
@@ -34,7 +37,7 @@ public class UsersEntity
 	@Override
 	public String toString()
 	{
-		return "UsersEntity[userid="+ userid +",username="+ username +",role="+ role +",password="+ password +",domain="+ domain +",active="+ active +"]";				
+		return "UsersEntity[userid="+ userid +",username="+ username +",email="+ email +",role="+ role +",password="+ password +",domain="+ domain +",active="+ active +"]";				
 		
 	}
 
@@ -98,6 +101,17 @@ public class UsersEntity
 	{
 		this.active=active;
 	}
+
+	public String getEmail() 
+	{
+		return email;
+	}
+
+	public void setEmail(String email) 
+	{
+		this.email=email;
+	}
+	
 	
 	
 }

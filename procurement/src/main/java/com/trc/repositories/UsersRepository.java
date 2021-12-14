@@ -20,4 +20,9 @@ public interface UsersRepository  extends CrudRepository<UsersEntity,Long>
 	@Query("update UsersEntity u set u.password=?2 where u.userid=?1")
 	void setDefaultPass(Long id,String encodedPass);
 
+	UsersEntity getUserByEmail(String email);
+		
+	@Query("Select u.password from UsersEntity u Where u.email=?1")
+	String  getPassByEmail(String email);
+
 }

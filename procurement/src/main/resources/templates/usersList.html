@@ -38,7 +38,7 @@
            			<a href="/procurement/users/edit">Add New</a>
         		</li>
             	<li>
-           			<a href="/procurement/index">Back</a>
+           			<a href="/procurement/mainMenu">Back</a>
         		</li>
             </ul>
       	</nav>
@@ -55,6 +55,7 @@
   						<tr>
   							<th style="color:#006400;font-size:12px;">ID</th>
   							<th style="color:#006400;font-size:12px;">Username</th>
+  							<th style="color:#006400;font-size:12px;">Email</th>
   							<th style="color:#006400;font-size:12px;">Role</th>
   							<th style="color:#006400;font-size:12px;">Domain</th>
   							<th style="color:#006400;font-size:12px;">Active</th>
@@ -68,6 +69,7 @@
   						<tr th:each="user : ${users}">
   							<td th:text="${user.userid}" style="font-size:12px;"></td>
   							<td th:text="${user.username}" style="font-size:12px;"></td>
+  							<td th:text="${user.email}" style="font-size:12px;"></td>
   							<td th:text="${user.role}" style="font-size:12px;"></td>
   							<td th:text="${user.domain}" style="font-size:12px;"></td>
   							

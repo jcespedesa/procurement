@@ -33,7 +33,7 @@
   		
   			<span th:include="topMenu"> Top Menu </span>
   		
-      		<div class="col-sm">&nbsp;</div>	
+      		<div class="col-sm"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>	
       		      		      		
       		<div class="row">
       		
@@ -45,8 +45,15 @@
    						  						
    						<li><a href='#'><span>Services</span></a>
       						<ul>
-         						<li style="white-space: nowrap;"><a href="/portal/assets/init"><span>Assets Portal Inventory</span></a></li>
-         						<li style="white-space: nowrap;"><a href="/procurement/services/bedListHHSsel"><span>Bed Lists Compare</span></a></li>
+      							<li style="white-space: nowrap;">
+      								<a th:href="@{/portal/init(quserId=${quserId})}">Asset Portal Inventory</a>
+      							</li>
+      							
+      							
+         						<li style="white-space: nowrap;"><a href="/procurement/services/bedListHHSsel"><span>Bed Lists Compare</span></a>
+         						
+         						
+         						</li>
          						<li style="white-space: nowrap;"><a href="/procurement/services/billableFileSel"><span>Billables Report</span></a></li>		
       						</ul>
    						</li>

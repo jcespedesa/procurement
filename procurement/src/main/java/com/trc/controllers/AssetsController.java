@@ -40,7 +40,7 @@ import com.trc.services.TitlesService;
 
 
 @Controller
-@RequestMapping("/procurement/Assets")
+@RequestMapping("/procurement/assets")
 public class AssetsController 
 {
 	@Autowired

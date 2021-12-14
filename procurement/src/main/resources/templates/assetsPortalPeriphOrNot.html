@@ -50,6 +50,8 @@
         			</div>
       			</div>
       			
+      			<div class="col-sm"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>
+      			
       			<div class="row">
       				<label class="col-form-label">Does this item have any peripheral associated?</label>
       			</div>
@@ -61,7 +63,7 @@
       			
 	      			<div class="col">
 	     		
-	  					<form class="form-main" th:action="@{/portal/assets/periphForm}" method="post">
+	  					<form class="form-main" th:action="@{/portal/periphForm}" method="post">
 	                         
 	                                                                                   
 	                    	<div class="form-group">
@@ -69,11 +71,13 @@
 	                    	</div>
 	                        
 	                        <input type="hidden" th:value="${assetId}" name="assetId"> 
+	                        
+	                        <input type="hidden" th:value="${quserId}" name="quserId"> 
 	                    	
 	                    		                         				                        	
 	            		</form>
 	            		
-	            		<form class="form-main" th:action="@{/portal/assets/moreAssets}"  method="post">
+	            		<form class="form-main" th:action="@{/portal/moreAssets}"  method="post">
 	                         
 	                                                                                   
 	                    	<div class="form-group">
@@ -81,6 +85,8 @@
 	                    	</div>
 	                        
 	                        <input type="hidden" th:value="${assetId}" name="assetId"> 
+	                        
+	                        <input type="hidden" th:value="${quserId}" name="quserId"> 
 	                         				                        	
 	            		</form>
 	            		

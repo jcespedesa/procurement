@@ -55,7 +55,7 @@
       				      				      			
 	      			<div class="col">
 	     		
-	  					<form class="form-main" th:action="@{/portal/assets/endForm}"  method="post">
+	  					<form class="form-main" th:action="@{/portal/mainMenu}"  method="post">
 	                                       
 	                    		                        
 	                        <div class="form-group">
@@ -74,7 +74,9 @@
 	                    	</div>
 	                 
 	                    	<input type="hidden" th:value="${kluch}" th:attr="name='kluch'">
-	                    	<input type="hidden" th:value="${assetId}" th:attr="name='assetId'">
+	                    	<input type="hidden" th:value="${assetId}" name="assetId">
+	                    	
+	                    	<input type="hidden" th:value="${quserId}" name="quserId">
 	                    		                         				                        	
 	            		</form>
 	  				</div>

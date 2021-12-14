@@ -50,11 +50,13 @@
         			</div>
       			</div>
       			
+      			<div class="col-sm"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>
+      			
       			<div class="row">
       			
 	      			<div class="col">
 	     		
-	  					<form class="form-main" th:action="@{/portal/assets/morePeriph}" th:object="${peripheral}" method="post">
+	  					<form class="form-main" th:action="@{/portal/morePeriph}" th:object="${peripheral}" method="post">
 	                                       
 	                    	<div class="form-group">
 	                       	
@@ -91,6 +93,8 @@
 	                    	</div>
 	                        
 	                        <input type="hidden" th:value="${assetId}" name="assetId">
+	                        
+	                        <input type="hidden" th:value="${quserId}" name="quserId">
 	                       	                         				                        	
 	            		</form>
 	  				</div>

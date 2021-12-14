@@ -21,6 +21,7 @@ import com.trc.entities.PeripheralsEntity;
 import com.trc.entities.ProjectsEntity;
 import com.trc.entities.SitesEntity;
 import com.trc.entities.TitlesEntity;
+import com.trc.entities.UsersEntity;
 import com.trc.services.AssetsService;
 import com.trc.services.EmailService;
 import com.trc.services.ItemsService;
@@ -30,6 +31,7 @@ import com.trc.services.RecordNotFoundException;
 import com.trc.services.SitesService;
 import com.trc.services.TempUsersService;
 import com.trc.services.TitlesService;
+import com.trc.services.UsersService;
 
 @Controller
 @RequestMapping("/portal")
@@ -58,6 +60,9 @@ public class PortalController
 	
 	@Autowired
 	TempUsersService serviceTempUsers;
+	
+	@Autowired
+	UsersService serviceUsers;
 	
 
 	@RequestMapping(path={"/menu"})
@@ -181,8 +186,8 @@ public class PortalController
 
 	}
 	
-	@RequestMapping(path={"/init"})
-	public String portalForm1(Model model,String assetId) throws RecordNotFoundException
+	@RequestMapping(path="/init")
+	public String portalForm1(Model model,String assetId,Long quserId) throws RecordNotFoundException
 	{
 		String kluch=null;
 		
@@ -234,9 +239,15 @@ public class PortalController
 		//Creating the object
 		model.addAttribute("asset",new AssetsEntity());
 		
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
 		model.addAttribute("projects",projects);
 		model.addAttribute("titles",titles);
 		model.addAttribute("kluch",kluch);
+		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		return "assetsPortalIni";
 		
@@ -248,7 +259,7 @@ public class PortalController
 	
 	
 	@RequestMapping(path="/itForm", method=RequestMethod.POST)
-	public String portalForm4(Model model,AssetsEntity asset,String firstName,String lastName)
+	public String portalForm4(Model model,AssetsEntity asset,String firstName,String lastName,Long quserId)
 	{
 		String titleName=null;
 		String projectName=null;
@@ -269,6 +280,9 @@ public class PortalController
 		//Retrieving program name
 		projectName=serviceProjects.getProjectByNum(asset.getProject());
 		
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
 		model.addAttribute("asset",asset);
 		
 		model.addAttribute("titleName",titleName);
@@ -276,13 +290,16 @@ public class PortalController
 				
 		model.addAttribute("items",items);
 		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		return "assetsPortalItForm";
 		
 	}	
 	
 	
 	@RequestMapping(path="/periphOrNot", method=RequestMethod.POST)
-	public String portalForm3(Model model,AssetsEntity asset)
+	public String portalForm3(Model model,AssetsEntity asset, Long quserId)
 	{
 		//System.out.println(asset);
 				
@@ -308,6 +325,10 @@ public class PortalController
 		asset.setKlass(klass);
 		asset.setDateCreation(todayDate);
 		
+		
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
 		//Creating the object
 		AssetsEntity newAsset=new AssetsEntity();
 		
@@ -328,18 +349,24 @@ public class PortalController
 		newAsset.setDivision(division);
 		newAsset.setActive(active);
 		newAsset.setKlass(klass);
-				
 		
+		//Inputing author fields in case the operator is not getting to the last screen
+		newAsset.setAuthor(quser.getUsername());
+		newAsset.setAuthorEmail(quser.getEmail());
+				
 		//Saving the asset
 		service.createAsset(newAsset);
 				
 		//Retrieving asset ID
 		Long assetIdLong=newAsset.getAssetid();
 		
+				
 		assetId=String.valueOf(assetIdLong);
 				
 		model.addAttribute("assetId",assetId);
-		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+				
 		//System.out.println("Asset ID : "+ assetId);
 			
 		return "assetsPortalPeriphOrNot";
@@ -349,7 +376,7 @@ public class PortalController
 	
 	
 	@RequestMapping(path="/periphForm", method=RequestMethod.POST)
-	public String portalForm10(Model model, String assetId) throws RecordNotFoundException
+	public String portalForm10(Model model, String assetId, Long quserId) throws RecordNotFoundException
 	{
 		//Preparing list of already input peripherals
 		List<PeripheralsEntity> periphs=servicePeripherals.getByAssetId(assetId);
@@ -369,10 +396,16 @@ public class PortalController
 		
 		//Creating the object
 		model.addAttribute("peripheral",new PeripheralsEntity());
+		
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
 			
 		model.addAttribute("items",list);
 		model.addAttribute("periphs",periphs);
 		model.addAttribute("assetId",assetId);
+		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		return "assetsPortalPeriphForm";
 		
@@ -381,7 +414,7 @@ public class PortalController
 	
 	
 	@RequestMapping(path="/morePeriph", method=RequestMethod.POST)
-	public String portalForm4B(Model model, PeripheralsEntity peripheral, String assetId) throws RecordNotFoundException
+	public String portalForm4B(Model model, PeripheralsEntity peripheral, String assetId, Long quserId) throws RecordNotFoundException
 	{
 				
 		String description=null;
@@ -411,10 +444,16 @@ public class PortalController
 			periph.setDescription(description);
 		}
 		
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
 		model.addAttribute("peripherals",list);
 		
 		model.addAttribute("assetId",assetId);
 		model.addAttribute("description",description);
+		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 							
 		return "assetsPortalMorePeriph";
 				
@@ -422,12 +461,16 @@ public class PortalController
 	
 	
 	@RequestMapping(path="/moreAssets", method=RequestMethod.POST)
-	public String portalForm7b(Model model, String assetId) throws RecordNotFoundException
+	public String portalForm7b(Model model, String assetId, Long quserId) throws RecordNotFoundException
 	{
 		
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
 		
 		model.addAttribute("assetId",assetId);
-			
+		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);	
 			
 		return "assetsPortalMoreAssets";
 			
@@ -436,10 +479,16 @@ public class PortalController
 	
 	
 	@RequestMapping(path="/byeForm", method=RequestMethod.POST)
-	public String portalForm7(Model model,String assetId)
+	public String portalForm7(Model model,String assetId,Long quserId)
 	{		
-			
+		
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
 		model.addAttribute("assetId",assetId);
+		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		return "assetsPortalByeForm";
 		
@@ -448,7 +497,7 @@ public class PortalController
 		
 	
 	@RequestMapping(path="/endForm", method=RequestMethod.POST)
-	public String portalForm6a(Model model, String assetId, String author, String authorEmail) throws JsonProcessingException, RecordNotFoundException
+	public String portalForm6a(Model model, String assetId, String author, String authorEmail,Long quserId) throws JsonProcessingException, RecordNotFoundException
 	{
 		String toEmail=null;
 		String kluch=null;
@@ -470,6 +519,12 @@ public class PortalController
 		
 		//Sending the receipt email
 		serviceEmails.sendInventoryReceipt(toEmail,asset,author,authorEmail);
+		
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		return "assetsPortalEndForm";
 		
@@ -556,12 +611,21 @@ public class PortalController
 		String message="Invalid username/password...";
 				
 		//Retrieving stored password
-		priznakSuccess=serviceTempUsers.checkPass(email,password);
+		priznakSuccess=serviceUsers.checkPass(email,password);
 		
 		if(priznakSuccess)
 		{	
 			//System.out.println("User has the right password...");
-			return "redirect:/procurement/index";
+						
+			//Retrieving user credentials
+			UsersEntity quser=serviceUsers.getUserByEmail(email);
+			
+			//System.out.println("Selected user was: "+ user);
+			
+			model.addAttribute("quser",quser);
+			model.addAttribute("quserId",quser.getUserid());
+			
+			return "mainMenu";
 					
 		}
 		else
@@ -571,6 +635,25 @@ public class PortalController
 			return "login";
 			
 		}	
+		
+	}
+	
+	
+	@RequestMapping(path="/mainMenu", method=RequestMethod.POST)
+	public String backToMainMenu(Model model,Long quserId)
+	{
+		
+		//Retrieving user credentials
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
+		//System.out.println("Selected user was: "+ quser);
+		
+		model.addAttribute("quser",quser);
+		
+		model.addAttribute("quserId",quserId);
+		
+		return "mainMenu";
+		
 		
 	}
 	

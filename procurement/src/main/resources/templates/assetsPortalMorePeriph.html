@@ -50,6 +50,8 @@
         			</div>
       			</div>
       			
+      			<div class="col-sm"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>
+      			
       			<div class="row">
       			
       				<p class="navbar-brand" style="color:teal;font-size:14px;">Do you have more peripherals to input?</p>
@@ -58,22 +60,26 @@
       			
 	      			<div class="col">
 	     		
-	  					<form class="form-main" th:action="@{/portal/assets/periphForm}"  method="post">
+	  					<form class="form-main" th:action="@{/portal/periphForm}"  method="post">
 	                                       
 	                    	<input type="submit" class="btn btn-primary btn-sm" value="Yes, I will continue inputing associated peripherals">	
 	                    	
-	                    	<input type="hidden" th:value="${assetId}" th:attr="name='assetId'">
+	                    	<input type="hidden" th:value="${assetId}" name="assetId">
+	                    	
+	                    	<input type="hidden" th:value="${quserId}" name="quserId">
 	                    		                    		                         				                        	
 	            		</form>
 	  				</div>
 	  				
 	  				<div class="col">
 	  				
-	  					<form class="form-main" th:action="@{/portal/assets/moreAssets}"  method="post">
+	  					<form class="form-main" th:action="@{/portal/moreAssets}"  method="post">
 	                                       
 	                    	<input type="submit" class="btn btn-primary btn-sm" value="No, no more peripherals">	                        
 	                        
-	                    	<input type="hidden" th:value="${assetId}" th:attr="name='assetId'">
+	                    	<input type="hidden" th:value="${assetId}" name="assetId">
+	                    	
+	                    	<input type="hidden" th:value="${quserId}" name="quserId">
 	                    	
 	                         				                        	
 	            		</form>

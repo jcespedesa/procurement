@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.trc.entities.BedListsEntityHHS;
 import com.trc.entities.BedListsEntityHMIS;
+import com.trc.entities.ViSpdatsEntity;
 import com.trc.services.ServicesService;
 
 
@@ -240,9 +241,31 @@ public class servicesController
 	//Billables report process
 	
 	@GetMapping("/billableFileSel")
-	public String billableUploadSel()
+	public String billableUploadSel(Model model)
 	{
-			
+		String dateRecord=null;
+        String kluch=null;
+        
+        //Creating the unique record identifier
+        LocalDateTime now=LocalDateTime.now(); 
+		
+		//Generating today's date
+		DateTimeFormatter dtfRecord=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+		dateRecord=dtfRecord.format(now);
+		
+		//Generating a random value for record identification
+		Random r=new Random();
+		int seed=r.nextInt();
+		
+		//Converting seed in always a positive number
+		if(seed<0)
+			seed=-seed;
+		
+		//Obtaining the unique identifier for this file
+		kluch=dateRecord +"-"+ seed;
+		
+		model.addAttribute("kluch",kluch);
+		
 		return "servicesBillRepSel";
 			
 	}
@@ -253,36 +276,35 @@ public class servicesController
         //HttpStatus status=HttpStatus.OK;
         
         int index=0;
-        
-                       
+                               
         String message="I could not open the file...";
         
-       		
-		//Opening and importing the selected file
+              		
+		//Opening and importing the selected file, viSpdat tab 0
 
         XSSFWorkbook workbook=new XSSFWorkbook(files.getInputStream());
         XSSFSheet worksheet=workbook.getSheetAt(0);
         
         
-        for(index=7; index < worksheet.getPhysicalNumberOfRows(); index++)
+        for(index=2; index < worksheet.getPhysicalNumberOfRows(); index++)
         {
            
-        	BedListsEntityHMIS bedList=new BedListsEntityHMIS();
+        	ViSpdatsEntity viSpdat=new ViSpdatsEntity();
 
         	XSSFRow row=worksheet.getRow(index);
         	
         	if(row != null) 
         	{
-                
-	        	bedList.setFloor(row.getCell(0).getStringCellValue());
-	        	bedList.setRoom(row.getCell(1).getStringCellValue());
-	            bedList.setBed(row.getCell(2).getStringCellValue());
-	            bedList.setCname(row.getCell(3).getStringCellValue());
+              /*  
+        		viSpdat.setFloor(row.getCell(0).getStringCellValue());
+        		viSpdat.setRoom(row.getCell(1).getStringCellValue());
+        		viSpdat.setBed(row.getCell(2).getStringCellValue());
+        		viSpdat.setCname(row.getCell(3).getStringCellValue());
 	                
 	            bedList.setKluch(kluch);
 	                                            
 	            service.createHMIS(bedList);
-	            
+	          */  
 	            //System.out.println("index is "+ index);
 	            message="HMIS Bed List File was imported successfully. Total of rows is "+ index;
         	}                          

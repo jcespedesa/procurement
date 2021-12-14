@@ -57,6 +57,7 @@ public class UsersService
 				UsersEntity newEntity=user.get();
 				
 				newEntity.setUsername(entity.getUsername());
+				newEntity.setEmail(entity.getEmail());
 				newEntity.setRole(entity.getRole());
 				newEntity.setDomain(entity.getDomain());
 				
@@ -150,5 +151,43 @@ public class UsersService
     	
     	
     }
+
+
+
+
+	public UsersEntity getUserByEmail(String email) 
+	{
+				
+		UsersEntity user=repository.getUserByEmail(email);
+		
+		return user;
+	}
+
+
+		
+	public Boolean checkPass(String email, String password) 
+	{
+		
+		Boolean priznakSuccess=false;
+		String storedPassword=null;
+		
+		//Retrieving stored password for this email
+		storedPassword=repository.getPassByEmail(email);
+		
+		
+		if(storedPassword==null)
+		{	
+			System.out.println("No email was found: "+ email);
+			
+		}	
+		else
+			if(storedPassword.equals(password))
+				priznakSuccess=true;
+		
+				
+		return priznakSuccess;
+	}
+	
+	
 	
 }

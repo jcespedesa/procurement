@@ -50,24 +50,27 @@
         			</div>
       			</div>
       			
+      			<div class="col-sm"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>
+      			
       			<div class="row">
       			
       				<label class="col-form-label">Do you have more assets to report?</label> 
       			
 	      			<div class="col">
 	     		
-	  					<form class="form-main" th:action="@{/portal/assets/init}"  method="post">
+	  					<form class="form-main" th:action="@{/portal/init}"  method="post">
 	                         
 	                                                                                   
 	                    	<div class="form-group">
 	                       		<input type="submit" class="btn btn-primary btn-sm" value="Yes, I will input more assets now">
 	                    	</div>
 	                    	
-	                    	<input type="hidden" th:value="${assetId}" name="assetId">  
-	                        	                         				                        	
+	                    	<input type="hidden" th:value="${assetId}" name="assetId"> 
+	                    	 
+	                        <input type="hidden" th:value="${quserId}" name="quserId">	 	                         				                        	
 	            		</form>
 	            		
-	            		<form class="form-main" th:action="@{/portal/assets/byeForm}"  method="post">
+	            		<form class="form-main" th:action="@{/portal/byeForm}"  method="post">
 	                        	                                                                                   
 	                    	<div class="form-group">
 	                       		<input type="submit" class="btn btn-primary btn-sm" value="No, that was the last one">
@@ -75,7 +78,7 @@
 	                        
 	                        <input type="hidden" th:value="${assetId}" name="assetId">  	                        	                        	                            	
 	                    		                    	                    	
-	                    		                         				                        	
+	                    	<input type="hidden" th:value="${quserId}" name="quserId">	                         				                        	
 	            		</form>
 	            		
 	  				</div>

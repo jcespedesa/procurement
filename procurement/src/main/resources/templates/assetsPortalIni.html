@@ -35,7 +35,12 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<!-- <a th:href="@{/portal/assets/menu/{kluch}(kluch=${kluch})}">Back</a>  -->
+           			<form th:action="@{/portal/mainMenu}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             	
             </ul>
@@ -50,8 +55,9 @@
         			</div>
       			</div>
       			
+      			<div class="col-sm"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>	
       			    		
-  				<form class="form-main" th:action="@{/portal/assets/itForm}" th:object="${asset}"  method="post">
+  				<form class="form-main" th:action="@{/portal/itForm}" th:object="${asset}"  method="post">
                     
                     <div class="form-group">
       					<label style="color:brown;">Person in charge of the equipment to be registered</label>
@@ -102,6 +108,8 @@
                             	
                     <input type="hidden" th:value="${todayDate}" name="todayDate">
                     <input type="hidden" th:value="${kluch}" name="kluch">
+                    
+                    <input type="hidden" th:value="${quserId}" name="quserId">
                                              				                        	
             	</form>
   				
