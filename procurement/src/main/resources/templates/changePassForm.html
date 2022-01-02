@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Change Password</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
+			
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<form th:action="@{/portal/mainMenu}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
+        			</li>
+            		
+            </ul>
+      	</nav>
+   		<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
+      		<div class="row">
+        		<div class="col-6 ">
+			         <p class="navbar-brand" style="color:#880000;font-size:15px;">Change my Password</p>
+				</div>
+      		</div>
+      		
+     		<form th:action="@{/procurement/changePassExe}" method="post">
+	        			
+		    	<table class="table-bordered" style="background-color:#bde9ba;">
+		        			
+		    		<tr>
+			           	<td noWrap style="padding: 15px;">
+				           	<label for="pass1" class="col-form-label">Type New Password <sup>*</sup>:</label> 
+				           	<input type="password" name="pass1" required  size="15" minlength="6" maxlength="10"/>
+				        </td>
+				    </tr>
+				    <tr>
+			           	<td noWrap style="padding: 15px;">
+				           	<label for="pass1" class="col-form-label">Confirm Password <sup>*</sup>  :</label> 
+				           	<input type="password" name="pass2" required  size="15" minlength="6" maxlength="10"/>
+				        </td>
+				    </tr>     	
+		            <tr><td>&nbsp;</td></tr>
+		            <tr><td style="padding: 15px;"><label style="color:teal;font-size:12px;" class="col-form-label">At least 6 char long and at least one number and at least one capital letter.</label></td></tr>	                       	
+		           	<tr><td style="padding: 15px;"><input class="btn btn-primary" type="submit" value="Change Password"/></td></tr>
+		           				
+		         </table>
+		           			
+		         <input type="hidden" name="quserId" th:value="${quserId}">	
+		           				
+			</form>     	
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  		
+ 	</body>
+</html>			

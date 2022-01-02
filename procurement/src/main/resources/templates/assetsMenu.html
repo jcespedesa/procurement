@@ -32,45 +32,69 @@
    		<div class="container">
    		
    			<nav id="hcssmenu">
-    		<ul>
-        		<li>
-           			<a href="/procurement/index">Back</a>
-        		</li>
-            	
-        		<li>
-        		
-        			<form th:action="@{/procurement/Assets/list}" method="post">
-                            	
-	           			<button type="submit" class="btn btn-light">List All Assets</button>	
+    			<ul>
+        			<li>
+           				<form th:action="@{/portal/mainMenu}" method="post">
+               				<button type="submit" class="btn btn-light">Back</button>	
 	           			
-	           			<input type="hidden" th:value="all" name="stringSearch"> 
-	           			<input type="hidden" th:value="list" name="priznak">
-	           		</form>
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
+        			</li>
+            	
+        			<li>
         		
-        		</li>
+        				<form th:action="@{/procurement/assets/list}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">List All Assets</button>	
+	           			
+	           				<input type="hidden" th:value="all" name="stringSearch"> 
+	           				<input type="hidden" th:value="list" name="priznak">
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           				
+	           			</form>
+        		
+        			</li>
         		        		
-        		<li>
-	           		<a th:href="@{/procurement/Assets/new/{stringSearch}(stringSearch='new')}">Add New</a>
-	        	</li>
-	        	<li>
-	           		<a href="/procurement/Assets/views">Export</a>
-	        	</li>
-            </ul>
-      	</nav>
+        			<li>
+	           			
+	           			<form th:action="@{/procurement/assets/new}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Add New</button>	
+	           			
+	           				<input type="hidden" th:value="new" name="stringSearch"> 
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           				
+	           			</form>
+	        		</li>
+	        		<li>
+	           			
+	           			<form th:action="@{/procurement/assets/views}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Export</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           				
+	           			</form>
+	        		</li>
+            	</ul>
+      		</nav>
    		
-      			<div class="row"> 
-        			<div class="col-lg-12 text-center">
-				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Options for Searching Assets</p>
+      		<div class="row"> 
+        		<div class="col-lg-12 text-center">
+			          <p class="navbar-brand" style="color:#880000;font-size:15px;">Options for Searching Assets</p>
 				          
-        			</div>
-      			</div>
+        		</div>
+      		</div>
       			
-      			<div class="row">
+      		<div class="col-sm"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>	
       			
-      				<div class="col">
-      					<label class="warning">Search by Asset Number</label>
+      		<div class="row">
+      			
+      			<div class="col">
+      				<label class="warning">Search by Asset Number</label>
       				
-      					<form class="utilityForm" th:action="@{/procurement/Assets/findAssetByNum}" method="post">
+      				<form class="utilityForm" th:action="@{/procurement/assets/findAssetByNum}" method="post">
 	                    
 		                    <div class="form-group">
 		                       	<label for="number" class="col-form-label">Asset Number<sup>*</sup>:</label> 
@@ -82,18 +106,19 @@
 		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
 		                    </div>
 		                    
-		                    <input type="hidden" th:value="findAssetByNum" name="priznak"> 
+		                    <input type="hidden" th:value="findAssetByNum" name="priznak">
+		                    <input type="hidden" th:value="${quserId}" name="quserId">  
 		                      	
-	            		</form>
+	           		</form>
       				
-      				</div>
+      			</div>
       				
       				
-      				<div class="col">
+      			<div class="col">
       				
       					<label class="warning">Search by Item</label>
       				
-      					<form class="utilityForm" th:action="@{/procurement/Assets/findAssetsByItem}" method="post">
+      					<form class="utilityForm" th:action="@{/procurement/assets/findAssetsByItem}" method="post">
 	                    
 		                    <div class="form-group">
 		                       	<label for="requester" class="col-form-label">Select item type<sup>*</sup>:</label> 
@@ -109,6 +134,7 @@
 		                    </div>
 		                    
 		                    <input type="hidden" th:value="findAssetsByItem" name="priznak"> 
+		                    <input type="hidden" th:value="${quserId}" name="quserId"> 
 		                      	
 	            		</form>
       				
@@ -118,9 +144,9 @@
       				
       				<div class="col">
       				
-      					<label class="warning">Search by Author</label>
+      					<label class="warning">Search by Author (Person who registered items)</label>
       				
-      					<form class="utilityForm" th:action="@{/procurement/Assets/findAssetsByAuthor}" method="post">
+      					<form class="utilityForm" th:action="@{/procurement/assets/findAssetsByAuthor}" method="post">
 	                    
 		                    <div class="form-group">
 		                       	<label for="requester" class="col-form-label">Select Author<sup>*</sup>:</label> 
@@ -136,6 +162,7 @@
 		                    </div>
 		                    
 		                    <input type="hidden" th:value="findAssetsByAuthor" name="priznak">
+		                    <input type="hidden" th:value="${quserId}" name="quserId"> 
 		                      	
 	            		</form>
       				
@@ -151,7 +178,7 @@
       				
       					<label class="warning">Search by Program</label>
       				
-      					<form class="utilityForm" th:action="@{/procurement/Assets/findAssetsByProgram}" method="post">
+      					<form class="utilityForm" th:action="@{/procurement/assets/findAssetsByProgram}" method="post">
 	                    
 		                    <div class="form-group">
 		                       	<label for="requester" class="col-form-label">Select Program<sup>*</sup>:</label> 
@@ -167,6 +194,7 @@
 		                    </div>
 		                    
 		                    <input type="hidden" th:value="findAssetsByProgram" name="priznak">
+		                    <input type="hidden" th:value="${quserId}" name="quserId"> 
 		                      	
 	            		</form>
       				      				
@@ -176,7 +204,7 @@
       				
       					<label class="warning">Search by Assignee</label>
       				
-      					<form class="utilityForm" th:action="@{/procurement/Assets/findAssetsByAssignee}" method="post">
+      					<form class="utilityForm" th:action="@{/procurement/assets/findAssetsByAssignee}" method="post">
 	                    
 		                    <div class="form-group">
 		                       	<label for="requester" class="col-form-label">Select Assignee<sup>*</sup>:</label> 
@@ -193,6 +221,7 @@
 		                    </div>
 		                    
 		                    <input type="hidden" th:value="findAssetsByAssignee" name="priznak">
+		                    <input type="hidden" th:value="${quserId}" name="quserId"> 
 		                      	
 	            		</form>
       				

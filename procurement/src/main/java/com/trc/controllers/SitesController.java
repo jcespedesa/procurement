@@ -6,19 +6,20 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.DivisionsEntity;
 import com.trc.entities.SitesEntity;
+import com.trc.entities.UsersEntity;
 import com.trc.services.DivisionsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.SitesService;
+import com.trc.services.UsersService;
 
 @Controller
-@RequestMapping("/procurement/Sites")
+@RequestMapping("/procurement/sites")
 public class SitesController 
 {
 
@@ -28,16 +29,23 @@ public class SitesController
 	@Autowired
 	DivisionsService serviceDivisions;
 	
-	
+	@Autowired
+	UsersService serviceUsers;
 	
 	//CRUD operations for sites
 	
-	@GetMapping("/list")
-	public String getAllSites(Model model)
+	@RequestMapping(path="/list", method=RequestMethod.POST)
+	public String getAllSites(Model model, Long quserId)
 	{
 		//List<SitesEntity> list=service.getAllSites();
 		
 		List<SitesEntity> list=service.getAllByName();
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		model.addAttribute("sites",list);
 		
@@ -46,8 +54,8 @@ public class SitesController
 		
 	}
 	
-	@RequestMapping(path={"/edit","/edit/{id}"})
-	public String editSitesById(Model model,@PathVariable("id") Optional<Long> id) throws RecordNotFoundException 
+	@RequestMapping(path="/edit", method=RequestMethod.POST)
+	public String editSitesById(Model model,Optional<Long> id, Long quserId) throws RecordNotFoundException 
 	{
 		
 		//Preparing list of divisions
@@ -64,39 +72,72 @@ public class SitesController
 			
 		}
 		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		model.addAttribute("divisions",divisions);
 		
 		return "sitesAddEdit";
 	}
 	
-	@RequestMapping(path="/delete/{id}")
-	public String deleteSiteById(Model model, @PathVariable("id") Long id) throws RecordNotFoundException
+	@RequestMapping(path="/delete", method=RequestMethod.POST)
+	public String deleteSiteById(Model model, Long id, Long quserId) throws RecordNotFoundException
 	{
-		
+		String message=null;
+				
 		service.deleteSiteById(id);
 		
-		return "redirect:/procurement/Sites/list";
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
+		message="Site was deleted...";
+		
+		model.addAttribute("message",message);
+		
+		return "sitesRedirect";
 		
 	}
 	
 	@RequestMapping(path="/createSite", method=RequestMethod.POST)
-	public String createOrUpdateSite(SitesEntity site)
+	public String createOrUpdateSite(Model model, SitesEntity site, Long quserId)
 	{
-		//System.out.println("Inside the controller to update or create. Object is: "+ site);
+		String message=null;
 		
 		service.createOrUpdate(site);
 		
-		return "redirect:/procurement/Sites/list";
+		message="List was updated...";
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
+		model.addAttribute("message",message);
+		
+		return "sitesRedirect";
 		
 		
 	}
 	
 	
-	@RequestMapping(path="/search")
-	public String search(Model model)
+	@RequestMapping(path="/search", method=RequestMethod.POST)
+	public String search(Model model, Long quserId)
 	{
 				
 		List<DivisionsEntity> list=serviceDivisions.getAllDivisions();
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		model.addAttribute("divisions",list);
 		
@@ -106,12 +147,16 @@ public class SitesController
 	}
 	
 	@RequestMapping(path="/searchDivision", method=RequestMethod.POST)
-	public String searchByDivision(Model model,String stringSearch)
+	public String searchByDivision(Model model,String stringSearch, Long quserId)
 	{
 				
 		List<SitesEntity> list=service.searchByDivision(stringSearch);
 		
-		//System.out.println(list);
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		model.addAttribute("sites",list);
 		model.addAttribute("stringSearch",stringSearch);

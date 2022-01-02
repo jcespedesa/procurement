@@ -6,29 +6,39 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.SettingsEntity;
+import com.trc.entities.UsersEntity;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.SettingsService;
+import com.trc.services.UsersService;
 
 @Controller
-@RequestMapping("/procurement/Settings")
+@RequestMapping("/procurement/settings")
 public class SettingsController 
 {
 
 	@Autowired
 	SettingsService service;
 	
+	@Autowired
+	UsersService serviceUsers;
+	
 	//CRUD operations for Settings
 	
-	@GetMapping("/list")
-	public String getAllSettings(Model model)
+	@RequestMapping(path="/list", method=RequestMethod.POST)
+	public String getAllSettings(Model model, Long quserId)
 	{
 		List<SettingsEntity> list=service.getAllSettings();
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		model.addAttribute("settings",list);
 		
@@ -37,8 +47,8 @@ public class SettingsController
 		
 	}
 	
-	@RequestMapping(path={"/edit","/edit/{id}"})
-	public String editSettingsById(Model model,@PathVariable("id") Optional<Long> id) throws RecordNotFoundException 
+	@RequestMapping(path="/edit", method=RequestMethod.POST)
+	public String editSettingsById(Model model, Optional<Long> id, Long quserId) throws RecordNotFoundException 
 	{
 		
 		if(id.isPresent())
@@ -51,27 +61,56 @@ public class SettingsController
 			model.addAttribute("setting",new SettingsEntity());
 			
 		}
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		return "settingsAddEdit";
 	}
 	
-	@RequestMapping(path="/delete/{id}")
-	public String deleteSettingById(Model model, @PathVariable("id") Long id) throws RecordNotFoundException
+	@RequestMapping(path="/delete", method=RequestMethod.POST)
+	public String deleteSettingById(Model model, Long id, Long quserId) throws RecordNotFoundException
 	{
+		
+		String message=null;
 		
 		service.deleteSettingById(id);
 		
-		return "redirect:/procurement/Settings/list";
+		message="Setting was deleted...";
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
+		model.addAttribute("message",message);
+		
+		return "settingsRedirect";
 		
 	}
 	
 	@RequestMapping(path="/createSetting", method=RequestMethod.POST)
-	public String createOrUpdateSetting(SettingsEntity setting)
+	public String createOrUpdateSetting(Model model, SettingsEntity setting, Long quserId)
 	{
-		//System.out.println("Inside the controller to update or create. Object is: "+ site);
+		String message=null;
 		
 		service.createOrUpdate(setting);
 		
-		return "redirect:/procurement/Settings/list";
+		message="List was updated...";
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
+		model.addAttribute("message",message);
+		
+		return "settingsRedirect";
 		
 		
 	}

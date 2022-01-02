@@ -1,22 +1,19 @@
 package com.trc.controllers;
 
 import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.AssetsEntity;
 import com.trc.entities.ItemsEntity;
 import com.trc.entities.PeripheralsEntity;
-import com.trc.entities.ProjectsEntity;
-import com.trc.entities.SitesEntity;
-import com.trc.entities.TitlesEntity;
+import com.trc.entities.UsersEntity;
 import com.trc.services.AssetsService;
 import com.trc.services.ItemsService;
 import com.trc.services.PeripheralsService;
@@ -24,6 +21,7 @@ import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.SitesService;
 import com.trc.services.TitlesService;
+import com.trc.services.UsersService;
 
 
 @Controller
@@ -48,12 +46,15 @@ public class PeripheralsController
 	@Autowired
 	SitesService serviceSites;
 	
+	@Autowired
+	UsersService serviceUsers;
+	
 	//CRUD operations for peripherals
 	
 	
 	
 	@RequestMapping(path="/list",method=RequestMethod.POST)
-	public String getPeripheralsByAssetId(Model model,String assetId,String priznak,String stringSearch) throws RecordNotFoundException
+	public String getPeripheralsByAssetId(Model model,String assetId,String priznak,String stringSearch,Long quserId) throws RecordNotFoundException
 	{
 		List<PeripheralsEntity> list=service.getByAssetId(assetId);
 		
@@ -66,6 +67,12 @@ public class PeripheralsController
 			periph.setDescription(description);
 				
 		}
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 			
 		model.addAttribute("peripherals",list);
 		model.addAttribute("assetId",assetId);
@@ -78,7 +85,7 @@ public class PeripheralsController
 	}
 	
 	@RequestMapping(path={"/edit"}, method=RequestMethod.POST)
-	public String editPeripheral(Model model,Long id, String assetId,String stringSearch,String priznak) throws RecordNotFoundException 
+	public String editPeripheral(Model model,Long id, String assetId,String stringSearch,String priznak, Long quserId) throws RecordNotFoundException 
 	{
 		List<ItemsEntity> items=serviceItems.getAllPeripheralsHHS();		
 		
@@ -86,6 +93,12 @@ public class PeripheralsController
 		model.addAttribute("peripheral",entity);
 			
 		//System.out.println("modifying old item");
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		model.addAttribute("items",items);
 		model.addAttribute("assetId",assetId);
@@ -97,13 +110,19 @@ public class PeripheralsController
 	}
 	
 	@RequestMapping(path={"/create"}, method=RequestMethod.POST)
-	public String newPeripheral(Model model,String assetId, String stringSearch, String priznak) throws RecordNotFoundException 
+	public String newPeripheral(Model model,String assetId, String stringSearch, String priznak, Long quserId) throws RecordNotFoundException 
 	{
 		List<ItemsEntity> items=serviceItems.getAllPeripheralsHHS();		
 		
 		model.addAttribute("peripheral",new PeripheralsEntity());
 			
 		// System.out.println("creating new item");
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		model.addAttribute("items",items);
 		model.addAttribute("assetId",assetId);
@@ -116,11 +135,17 @@ public class PeripheralsController
 	
 	
 	@RequestMapping(path="/delete", method=RequestMethod.POST)
-	public String deletePeripheralById(Model model, Long id, String assetId, String stringSearch, String priznak) throws RecordNotFoundException
+	public String deletePeripheralById(Model model, Long id, String assetId, String stringSearch, String priznak, Long quserId) throws RecordNotFoundException
 	{
 		String message="Peripheral was deleted successfully...";
 		
 		service.deletePeripheralById(id);
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		 model.addAttribute("assetId",assetId);
 		 model.addAttribute("message",message);
@@ -133,7 +158,7 @@ public class PeripheralsController
 	}
 	
 	@RequestMapping(path="/createPeripheral", method=RequestMethod.POST)
-	public String createOrUpdatePeripheral(Model model, PeripheralsEntity peripheral, String assetId,String priznak,String stringSearch,String id) throws RecordNotFoundException
+	public String createOrUpdatePeripheral(Model model, PeripheralsEntity peripheral, String assetId,String priznak,String stringSearch,String id, Long quserId) throws RecordNotFoundException
 	{
 		//System.out.println("Inside the controller to update or create. Object is: "+ peripheral);
 		
@@ -154,6 +179,12 @@ public class PeripheralsController
 		peripheral.setDescription(description);
 		
 		service.createOrUpdate(peripheral);
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		model.addAttribute("assetId",assetId);
 		model.addAttribute("message",message);
@@ -238,9 +269,16 @@ public class PeripheralsController
 */	
 	
 	@RequestMapping(path="/promote", method=RequestMethod.POST)
-	public String voidPromote(Model model, String itemid, String assetId, String stringSearch, String priznak) throws RecordNotFoundException
+	public String voidPromote(Model model, String itemid, String assetId, String stringSearch, String priznak, Long quserId) throws RecordNotFoundException
 	{
 		String message="This option was disabled by your administrator...";
+		
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		model.addAttribute("message",message);
 		
@@ -257,10 +295,16 @@ public class PeripheralsController
 
 	
 	@RequestMapping(path="/promoteAsset", method=RequestMethod.POST)
-	public String promoteAsset(Model model, AssetsEntity asset)
+	public String promoteAsset(Model model, AssetsEntity asset, Long quserId)
 	{
 	
 		serviceAssets.createAsset(asset);
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		return "assetsList";
 	}

@@ -27,6 +27,7 @@
 					
 					<div class="row simpleFrame" th:text="${message}"></div>
 					
+					<div class="row"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>	
 					
                 	<div class="form-group col-md-8">
                         
@@ -35,6 +36,7 @@
                 			<input type="submit" class="btn btn-primary btn-sm" value=" Continue >> ">
                 			
                 			<input type="hidden" name="kluch" th:value="${kluch}">
+                			<input type="hidden" th:value="${quserId}" name="quserId">
                 		
                 		</form>
                     </div>

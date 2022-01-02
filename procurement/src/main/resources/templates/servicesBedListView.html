@@ -26,7 +26,12 @@
     	
     			<div class="form-group col">
                         
-                	<a class="btn btn-primary" href="/procurement/index" role="button">Back to Main Menu</a>
+                	<form th:action="@{/portal/mainMenu}" method="post">
+               			<button type="submit" class="btn btn-primary" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
                 	
             	</div>
         	</div>
@@ -93,7 +98,12 @@
 					
             <div class="form-group">
                         
-               	<a class="btn btn-primary" href="/procurement/index" role="button">Back to Main Menu</a>
+               	<form th:action="@{/portal/mainMenu}" method="post">
+               		<button type="submit" class="btn btn-primary" style="font-size:11px;">Back</button>	
+	           			
+	           		<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           	</form>
                	
              </div>
              

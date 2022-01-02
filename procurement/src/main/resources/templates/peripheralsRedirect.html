@@ -46,7 +46,7 @@
 				         	<div th:text="${assetId}"></div>
         				</div>
       				</div>
-     			     			
+     			    <div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div> 			
 					<hr/>
 				
 					<div class="row" th:text="${message}"></div>
@@ -60,6 +60,8 @@
 	           			
 	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
 	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           				<input type="hidden" th:value="${quserId}" name="quserId">  
+	           				
 	           			</form>
 					</div>
   					<hr/>

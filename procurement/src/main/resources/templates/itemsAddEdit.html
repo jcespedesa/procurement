@@ -34,12 +34,18 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a href="/procurement/Items/list">Back</a>
+           			<form th:action="@{/procurement/items/list}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             	
             </ul>
       	</nav>
-   		
+   		<div class="row"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>
       			<div class="row">
         			<div class="col-lg-12 text-center">
 				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit Items</p>
@@ -47,7 +53,7 @@
         			</div>
       			</div>
      		
-  				<form class="form-main" th:action="@{/procurement/Items/createItem}" th:object="${item}" method="post">
+  				<form class="form-main" th:action="@{/procurement/items/createItem}" th:object="${item}" method="post">
                     
                     <div class="form-group">
                        	<input type="text" th:field="*{itemid}" readOnly  size="2"/>
@@ -84,14 +90,11 @@
                                        
                     <div class="form-group">
                        	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
-                       	
-                       	<a href="/procurement/Items/list" class="btn btn-secondary btn-sm">
-                			<i class="fas fa-back ml-2"> Cancel </i>
-                		</a>
+                       
                     </div>
                             	
                     <input type="hidden" id="id" th:field="*{itemid}">
-     
+     				<input type="hidden" th:value="${quserId}" name="quserId"> 
                         	
             	</form>
   				

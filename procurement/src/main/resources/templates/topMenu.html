@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
 	<div class="row">
@@ -20,18 +21,99 @@
 				    <!-- <li><a href="/procurement/clients/list"><span>Clients</span></a></li> -->
 				    <li class='active has-sub'><a href='#'><span>Lists</span></a>
 						<ul>
-      						<li><a href="/procurement/Divisions/list"><span>Divisions</span></a></li>
-      						<li><a href="/procurement/Items/list"><span>Items</span></a></li>
-      						<li><a href="/procurement/phones/list"><span>Phones</span></a></li>
-         					<li><a href="/procurement/Projects/list"><span>Projects</span></a></li>
-         					<li><a href="/procurement/Providers/list"><span>Providers</span></a></li>
-            				<li><a href="/procurement/Sites/list"><span>Sites</span></a></li>
-            				<li><a href="/procurement/Titles/list"><span>Titles</span></a></li>
-            				<li><a href="/procurement/hhsDivisions/list"><span>HHS Divisions</span></a></li>
+							<li>
+								<form th:action="@{/procurement/divisions/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-light">Divisions</button>	
+	           			
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           					</form>
+							</li>
+							<li>
+								<form th:action="@{/procurement/items/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-light">Items</button>	
+	           			
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           					</form>
+							</li>
+							<li>
+								<form th:action="@{/procurement/projects/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-light">Projects</button>	
+	           			
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           					</form>
+							</li>
+      						<li>
+								<form th:action="@{/procurement/sites/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-light">Sites</button>	
+	           			
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           					</form>
+							</li>
+      						<li>
+								<form th:action="@{/procurement/titles/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-light">Titles</button>	
+	           			
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           					</form>
+							</li>
+							<li>
+								<form th:action="@{/procurement/hhsDivisions/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-light">HHS Divisions</button>	
+	           			
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           					</form>
+							</li>
+         					
       					</ul>
    					</li>
-   					<li><a href="/procurement/users/list"><span>Users</span></a></li>
-   					<li><a href="/procurement/Settings/list"><span>Settings</span></a></li>
+   					<li>
+   						<form th:action="@{/procurement/users/list}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light" style="font-size:11px;">Users</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
+   					</li>
+   					<li>
+   						<form th:action="@{/procurement/settings/list}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light" style="font-size:11px;">Settings</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
+	           		</li>
+	           		<li>
+   						<form th:action="@{/procurement/changePass}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light" style="font-size:11px;">Change My Password</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
+	           		</li>
+	           		<li>
+   						<form th:action="@{/procurement/logOut}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light" style="font-size:11px;">Logout</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
+	           		</li>
    				</ul>
 			</div>
 		

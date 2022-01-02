@@ -21,8 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.trc.entities.BedListsEntityHHS;
 import com.trc.entities.BedListsEntityHMIS;
+import com.trc.entities.UsersEntity;
 import com.trc.entities.ViSpdatsEntity;
 import com.trc.services.ServicesService;
+import com.trc.services.UsersService;
 
 
 @Controller
@@ -33,18 +35,26 @@ public class servicesController
 	@Autowired
 	ServicesService service;
 	
+	@Autowired
+	UsersService serviceUsers;
+	
 	//Bed list comparison 
 	
 	@GetMapping("/bedListHHSsel")
-	public String bedListCompHHSsel()
+	public String bedListCompHHSsel(Model model,Long quserId)
 	{
-			
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		return "servicesBedListHHSsel";
 			
 	}
 	
 	@RequestMapping(value="/bedListHHSimport", method=RequestMethod.POST)
-    public String importExcelFileHHS(Model model, @RequestParam("file") MultipartFile files) throws IOException 
+    public String importExcelFileHHS(Model model, @RequestParam("file") MultipartFile files, Long quserId) throws IOException 
 	{
         //HttpStatus status=HttpStatus.OK;
         
@@ -121,9 +131,15 @@ public class servicesController
         
         service.bedCorrectionHHS(kluch);
         
-        
+      //Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+      		
+                
         model.addAttribute("message",message);
         model.addAttribute("kluch",kluch);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 
         return "servicesBedListRedirect";
     }
@@ -131,26 +147,29 @@ public class servicesController
 	
 	
 	@RequestMapping(value="/bedListHMISsel", method=RequestMethod.POST)
-	public String bedListCompHMISsel(Model model,String kluch)
+	public String bedListCompHMISsel(Model model,String kluch,Long quserId)
 	{
-			
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+				
 		model.addAttribute("kluch",kluch);
+		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		return "servicesBedListHMISsel";
 			
 	}
 	
 	@RequestMapping(value="/bedListHMISimport", method=RequestMethod.POST)
-    public String importExcelFileHHS(Model model, @RequestParam("file") MultipartFile files, String kluch) throws IOException 
+    public String importExcelFileHHS(Model model, @RequestParam("file") MultipartFile files, String kluch, Long quserId) throws IOException 
 	{
         //HttpStatus status=HttpStatus.OK;
         
         int index=0;
-        
-                       
+                               
         String message="I could not open the file...";
-        
-       		
+               		
 		//Opening and importing the selected file
 
         XSSFWorkbook workbook=new XSSFWorkbook(files.getInputStream());
@@ -183,6 +202,12 @@ public class servicesController
         
         workbook.close();
         
+        //Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+        
         model.addAttribute("message",message);
         model.addAttribute("kluch",kluch);
 
@@ -190,7 +215,7 @@ public class servicesController
     }
 
 	@RequestMapping(value="/bedListComp", method=RequestMethod.POST)
-	public String bedListComparation(Model model,String kluch)
+	public String bedListComparation(Model model,String kluch, Long quserId)
 	{
 				
 		List<BedListsEntityHHS> bedListHHS=(List<BedListsEntityHHS>) service.getCompListHHS(kluch);
@@ -228,7 +253,12 @@ public class servicesController
 			bedList1.setHhsCname(name);
 			
 		}
-			
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		model.addAttribute("bedListHHS",bedListHHS);
 		model.addAttribute("bedListHMIS",bedListHMIS);
@@ -241,7 +271,7 @@ public class servicesController
 	//Billables report process
 	
 	@GetMapping("/billableFileSel")
-	public String billableUploadSel(Model model)
+	public String billableUploadSel(Model model, Long quserId)
 	{
 		String dateRecord=null;
         String kluch=null;
@@ -264,6 +294,12 @@ public class servicesController
 		//Obtaining the unique identifier for this file
 		kluch=dateRecord +"-"+ seed;
 		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		model.addAttribute("kluch",kluch);
 		
 		return "servicesBillRepSel";
@@ -271,7 +307,7 @@ public class servicesController
 	}
 	
 	@RequestMapping(value="/billableFileUpload", method=RequestMethod.POST)
-    public String billableFileUpload(Model model, @RequestParam("file") MultipartFile files, String kluch) throws IOException 
+    public String billableFileUpload(Model model, @RequestParam("file") MultipartFile files, String kluch, Long quserId) throws IOException 
 	{
         //HttpStatus status=HttpStatus.OK;
         
@@ -312,10 +348,16 @@ public class servicesController
         
         workbook.close();
         
+      //Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+        
         model.addAttribute("message",message);
         model.addAttribute("kluch",kluch);
 
-        return "servicesBedListComp";
+        return "servicesBillRepRedirect";
     }
 
 	

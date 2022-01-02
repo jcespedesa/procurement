@@ -40,8 +40,10 @@ import com.trc.services.ReceiptsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.TestsService;
 import com.trc.services.TitlesService;
+import com.trc.services.UsersService;
 import com.trc.entities.SettingsEntity;
 import com.trc.entities.TestSitesEntity;
+import com.trc.entities.UsersEntity;
 
 
 
@@ -77,34 +79,57 @@ public class TestsController
 	@Autowired
 	TestsService serviceTests;
 	
+	@Autowired
+	UsersService serviceUsers;
+	
 	
 	@GetMapping("/emailSel")
-	public String testEmailSel()
+	public String testEmailSel(Model model, Long quserId)
 	{
-			
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		return "testEmailSel";
 			
 	}
 	
 	@GetMapping("/sendAssetInfoSel")
-	public String testEmailObjectSel()
+	public String testEmailObjectSel(Model model, Long quserId)
 	{
-			
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        //Retrieving list of assets
+        List<AssetsEntity> list=serviceAssets.getAllAssets();
+        
+        model.addAttribute("assets",list);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		return "testObjectEmailSel";
 			
 	}
 	
 	
 	@GetMapping("/findAgeTwoDates")
-	public String findAgeTwoDatesSel()
+	public String findAgeTwoDatesSel(Model model, Long quserId)
 	{
-			
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		return "testFindAgeTwoDatesSel";
 			
 	}
 	
 	@GetMapping("/ezOffAPIquerySel")
-	public String ezOfficeAPIquerySel(Model model) throws RecordNotFoundException
+	public String ezOfficeAPIquerySel(Model model, Long quserId) throws RecordNotFoundException
 	{
 		
 		//Retrieving setting
@@ -120,6 +145,12 @@ public class TestsController
 		prefix=setting.getParam1();
 		token=setting.getParam2();
 		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 				
 		model.addAttribute("apiUrl",apiUrl);
 		model.addAttribute("prefix",prefix);
@@ -131,11 +162,17 @@ public class TestsController
 	
 	
 	@RequestMapping(path="/testEmailSending", method=RequestMethod.POST)
-	public String testEmail(Model model, String toEmail, String body, String subject)
+	public String testEmail(Model model, String toEmail, String body, String subject, Long quserId)
 	{
 				
 		//Sending the test email
 		emailService.sendMail(toEmail,subject,body);
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		model.addAttribute("toEmail",toEmail);
 		
@@ -144,7 +181,7 @@ public class TestsController
 	}
 	
 	@RequestMapping(path="/sendingAssetInfo", method=RequestMethod.POST)
-	public String sendingAsset(Model model, String toEmail, long assetId) throws RecordNotFoundException, JsonProcessingException
+	public String sendingAsset(Model model, String toEmail, long assetId, Long quserId) throws RecordNotFoundException, JsonProcessingException
 	{
 		
 		String description="Receipt confirmation for IT Asset Inventory Input";
@@ -170,13 +207,19 @@ public class TestsController
 		//Sending the test email  
 		emailService.sendMailObject(toEmail,description,newReceipt);
 		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		model.addAttribute("toEmail",toEmail);
 		
 		return "testEmailRedirect";	
 	}
 	
 	@RequestMapping(path="/testFindAgeTwoDates", method=RequestMethod.POST)
-	public String testFindAgeTwoDates(Model model, String datePurchased, String todayDate)
+	public String testFindAgeTwoDates(Model model, String datePurchased, String todayDate, Long quserId)
 	{
 		int age=0;
 		
@@ -211,6 +254,12 @@ public class TestsController
 		//finding the age
 		age=Period.between(datePurchasedLocal,todayDateLocal).getYears();
 		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		model.addAttribute("datePurchased",datePurchased);
 		model.addAttribute("todayDate",todayDate);
 		model.addAttribute("age",age);
@@ -220,7 +269,7 @@ public class TestsController
 	}
 	
 	@RequestMapping(path="/testAPIqueryToEZoffice", method=RequestMethod.POST)
-	public Object testAPIqueryToEZoffice(Model model,String apiUrl,String prefix,String token,String assetNumber) throws IOException
+	public Object testAPIqueryToEZoffice(Model model,String apiUrl,String prefix,String token,String assetNumber, Long quserId) throws IOException
 	{
 		ObjectMapper mapper=new ObjectMapper();
 				
@@ -266,6 +315,12 @@ public class TestsController
 		//System.out.println("The Json object is : "+ jsonObject);					
 		
 		//System.out.println("description is : "+ description);
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 				
 		model.addAttribute("assetNumber",assetNumber);
 		model.addAttribute("asset",resultingAsset);
@@ -277,16 +332,21 @@ public class TestsController
 	}
 	
 	@GetMapping("/excelFileUploadSel")
-	public String excelFileInput()
+	public String excelFileInput(Model model, Long quserId)
 	{
-			
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		return "excelFileUploadSel";
 			
 	}
 	
 	
 	@RequestMapping(value="/excelFileUpload", method=RequestMethod.POST)
-    public ResponseEntity<List<TestSitesEntity>> importExcelFile(@RequestParam("file") MultipartFile files) throws IOException 
+    public ResponseEntity<List<TestSitesEntity>> importExcelFile(Model model, @RequestParam("file") MultipartFile files, Long quserId) throws IOException 
 	{
         HttpStatus status=HttpStatus.OK;
         
@@ -330,15 +390,29 @@ public class TestsController
         }
         
         workbook.close();
+        
+      //Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 
         return new ResponseEntity<>(siteList, status);
     }
 	
+	
+	
 	@RequestMapping(path="/ajaxTestForm")
-	public String formAjaxTest(Model model)
+	public String formAjaxTest(Model model, Long quserId)
 	{
 				
 		List<AssetsEntity> list=serviceAssets.getAllAssets();
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		
 		model.addAttribute("assets",list);
 		

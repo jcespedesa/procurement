@@ -35,7 +35,13 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a th:href="@{/procurement/index}">Back</a>
+           			<form th:action="@{/portal/mainMenu}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             	
             </ul>
@@ -64,12 +70,16 @@
 	                        
 	                        <div class="form-group">
 	                        	<label for="assetId" class="col-form-label">Asset ID <sup>*</sup>:</label> 
-                       			<input type="text" name="assetId" placeholder="Asset ID" required  size="3" maxlength="5"/>
+                       			<select name="assetId" required>
+                       				<option th:each="asset : ${assets}" th:value="${asset.assetid}" th:text="${asset.assetNumber}" ></option>
+                       			</select>
 	                        </div>
 	                      	                                                           
 	                    	<div class="form-group">
 	                       		<input type="submit" class="btn btn-primary btn-sm" value=" Test Sending >> ">
 	                    	</div>
+	                    	
+	                    	<input type="hidden" th:value="${quserId}" name="quserId"> 
 	                	                        	
 	            		</form>
 	  				</div>

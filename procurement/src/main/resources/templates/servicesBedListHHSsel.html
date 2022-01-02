@@ -35,7 +35,12 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a th:href="@{/procurement/index}">Back</a>
+           			<form th:action="@{/portal/mainMenu}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             	
             </ul>
@@ -52,6 +57,8 @@
       			
       			<div class="row">
       			
+      				<div class="col-sm"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>	
+      			
 	      			<div class="col-lg-8">
 	      			
 	      				 <div class="form-group">
@@ -59,8 +66,7 @@
 	                        </div> 
 	      			
 	  					<form class="form-main" th:action="@{/procurement/services/bedListHHSimport}" method="post" enctype="multipart/form-data">
-	                                       
-	                    		                        
+	                        	                        
 	                        <div class="form-group">
 	                        	<label for="excelFile" class="col-form-label">HHS Bed List File to Upload : <sup>*</sup></label> 
                        			<input type="file" name="file" placeholder="Select HHS file" required  size="25"/>
@@ -73,6 +79,8 @@
 	                    	<div class="form-group">
 	                       		<input type="submit" class="btn btn-primary btn-sm" value=" Continue >> ">
 	                    	</div>
+	                    	
+	                    	<input type="hidden" th:value="${quserId}" name="quserId">
 	                	                        	
 	            		</form>
 	  				</div>

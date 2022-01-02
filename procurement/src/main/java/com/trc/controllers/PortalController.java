@@ -242,6 +242,7 @@ public class PortalController
 		//Retrieving user identity
 		UsersEntity quser=serviceUsers.getUserById(quserId);
 		
+				
 		model.addAttribute("projects",projects);
 		model.addAttribute("titles",titles);
 		model.addAttribute("kluch",kluch);

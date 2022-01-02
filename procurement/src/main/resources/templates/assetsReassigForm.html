@@ -36,12 +36,14 @@
 	    		<ul>
 	        		<li>
 	           			
-	           			<form th:action="@{/procurement/Assets/{priznak}(priznak=${priznak})}" method="post">
+	           			<form th:action="@{/procurement/assets/{priznak}(priznak=${priznak})}" method="post">
                             	
 	           				<button type="submit" class="btn btn-light">Back</button>	
 	           			
 	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
 	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           				
 	           			</form>
 	           			
 	        		</li>
@@ -52,28 +54,31 @@
    		
    		
       			<div class="row">
-        			<div class="col-lg-12 text-center">
+        			<div class="col-lg-10 text-center">
 				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Reassign Form</p>
 				          
         			</div>
       			</div>
      		
-  				<div class="form-group">
-                   	<label for="assetNumber" class="col-form-label" style="font-weight: bold;">Asset Number:</label> 
-                   	<label class="primary" th:text="${asset.assetNumber}"></label>
-                </div>
-                <div class="form-group">   	
-                   	<label for="assetNumber" class="col-form-label" style="font-weight: bold;">Item :</label> 
-                   	<label class="primary" th:text="${itemName}"></label>
-                       	
-                   	<label class="primary" th:text="${asset.maker}"></label>
-                   	<label class="primary" th:text="${asset.model}"></label>
-                </div>   	
+  				                
+                <table class="table table-striped">
+      			<tr>
+      				<td style="color:#880000;">Asset Number : <label th:text="${asset.assetNumber}"></label></td>
+					<td style="color:#880000;">Item : <span th:text="${itemName}"></span></td>
+				   	<td style="color:#880000;"><span th:text="${asset.maker}"></span>
+					<span style="color:#000088;" th:text="${asset.model}"></span></td>
+					
+				</tr>
+				<tr>
+					<td colspan="3" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></td>
+					
+				</tr>
+			</table>	   	
                        	    
                 <hr>
                 
                 <div class="form-group">   	
-                   	<label for="assetNumber" class="col-form-label" style="font-weight: bold;">Currently Assigned to :</label> 
+                   	<label for="assetNumber" class="col-form-label" style="font-weight:bold;">Currently Assigned to :</label> 
                    	<label class="primary" th:text="${asset.username}"></label>/
                        	
                    	<label class="primary" th:text="${asset.title}"></label>/
@@ -83,7 +88,7 @@
                        	    
                 <hr>
                     
-                <form class="form-main" th:action="@{/procurement/Assets/reassignAsset}" th:object="${assetReassig}" method="post">    
+                <form class="form-main" th:action="@{/procurement/assets/reassignAsset}" th:object="${assetReassig}" method="post">    
                     
                     <div class="form-group">
                        	<label for="newAssigName" class="col-form-label">New User Name:</label> 
@@ -146,7 +151,8 @@
                     <input type="hidden" name="empStatus" th:value="${asset.empStatus}"> 
                     
                     <input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
-	           		<input type="hidden" th:value="${priznak}" name="priznak">   
+	           		<input type="hidden" th:value="${priznak}" name="priznak">
+	           		<input type="hidden" th:value="${quserId}" name="quserId">     
                        				                        	
             	</form>
             	            	  				

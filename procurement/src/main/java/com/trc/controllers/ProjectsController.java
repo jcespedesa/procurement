@@ -6,23 +6,24 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.DivisionsEntity;
 import com.trc.entities.ProjectsEntity;
 import com.trc.entities.SitesEntity;
+import com.trc.entities.UsersEntity;
 import com.trc.services.DivisionsService;
 import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.SitesService;
+import com.trc.services.UsersService;
 
 
 
 @Controller
-@RequestMapping("procurement/Projects")
+@RequestMapping("procurement/projects")
 public class ProjectsController 
 {
 	@Autowired
@@ -34,10 +35,13 @@ public class ProjectsController
 	@Autowired
 	DivisionsService serviceDivisions;
 	
+	@Autowired
+	UsersService serviceUsers;
+	
 	//CRUD operations for projects
 	
-	@GetMapping("/list")
-	public String getAllProjects(Model model)
+	@RequestMapping(path="/list", method=RequestMethod.POST)
+	public String getAllProjects(Model model, Long quserId)
 	{
 				
 		List<ProjectsEntity> list=service.getAllByProject();
@@ -62,6 +66,12 @@ public class ProjectsController
         	dsite.setBuffer2(localSite);
         }
 		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		model.addAttribute("projects",list);
 			
 		return "projectsList";
@@ -69,8 +79,8 @@ public class ProjectsController
 			
 	}
 		
-		@RequestMapping(path={"/edit","/edit/{id}"})
-		public String editProjectsById(Model model,@PathVariable("id") Optional<Long> id) throws RecordNotFoundException 
+	@RequestMapping(path="/edit", method=RequestMethod.POST)
+		public String editProjectsById(Model model,Optional<Long> id,  Long quserId) throws RecordNotFoundException 
 		{
 			
 			String department="300";
@@ -104,6 +114,12 @@ public class ProjectsController
 				
 			}
 			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
 			model.addAttribute("sites",list);
 			model.addAttribute("divisions",listDivisions);
 			model.addAttribute("udelnyBeses",listUB);
@@ -111,32 +127,59 @@ public class ProjectsController
 			return "projectsAddEdit";
 		}
 		
-		@RequestMapping(path="/delete/{id}")
-		public String deleteProjectById(Model model, @PathVariable("id") Long id) throws RecordNotFoundException
+	
+		@RequestMapping(path="/delete", method=RequestMethod.POST)
+		public String deleteProjectById(Model model, Long id,  Long quserId) throws RecordNotFoundException
 		{
+			String message=null;
 			
 			service.deleteProjectById(id);
 			
-			return "redirect:/procurement/Projects/list";
+			message="Item was removed...";
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
+			model.addAttribute("message",message);
+			
+			return "projectsRedirect";
 			
 		}
 		
 		@RequestMapping(path="/createProject", method=RequestMethod.POST)
-		public String createOrUpdateProject(ProjectsEntity project)
+		public String createOrUpdateProject(Model model, ProjectsEntity project,  Long quserId)
 		{
-			//System.out.println("Inside the controller to update or create. Object is: "+ project);
+			String message=null;
 			
 			service.createOrUpdate(project);
 			
-			return "redirect:/procurement/Projects/list";
+			message="List was updated successfully...";
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
+			model.addAttribute("message",message);
+			
+			return "projectsRedirect";
 			
 			
 		}
 		
-		@RequestMapping(path="/search")
-		public String search()
+		@RequestMapping(path="/search", method=RequestMethod.POST)
+		public String search(Model model,  Long quserId)
 		{
 			//System.out.println("Inside the search form");
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 			
 			return "searchFormProjects";
 			
@@ -144,13 +187,17 @@ public class ProjectsController
 		}
 		
 		@RequestMapping(path="/findProjectNum", method=RequestMethod.POST)
-		public String findProjectNum(Model model,String stringSearch)
+		public String findProjectNum(Model model,String stringSearch,  Long quserId)
 		{
 			//System.out.println("Inside the controller to search by string. Object is: "+ stringSearch);
 			
 			List<ProjectsEntity> list=service.searchProjectsByNum(stringSearch);
 			
-			//System.out.println(list);
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 			
 			model.addAttribute("projects",list);
 			model.addAttribute("stringSearch",stringSearch);
@@ -161,13 +208,17 @@ public class ProjectsController
 		}
 		
 		@RequestMapping(path="/findProjectName", method=RequestMethod.POST)
-		public String findProjectName(Model model, String stringSearch)
+		public String findProjectName(Model model, String stringSearch,  Long quserId)
 		{
 			//System.out.println("Inside the controller to search by string. Object is: "+ stringSearch);
 			
 			List<ProjectsEntity> list=service.searchProjectsByName(stringSearch);
 			
-			//System.out.println(list);
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 			
 			model.addAttribute("projects",list);
 			model.addAttribute("stringSearch",stringSearch);
@@ -177,8 +228,9 @@ public class ProjectsController
 			
 		}
 		
-		@GetMapping("/hhsView")
-		public String hhsViewForm(Model model)
+		
+		@RequestMapping(path="/hhsView", method=RequestMethod.POST)
+		public String hhsViewForm(Model model,  Long quserId)
 		{
 					
 			List<ProjectsEntity> list=service.getHhsFormView();
@@ -202,6 +254,12 @@ public class ProjectsController
 	        	
 	        	dsite.setBuffer2(localSite);
 	        }
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 			
 			model.addAttribute("projects",list);
 				

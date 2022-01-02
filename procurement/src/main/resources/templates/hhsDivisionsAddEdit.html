@@ -26,20 +26,23 @@
 	<body id="page-top">
 
   <!-- Navigation -->
-  		
-
-
-   		<div class="container">
+  			<div class="container">
    		
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a href="/procurement/hhsDivisions/list">Back</a>
+           			<form th:action="@{/procurement/hhsDivisions/list}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             	
             </ul>
       	</nav>
-   		
+   		<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
       			<div class="row">
         			<div class="col-lg-12 text-center">
 				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit HHS Divisions</p>
@@ -79,14 +82,10 @@
                     
                     <div class="form-group">
                        	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
-                       	
-                       	<a href="/procurement/Divisions/list" class="btn btn-secondary btn-sm">
-                			<i class="fas fa-back ml-2"> Cancel </i>
-                		</a>
                     </div>
                             	
                     <input type="hidden" id="id" th:field="*{divisionid}">
-     
+     				<input type="hidden" th:value="${quserId}" name="quserId"> 
                         	
             	</form>
   				

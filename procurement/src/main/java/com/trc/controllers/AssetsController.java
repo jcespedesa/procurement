@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.supercsv.io.CsvBeanWriter;
@@ -29,6 +28,7 @@ import com.trc.entities.PeripheralsEntity;
 import com.trc.entities.ProjectsEntity;
 import com.trc.entities.SitesEntity;
 import com.trc.entities.TitlesEntity;
+import com.trc.entities.UsersEntity;
 import com.trc.services.AssetsAssigService;
 import com.trc.services.AssetsService;
 import com.trc.services.ItemsService;
@@ -37,6 +37,7 @@ import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.SitesService;
 import com.trc.services.TitlesService;
+import com.trc.services.UsersService;
 
 
 @Controller
@@ -64,10 +65,13 @@ public class AssetsController
 	@Autowired
 	AssetsAssigService serviceReassig;
 	
+	@Autowired
+	UsersService serviceUsers;
+	
 	//CRUD operations for assets
 	
 		@RequestMapping(path="/menu")
-		public String menuAssets(Model model)
+		public String menuAssets(Model model, Long quserId)
 		{
 						
 			//Preparing list of items
@@ -82,7 +86,12 @@ public class AssetsController
 			//Preparing list of assignees
 			List<String> assigEmails=service.getAssigneeEmails();
 			
-			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+						
 			model.addAttribute("items",items);
 			model.addAttribute("emails",emails);
 			model.addAttribute("projects",projects);
@@ -97,7 +106,7 @@ public class AssetsController
 	
 		
 		@RequestMapping(path="/list",method=RequestMethod.POST)
-		public String getAllAssets(Model model,String stringSearch,String priznak) throws RecordNotFoundException
+		public String getAllAssets(Model model,String stringSearch,String priznak, Long quserId) throws RecordNotFoundException
 		{
 			List<AssetsEntity> list=service.getAllAssets();
 			
@@ -147,7 +156,13 @@ public class AssetsController
 				asset.setTitle(titleName);
 							
 			}
-															
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+																		
 			model.addAttribute("assets",list);
 			model.addAttribute("stringSearch",stringSearch);
 			model.addAttribute("priznak",priznak);
@@ -157,8 +172,9 @@ public class AssetsController
 			
 		}
 		
-		@RequestMapping(path={"/new/{stringSearch}"})
-		public String newAsset(Model model,@PathVariable("stringSearch") String stringSearch)
+		
+		@RequestMapping(path={"/new"},method=RequestMethod.POST)
+		public String newAsset(Model model, String stringSearch, Long quserId)
 		{
 			
 								
@@ -194,6 +210,12 @@ public class AssetsController
 			//Generating a random value for record identification
 			Random r=new Random();
 			int seed=r.nextInt();
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 				
 			model.addAttribute("seed",seed);
 			model.addAttribute("kluch",todayDate);
@@ -212,7 +234,7 @@ public class AssetsController
 		
 		
 		@RequestMapping(path={"/edit"},method=RequestMethod.POST)
-		public String editAssetsById(Model model,Long id,String stringSearch,String priznak) throws RecordNotFoundException 
+		public String editAssetsById(Model model,Long id,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException 
 		{
 			
 								
@@ -265,6 +287,13 @@ public class AssetsController
 			project=serviceProjects.getSiteBySiteNumber1(entity.getProject());
 			itemName=serviceItems.getItemByNumber(itemNumber);
 			titleName=serviceTitles.getTitleByNumber(titleNumber);
+			
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 				
 			model.addAttribute("asset",entity);
 				
@@ -290,12 +319,18 @@ public class AssetsController
 		}
 		
 		@RequestMapping(path="/delete", method=RequestMethod.POST)
-		public String deleteAssetById(Model model,Long id,String stringSearch,String priznak) throws RecordNotFoundException
+		public String deleteAssetById(Model model,Long id,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
 			String message="Record was deleted...";
 			
 			//Deleting the record
 			service.deleteAssetById(id);
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 			
 			model.addAttribute("message",message);
 			model.addAttribute("stringSearch",stringSearch);
@@ -306,7 +341,7 @@ public class AssetsController
 		}
 		
 		@RequestMapping(path="/createAsset", method=RequestMethod.POST)
-		public String createOrUpdateAsset(Model model,AssetsEntity asset,String stringSearch,String priznak)
+		public String createOrUpdateAsset(Model model,AssetsEntity asset,String stringSearch,String priznak,Long quserId)
 		{
 			//System.out.println("Inside the controller, arrived string search was: "+ stringSearch);
 			
@@ -314,6 +349,13 @@ public class AssetsController
 			
 						
 			service.createOrUpdate(asset);
+			
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 			
 			model.addAttribute("message",message);
 			model.addAttribute("stringSearch",stringSearch);
@@ -325,8 +367,8 @@ public class AssetsController
 		
 		
 		
-		@RequestMapping(path="/search")
-		public String search(Model model)
+		@RequestMapping(path="/search", method=RequestMethod.POST)
+		public String search(Model model, Long quserId)
 		{
 						
 			//Preparing list of items
@@ -338,6 +380,12 @@ public class AssetsController
 			//Preparing list of authors email
 			List<String> emails=service.getAuthorEmails();
 			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
 			model.addAttribute("items",items);
 			model.addAttribute("emails",emails);
 			model.addAttribute("projects",projects);
@@ -348,7 +396,7 @@ public class AssetsController
 		}
 		
 		@RequestMapping(path="/findAssetByNum", method=RequestMethod.POST)
-		public String findByAssetNum(Model model,String stringSearch,String priznak) throws RecordNotFoundException
+		public String findByAssetNum(Model model,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
 			
 						
@@ -397,6 +445,12 @@ public class AssetsController
 				asset.setTitle(titleName);
 							
 			}
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 				
 			model.addAttribute("stringSearch",stringSearch);												
 			model.addAttribute("assets",list);
@@ -407,7 +461,7 @@ public class AssetsController
 		}
 		
 		@RequestMapping(path="/findAssetsByItem", method=RequestMethod.POST)
-		public String findByKlass(Model model,String stringSearch,String priznak) throws RecordNotFoundException
+		public String findByKlass(Model model,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
 			
 						
@@ -455,6 +509,12 @@ public class AssetsController
 				asset.setTitle(titleName);
 							
 			}
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 				
 			model.addAttribute("stringSearch",stringSearch);												
 			model.addAttribute("assets",list);
@@ -465,7 +525,7 @@ public class AssetsController
 		}
 		
 		@RequestMapping(path="/findAssetsByAuthor", method=RequestMethod.POST)
-		public String findByAuthor(Model model,String stringSearch,String priznak) throws RecordNotFoundException
+		public String findByAuthor(Model model,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
 									
 			List<AssetsEntity> list=service.getByAuthor(stringSearch);
@@ -511,6 +571,12 @@ public class AssetsController
 				asset.setTitle(titleName);
 							
 			}
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 				
 			model.addAttribute("stringSearch",stringSearch);												
 			model.addAttribute("assets",list);
@@ -522,7 +588,7 @@ public class AssetsController
 		
 		
 		@RequestMapping(path="/findAssetsByProgram", method=RequestMethod.POST)
-		public String findByProgram(Model model,String stringSearch,String priznak) throws RecordNotFoundException
+		public String findByProgram(Model model,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
 									
 			List<AssetsEntity> list=service.getByProgram(stringSearch);
@@ -568,6 +634,12 @@ public class AssetsController
 				asset.setTitle(titleName);
 							
 			}
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 				
 			model.addAttribute("stringSearch",stringSearch);												
 			model.addAttribute("assets",list);
@@ -579,7 +651,7 @@ public class AssetsController
 		
 		
 		@RequestMapping(path="/findAssetsByAssignee", method=RequestMethod.POST)
-		public String findByAssignee(Model model,String stringSearch,String priznak) throws RecordNotFoundException
+		public String findByAssignee(Model model,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
 									
 			List<AssetsEntity> list=service.getByAssignee(stringSearch);
@@ -625,6 +697,12 @@ public class AssetsController
 				asset.setTitle(titleName);
 							
 			}
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 				
 			model.addAttribute("stringSearch",stringSearch);												
 			model.addAttribute("assets",list);
@@ -636,8 +714,8 @@ public class AssetsController
 		
 		
 		
-		@RequestMapping(path="/views")
-		public String views(Model model)
+		@RequestMapping(path="/views", method=RequestMethod.POST)
+		public String views(Model model, Long quserId)
 		{
 						
 			//Preparing list of items
@@ -649,6 +727,12 @@ public class AssetsController
 			//Preparing list of authors email
 			List<String> emails=service.getAuthorEmails();
 			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
 			model.addAttribute("items",items);
 			model.addAttribute("emails",emails);
 			model.addAttribute("projects",projects);
@@ -659,7 +743,7 @@ public class AssetsController
 		}
 		
 		@RequestMapping(path="/viewAssetsByProgram", method=RequestMethod.POST)
-		public String viewByProgram(Model model,String stringSearch) throws RecordNotFoundException
+		public String viewByProgram(Model model,String stringSearch,Long quserId) throws RecordNotFoundException
 		{
 			//Retrieving assets list						
 			List<AssetsEntity> list=service.getByProgram(stringSearch);
@@ -767,6 +851,12 @@ public class AssetsController
 			
 			viewTitle=header + stringSearch;
 			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
 			model.addAttribute("stringSearch",stringSearch);
 			model.addAttribute("viewTitle",viewTitle);	
 			
@@ -778,8 +868,8 @@ public class AssetsController
 		}
 		
 		
-		@GetMapping("/exportCSV/{stringSearch}")
-	    public void exportToCSV(HttpServletResponse response,@PathVariable("stringSearch") String stringSearch) throws IOException, RecordNotFoundException 
+		@RequestMapping(path="/exportCSV", method=RequestMethod.POST)
+	    public void exportToCSV(Model model,HttpServletResponse response,String stringSearch,Long quserId) throws IOException, RecordNotFoundException 
 		{
 	        response.setContentType("text/csv");
 	        DateFormat dateFormatter=new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
@@ -893,12 +983,18 @@ public class AssetsController
 	        }
 	         
 	        csvWriter.close();
+	        
+	      //Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 	         
 	    }
 		
 				
 		@RequestMapping(path="/reassign", method=RequestMethod.POST)
-		public String reassign(Model model,Long assetId, String stringSearch, String priznak) throws RecordNotFoundException
+		public String reassign(Model model,Long assetId, String stringSearch, String priznak, Long quserId) throws RecordNotFoundException
 		{
 			String itemName=null;
 			String itemNumber=null;
@@ -933,6 +1029,13 @@ public class AssetsController
 			//System.out.println("title is "+ titleName);
 			//System.out.println("notes are "+ entity.getNotes());
 			
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
 			model.addAttribute("assetReassig",new AssetAssigEntity());
 						
 			model.addAttribute("asset",entity);
@@ -951,7 +1054,7 @@ public class AssetsController
 		}
 		
 		@RequestMapping(path="/reassignAsset", method=RequestMethod.POST)
-		public String reassignAsset(Model model,Long id, AssetAssigEntity assetReassig, String stringSearch, String priznak,
+		public String reassignAsset(Model model,Long id, AssetAssigEntity assetReassig, String stringSearch, String priznak, Long quserId,
 				
 				String username,
 				String email,
@@ -1013,6 +1116,13 @@ public class AssetsController
 			
 			//Saving changes to the asset object
 			service.assetReassignation(id,newUsername,newTitle,newEmpStatus,newProject,newEmail,reassignedBy,emailReassigner);
+			
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 			
 			model.addAttribute("assetReassig",assetReassig);
 			

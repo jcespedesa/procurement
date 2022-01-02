@@ -1,12 +1,15 @@
 package com.trc.config;
 
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 
 @Configuration
@@ -16,28 +19,16 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter
 	protected void configure(HttpSecurity http) throws Exception 
 	{
 		
-		http.authorizeRequests()
-		
-			.antMatchers("/portal/passSendForm").permitAll()
-			.antMatchers("/**").authenticated()
-            
-			.anyRequest().authenticated()
-			
-			//Login Form Details
-			.and()
-			.formLogin()
-			.defaultSuccessUrl("/procurement/login", true)
-			
-			//Logout Form Details
-			.and()
-			.logout()
-			.logoutRequestMatcher(new AntPathRequestMatcher("/portal/logout"))
-					
-			//Exception Details		
-			.and()	
-			.exceptionHandling()
-			.accessDeniedPage("/accessDenied")
-			;
+	    http.sessionManagement()
+	        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+	        .invalidSessionUrl("/procurement/login");
+	    
 	}
+	
+	@Bean
+    public PasswordEncoder passwordEncoder() 
+	{
+        return new BCryptPasswordEncoder();
+    }
 		
 }

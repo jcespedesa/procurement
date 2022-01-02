@@ -35,22 +35,40 @@
    			<nav id="hcssmenu">
     			<ul>
         			<li>
-           				<a href="/procurement/Sites/edit">Add New</a>
+           				<form th:action="@{/portal/mainMenu}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
         			</li>
             		<li>
-           				<a href="/procurement/index">Back</a>
+           				<form th:action="@{/procurement/sites/edit}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">New</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
         			</li>
         			<li>
-           				<a href="/procurement/Sites/search">Search</a>
+           				<form th:action="@{/procurement/sites/search}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Search</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
         			</li>
             	</ul>
       		</nav>
-   		
+   			<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
       		<div class="row">
-        		<div class="col-lg-12" th:if="${stringSearch==null}">
+        		<div class="col-6" th:if="${stringSearch==null}">
 			          <p class="navbar-brand" style="color:#880000;font-size:15px;">Showing All Sites</p><span th:text="${stringSearch}"></span>
 			   	</div>
-			   	<div class="col-lg-12" th:unless="${stringSearch==null}">
+			   	<div class="col-6" th:unless="${stringSearch==null}">
 			          <p class="navbar-brand" style="color:#880000;font-size:15px;">Results searching string: </p><span th:text="${stringSearch}"></span>
 			   	</div>
       		</div>
@@ -77,25 +95,39 @@
   						<td th:text="${site.sname}" style="font-size:12px;"></td>
   						<td th:text="${site.address}" style="font-size:12px;"></td>
   						<td th:text="${site.phone}" style="font-size:12px;"></td>
-  						<td th:text="${site.active}" style="font-size:12px;"></td>
+  						
+  						<td th:if="${site.active}=='Yes'" th:text="${site.active}" style="font-size:12px;"></td>
+  						<td th:if="${site.active}=='No'" th:text="${site.active}" style="font-size:12px;background-color: #ffcc99"></td>
+  						
+  						
   						<td th:text="${site.provider1}" style="font-size:12px;" noWrap></td>
   						<td th:text="${site.provider2}" style="font-size:12px;" noWrap></td>
   						  							
   						<td>
-                           	<a th:href="@{/procurement/Sites/edit/{id}(id=${site.siteid})}" class="btn btn-primary btn-sm">
-                               	<i class="fa fa-edit"></i>
-                            </a>
-                        </td>
-                        <td>
-                            <a th:href="@{/procurement/Sites/delete/{id}(id=${site.siteid})}" class="btn btn-danger btn-sm" onClick="return confirmDelete();">				                                    			
-                         		<i class="fa fa-trash" style="font-size:12px"></i>
-                           	</a>
-                        </td>
+                           	<form th:action="@{/procurement/sites/edit}" method="post">
+                            	
+	           			        	<button type="submit" class="btn btn-primary fa fa-edit btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${site.siteid}" name="id"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           					</form>
+                            </td>
+                            <td>
+                               <form th:action="@{/procurement/sites/delete}" method="post" onClick="return confirmDelete();">
+                            	
+	           			        	<button type="submit" class="btn btn-danger fa fa-trash btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${site.siteid}" name="id"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           					</form>
+                        	</td>
                                                                                    
-  					</tr>	
-  				</tbody>	
-  			</table>
-  		</div>
+  						</tr>	
+  					</tbody>	
+  				</table>
+  			</div>
   		
   		<!-- Footer -->
   

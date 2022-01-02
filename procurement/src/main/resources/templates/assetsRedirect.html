@@ -24,22 +24,31 @@
         	
         	<div class="card">
 				<div class="card-body">
+				
+					<div class="row"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>
 					
 					<div class="simpleFrame" th:text="${message}"></div>
 										
 					<div th:if="${priznak==''}">
 					
-						<a href="/procurement/Assets/menu" class="btn btn-primary" role="button">Back</a>
+						<form th:action="@{/procurement/assets/menu}" method="post">
+               				<button type="submit" class="btn btn-primary">Back</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
 					</div>
 					
 					<div th:unless="${priznak==''}">					                	                   
                     
-  						<form th:action="@{/procurement/Assets/{priznak}(priznak=${priznak})}" method="post">
+  						<form th:action="@{/procurement/assets/{priznak}(priznak=${priznak})}" method="post">
                             	
 	           				<button type="submit" class="btn btn-primary">Back</button>	
 	           			
 	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
 	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           				<input type="hidden" th:value="${quserId}" name="quserId">
+	           				
 	           			</form>
 	           		</div>	             	                    
                 </div>

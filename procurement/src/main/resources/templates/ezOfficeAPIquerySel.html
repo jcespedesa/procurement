@@ -35,57 +35,61 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a th:href="@{/procurement/index}">Back</a>
+           			<form th:action="@{/portal/mainMenu}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             	
             </ul>
       	</nav>
    			
-   		
-   		
-      			<div class="row">
-        			<div class="col-lg-12 text-center">
-				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Test - retrieving Asset Info from EZ Office</p>
+      	<div class="row">
+        	<div class="col-lg-12 text-center">
+		          <p class="navbar-brand" style="color:#880000;font-size:15px;">Test - retrieving Asset Info from EZ Office</p>
 				          
-        			</div>
-      			</div>
+        	</div>
+      	</div>
+      	<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>		
+      	<div class="row">
       			
-      			<div class="row">
-      			
-	      			<div class="col">
+	    	<div class="col">
 	     		
-	  					<form class="form-main" th:action="@{/procurement/tests/testAPIqueryToEZoffice}"  method="post">
-	                                       
+	  			<form class="form-main" th:action="@{/procurement/tests/testAPIqueryToEZoffice}"  method="post">
 	                    		                        
-	                        <div class="form-group">
-	                        	<label for="assetNumber" class="col-form-label">Asset Number <sup>*</sup>:</label> 
-                       			<input type="text" name="assetNumber" placeholder="EZoffice Asset Number" required  size="25" maxlength="20"/>
-	                        </div> 
+	               <div class="form-group">
+	                   	<label for="assetNumber" class="col-form-label">Asset Number <sup>*</sup>:</label> 
+               			<input type="text" name="assetNumber" placeholder="EZoffice Asset Number" required  size="25" maxlength="20"/>
+	              </div> 
 	                        
-	                        <div class="form-group">
-	                        	<label for="apiUrl" class="col-form-label">API URL <sup>*</sup>:</label> 
-                       			<input type="text" name="apiUrl" placeholder="API url" required  size="50" th:value="${apiUrl}" readOnly/>
-                       			<label for="prefix" class="col-form-label">Prefix <sup>*</sup>:</label> 
-                       			<input type="text" name="prefix" placeholder="Prefix" required  size="10" th:value="${prefix}" readOnly/>
-                       		</div>
-                       		<div class="form-group">	
-                       			<label for="token" class="col-form-label">Token <sup>*</sup>:</label> 
-                       			<input type="text" name="token" placeholder="Token" required  size="50" th:value="${token}" readOnly/>
-	                        </div>
-	                        
-	                        	                      	                                                           
-	                    	<div class="form-group">
-	                       		<input type="submit" class="btn btn-primary btn-sm" value=" Query API >> ">
-	                    	</div>
-	                	                        	
-	            		</form>
-	  				</div>
+	              <div class="form-group">
+	               		<label for="apiUrl" class="col-form-label">API URL <sup>*</sup>:</label> 
+                       	<input type="text" name="apiUrl" placeholder="API url" required  size="50" th:value="${apiUrl}" readOnly/>
+                  </div>     	
+                  <div class="form-group">     	
+                       	<label for="prefix" class="col-form-label">Prefix <sup>*</sup>:</label> 
+                       	<input type="text" name="prefix" placeholder="Prefix" required  size="5" th:value="${prefix}" readOnly/>
+                  </div>
+                  		<div class="form-group">	
+                   			<label for="token" class="col-form-label">Token <sup>*</sup>:</label> 
+                   			<input type="text" name="token" placeholder="Token" required  size="50" th:value="${token}" readOnly/>
+	                    </div>
+	                                      	                      	                                                           
+	                   	<div class="form-group">
+	                   		<input type="submit" class="btn btn-primary btn-sm" value=" Query API >> ">
+	                   	</div>
+	                	<input type="hidden" th:value="${quserId}" name="quserId">	                        	
+	            </form>
+	  		</div>
 	  				
-	  				<div class="col">
+	  		<div class="col">
 	  		
-	  				</div>
-	  			</div>
+	  		</div>
 	  	</div>
+	 </div>
   		
   		<!-- Footer --> 
   

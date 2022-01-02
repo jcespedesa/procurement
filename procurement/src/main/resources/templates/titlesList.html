@@ -34,15 +34,28 @@
    		
    			<nav id="hcssmenu">
     		<ul>
+    			<li>
+           			<form th:action="@{/portal/mainMenu}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
+        		</li>
         		<li>
-           			<a href="/procurement/Titles/edit">Add New</a>
+           			<form th:action="@{/procurement/titles/edit}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">New</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
-            	<li>
-           			<a href="/procurement/index">Back</a>
-        		</li>
+            	
             </ul>
       	</nav>
-   		
+   		<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
       			<div class="row">
         			<div class="col-lg-12 ">
 				          <p class="navbar-brand" style="color:#880000;font-size:15px;">All HHS Titles</p>
@@ -66,17 +79,29 @@
   							<td th:text="${itemNum.count}" style="font-size:12px;"></td>
   							<td th:text="${title.titleDesc}" style="font-size:12px;"></td>
   							<td th:text="${title.titleNum}" style="font-size:12px;"></td>
-  							<td th:text="${title.active}" style="font-size:12px;"></td>
+  							
+  							<td th:if="${title.active}=='Yes'" th:text="${title.active}" style="font-size:12px;"></td>
+  							<td th:if="${title.active}=='No'" th:text="${title.active}" style="font-size:12px;background-color: #ffcc99"></td>
   									  							
   							<td>
-                            	<a th:href="@{/procurement/Titles/edit/{id}(id=${title.titleid})}" class="btn btn-primary btn-sm">
-                                	<i class="fa fa-edit"></i>
-                                </a>
+                            	<form th:action="@{/procurement/titles/edit}" method="post">
+                            	
+	           			        	<button type="submit" class="btn btn-primary fa fa-edit btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${title.titleid}" name="id"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           					</form>
                             </td>
                             <td>
-                                <a th:href="@{/procurement/Titles/delete/{id}(id=${title.titleid})}" class="btn btn-danger btn-sm" onClick="return confirmDelete();">				                                    			
-                            		<i class="fa fa-trash" style="font-size:12px"></i>
-                            	</a>
+                                <form th:action="@{/procurement/titles/delete}" method="post" onClick="return confirmDelete();">
+                            	
+	           			        	<button type="submit" class="btn btn-danger fa fa-trash btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${title.titleid}" name="id"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           					</form>
                             </td>
                                                                                    
   						</tr>	

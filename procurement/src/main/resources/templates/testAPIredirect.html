@@ -30,32 +30,32 @@
   		<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a href="/procurement/tests/ezOffAPIquerySel">Back</a>
+           			<a th:href="@{/procurement/tests/ezOffAPIquerySel(quserId=${quserId})}">Back</a>
         		</li>
             	
             </ul>
       	</nav>
 
 		<div class="container">
+			<div class="row">&nbsp;</div>
+			<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
+			<div class="row">&nbsp;</div>
  
   			<section class="page-section" id="mainBody">
-    			<div class="container">
+    			
       				<div class="row" >
-        				<div class="col-lg-12 text-center">
-				          	<p class="navbar-brand" style="color:#880000;font-size:15px;">Results of querying Asset #: </p>
-				         	<div th:text="${assetNumber}"></div>
+        				<div class="col-lg-8">
+				          	<div style="color:navy;font-weight:bold;" th:text="'Results of querying Asset# : '+ ${assetNumber}"></div>
+				         	
         				</div>
       				</div>
      			     			
 					<hr/>
-				
+									
 					<div th:text="${asset}"></div>
 													
   					<hr/>
-  					
-  					
-  				</div>
-  		
+  			  		
   			</section>
   		</div>
   		

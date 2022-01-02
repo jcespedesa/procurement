@@ -30,7 +30,15 @@
   		<nav id="hcssmenu">
     		<ul>
         		<li>
-           			
+           			<form th:action="@{/procurement/assets/list}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           			<input type="hidden" th:value="${priznak}" name="priznak">
+	           			<input type="hidden" th:value="${quserId}" name="quserId">
+	           				
+	           		</form>	
         		</li>
             	
             </ul>
@@ -41,17 +49,22 @@
   			<section class="page-section" id="mainBody">
     			<div class="container">
       				<div class="row" >
-        				<div class="col-lg-12 text-center">
-				          	<p class="navbar-brand" style="color:#880000;font-size:15px;">Re-Assignation of Asset # :</p>
-				         	<div th:text="${assetNumber}"></div>
+        				<div class="col-lg-8 text-center">
+				          	<label style="color:#880000;">Re-Assignation of Asset # : </label>
+				         	<label style="font-weight:bold;color:teal;" th:text="${assetNumber}"></label>
         				</div>
       				</div>
       				
-      				<p th:text="'Priznak is '+ ${priznak}"></p>
-      				<p th:text="'StringSearch is '+ ${stringSearch}"></p>
-     			     			
-					<hr/>
-				
+      				<table class="table table-striped">
+      					<tr>
+      						<td colspan="2" style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></td>
+      					</tr>
+      					<tr>
+      						<td th:text="'Priznak is '+ ${priznak}"></td>
+      						<td th:text="'StringSearch is '+ ${stringSearch}"></td>
+     			     	</tr>
+     			     </table>		
+									
 					<div th:text="${message}"></div>
 				
 					<hr/>
@@ -82,13 +95,15 @@
 					
 					<br>
 				
-					<form th:action="@{/procurement/Assets/list}" method="post">
+					<form th:action="@{/procurement/assets/list}" method="post">
                             	
-	           				<button type="submit" class="btn btn-primary">Back</button>	
+	           			<button type="submit" class="btn btn-primary">Back</button>	
 	           			
-	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
-	           				<input type="hidden" th:value="${priznak}" name="priznak">
-	           			</form>
+	           			<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           			<input type="hidden" th:value="${priznak}" name="priznak">
+	           			<input type="hidden" th:value="${quserId}" name="quserId">
+	           				
+	           		</form>
 				
   					<hr/>
   				  				  						

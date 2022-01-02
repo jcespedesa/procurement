@@ -34,14 +34,20 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a href="/procurement/Projects/list">Back</a>
+           			<form th:action="@{/procurement/projects/list}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             	
             </ul>
       	</nav>
-   		
+   		<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
       			<div class="row">
-        			<div class="col-lg-12 text-center">
+        			<div class="col-8 text-center">
 				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Search Projects</p>
 				          
         			</div>
@@ -53,7 +59,7 @@
       				
       					<label class="warning">Search by Project Number</label>
       				
-      					<form class="utilityForm" th:action="@{/procurement/Projects/findProjectNum}" method="post">
+      					<form class="utilityForm" th:action="@{/procurement/projects/findProjectNum}" method="post">
 	                    
 		                    <div class="form-group">
 		                       	<label for="project" class="col-form-label">Project Number<sup>*</sup>:</label> 
@@ -65,7 +71,7 @@
 		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
 		                       	
 		                    </div>
-		                      	
+		                    <input type="hidden" th:value="${quserId}" name="quserId">   	
 	            		</form>
       				
       				</div>
@@ -73,7 +79,7 @@
       				
       					<label class="warning">Search by Project Name</label>
       				
-      					<form class="utilityForm" th:action="@{/procurement/Projects/findProjectName}" method="post">
+      					<form class="utilityForm" th:action="@{/procurement/projects/findProjectName}" method="post">
 	                    
 		                    <div class="form-group">
 		                       	<label for="project" class="col-form-label">String to search<sup>*</sup>:</label> 
@@ -87,7 +93,7 @@
 		                    </div>
 		                      	
 	            		</form>
-      				
+      					<input type="hidden" th:value="${quserId}" name="quserId"> 
       				
       				</div>
      		

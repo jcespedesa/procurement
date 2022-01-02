@@ -35,14 +35,26 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a href="/procurement/hhsDivisions/edit">Add New</a>
+           			<form th:action="@{/portal/mainMenu}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
-            	<li>
-           			<a href="/procurement/index">Back</a>
+        		<li>
+           			<form th:action="@{/procurement/hhsDivisions/edit}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">New</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             </ul>
       	</nav>
-   		
+   		<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
       			<div class="row">
         			<div class="col-lg-12 ">
 				          <p class="navbar-brand" style="color:#880000;font-size:15px;">All HHS Divisions</p>
@@ -69,17 +81,29 @@
   							<td th:text="${division.divisionNumber}" style="font-size:12px;"></td>
   							<td th:text="${division.division}" style="font-size:12px;"></td>
   							<td th:text="${division.director}" style="font-size:12px;"></td>
-  							<td th:text="${division.active}" style="font-size:12px;"></td>
+  							
+  							<td th:if="${division.active}=='Yes'" th:text="${division.active}" style="font-size:12px;"></td>
+  							<td th:unless="${division.active}=='Yes'" th:text="${division.active}" style="font-size:12px;background-color: #ffcc99"></td>
   									  							
   							<td>
-                            	<a th:href="@{/procurement/hhsDivisions/edit/{id}(id=${division.divisionid})}" class="btn btn-primary btn-sm">
-                                	<i class="fa fa-edit"></i>
-                                </a>
+                            	<form th:action="@{/procurement/hhsDivisions/edit}" method="post">
+                            	
+	           			        	<button type="submit" class="btn btn-primary fa fa-edit btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${division.divisionid}" name="id"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           					</form>
                             </td>
                             <td>
-                                <a th:href="@{/procurement/hhsDivisions/delete/{id}(id=${division.divisionid})}" class="btn btn-danger btn-sm" onClick="return confirmDelete();">				                                    			
-                            		<i class="fa fa-trash" style="font-size:12px"></i>
-                            	</a>
+                                <form th:action="@{/procurement/hhsDivisions/delete}" method="post" onClick="return confirmDelete();">
+                            	
+	           			        	<button type="submit" class="btn btn-danger fa fa-trash btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${division.divisionid}" name="id"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           					</form>
                             </td>
                                                                                    
   						</tr>	

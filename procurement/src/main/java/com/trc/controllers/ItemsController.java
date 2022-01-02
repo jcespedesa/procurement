@@ -6,30 +6,40 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.ItemsEntity;
+import com.trc.entities.UsersEntity;
 import com.trc.services.ItemsService;
 import com.trc.services.RecordNotFoundException;
+import com.trc.services.UsersService;
 
 @Controller
-@RequestMapping("/procurement/Items")
+@RequestMapping("/procurement/items")
 public class ItemsController 
 {
 	@Autowired
 	ItemsService service;
 	
+	@Autowired
+	UsersService serviceUsers;
+	
 	//CRUD operations for items
 	
-		@GetMapping("/list")
-		public String getAllItems(Model model)
+		@RequestMapping(path="/list", method=RequestMethod.POST)
+		public String getAllItems(Model model, Long quserId)
 		{
 						
 			List<ItemsEntity> list=service.getAllItemsListDesc();
 			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+						
 			model.addAttribute("items",list);
 			
 			return "itemsList";
@@ -37,8 +47,9 @@ public class ItemsController
 			
 		}
 		
-		@RequestMapping(path={"/edit","/edit/{id}"})
-		public String editItemsById(Model model,@PathVariable("id") Optional<Long> id) throws RecordNotFoundException 
+		
+		@RequestMapping(path="/edit", method=RequestMethod.POST)
+		public String editItemsById(Model model,Optional<Long> id, Long quserId) throws RecordNotFoundException 
 		{
 			
 			if(id.isPresent())
@@ -51,27 +62,56 @@ public class ItemsController
 				model.addAttribute("item",new ItemsEntity());
 				
 			}
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
 			return "itemsAddEdit";
 		}
 		
-		@RequestMapping(path="/delete/{id}")
-		public String deleteItemById(Model model, @PathVariable("id") Long id) throws RecordNotFoundException
+		
+		@RequestMapping(path="/delete", method=RequestMethod.POST)
+		public String deleteItemById(Model model, Long id, Long quserId) throws RecordNotFoundException
 		{
+			String message=null;
 			
 			service.deleteItemById(id);
 			
-			return "redirect:/procurement/Items/list";
+			message="Items was successful removed...";
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
+			model.addAttribute("message",message);
+			
+			return "itemsRedirect";
 			
 		}
 		
 		@RequestMapping(path="/createItem", method=RequestMethod.POST)
-		public String createOrUpdateItem(ItemsEntity item)
+		public String createOrUpdateItem(Model model, ItemsEntity item, Long quserId)
 		{
-			//System.out.println("Inside the controller to update or create. Object is: "+ provider);
+			String message=null;
 			
 			service.createOrUpdate(item);
 			
-			return "redirect:/procurement/Items/list";
+			message="List was updated successfully...";
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
+			model.addAttribute("message",message);
+			
+			return "itemsRedirect";
 			
 			
 		}

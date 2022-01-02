@@ -34,20 +34,26 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a href="/procurement/Divisions/list">Back</a>
+           			<form th:action="@{/procurement/divisions/list}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             	
             </ul>
       	</nav>
-   		
+   		<div class="cols-sm-4"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>
       			<div class="row">
         			<div class="col-lg-12 text-center">
-				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit Sites</p>
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit</p>
 				          
         			</div>
       			</div>
      		
-  				<form class="form-main" th:action="@{/procurement/Divisions/createDivision}" th:object="${division}" method="post">
+  				<form class="form-main" th:action="@{/procurement/divisions/createDivision}" th:object="${division}" method="post">
                     
                     <div class="form-group">
                        	<label for="dnumber" class="col-form-label">Number<sup>*</sup>:</label> 
@@ -71,14 +77,11 @@
                     
                     <div class="form-group">
                        	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
-                       	
-                       	<a href="/procurement/Divisions/list" class="btn btn-secondary btn-sm">
-                			<i class="fas fa-back ml-2"> Cancel </i>
-                		</a>
+                       
                     </div>
                             	
                     <input type="hidden" id="id" th:field="*{divisionid}">
-     
+     				<input type="hidden" th:value="${quserId}" name="quserId">
                         	
             	</form>
   				

@@ -35,22 +35,31 @@
    			<nav id="hcssmenu">
 	    		<ul>
 	    			<li>
-	           			<a href="/procurement/Assets/menu">Back</a>
+	           			<form th:action="@{/procurement/assets/menu}" method="post">
+               				<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
 	        		</li>
 	        			        			        		
 	            </ul>
       		</nav>
    		
       			<div class="row">
-        			<div class="col-lg-12" th:if="${stringSearch=='all'}">
+        			<div class="col-lg-8" th:if="${stringSearch=='all'}">
 				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Showing All HHS IT Assets</p><span th:text="${stringSearch}"></span>
 				   	</div>
 				   	<div class="col-lg-12" th:unless="${stringSearch=='all'}">
 				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Results searching string: </p><span th:text="${stringSearch}"></span>
 				   	</div>
-				   	<div class="col-lg-12">
-				          <label class="navbar-brand" style="color:#003399;font-size:15px;" th:text="${priznak}"></label>
-				   	</div>
+				   	
+				   	<table class="table table-striped">
+				   		<tr>
+				   			<td><label style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+				   			<td><label style="color:#003399;" th:text="${priznak}"></label></td>
+				   		</tr>
+				   	</table>
 				   	
       			</div>
      		
@@ -92,24 +101,26 @@
   							<td th:unless="${asset.active}=='Yes'" th:text="${asset.active}" style="font-size:12px;background-color:#ffccff;text-align: center;"></td>
   							<td th:text="${asset.author}" style="font-size:12px;" noWrap></td>						  							
   							<td>
-                            	<form th:action="@{/procurement/Assets/edit}" method="post">
+                            	<form th:action="@{/procurement/assets/edit}" method="post">
                             	
 	           			        	<button type="submit" class="btn btn-primary fa fa-edit btn-sm"></button>	
 	           			
 	           						<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
 	           						<input type="hidden" th:value="${asset.assetid}" name="id"> 
 	           						<input type="hidden" th:value="${priznak}" name="priznak">
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
 	           					</form>
                             </td>
                            
                             <td>
-                            	<form th:action="@{/procurement/Assets/delete}" method="post" onClick="return confirmDelete();">
+                            	<form th:action="@{/procurement/assets/delete}" method="post" onClick="return confirmDelete();">
                             	
 	           			        	<button type="submit" class="btn btn-danger fa fa-trash btn-sm"></button>	
 	           			
 	           						<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
 	           						<input type="hidden" th:value="${asset.assetid}" name="id"> 
 	           						<input type="hidden" th:value="${priznak}" name="priznak">
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
 	           					</form>
                             </td>
                                                                                    

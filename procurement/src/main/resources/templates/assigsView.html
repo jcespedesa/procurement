@@ -35,7 +35,7 @@
 	        		
 	            	<li>
 	           			
-	           			<form th:action="@{/procurement/Assets/edit}" method="post">
+	           			<form th:action="@{/procurement/assets/edit}" method="post">
                             	
 	           				<button type="submit" class="btn btn-light">Back</button>
 	           				
@@ -43,20 +43,21 @@
 	           			
 	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
 	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           				<input type="hidden" th:value="${quserId}" name="quserId">
+	           				
 	           			</form>
 	        		</li>
-	        		
-	        		
-	        			        		
 	        		
 	            </ul>
       		</nav>
    		
       			<div class="row">
-        			<div class="col-lg-12">
-				          <p class="navbar-brand" style="color:#880000;font-size:15px;">IT Asset History </p><span th:text="${assetId}"></span>
-				   	</div>
-				   	
+        			<table class="table table-striped">
+        				<tr>
+				        	<td style="color:#880000;">IT Asset History <span th:text="${assetId}"></span></td>
+				            <td><label style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+				   		</tr>
+				   	</table>
       			</div>
      		
   				<table class="table table-striped table-responsive-md w-75">

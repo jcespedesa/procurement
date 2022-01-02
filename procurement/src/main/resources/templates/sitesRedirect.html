@@ -6,7 +6,7 @@
   		<meta charset="utf-8">
   		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   		
-  		<title>Email test</title>
+  		<title>API test</title>
   		
   		<!-- Bootstrap core CSS -->
   		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
@@ -24,33 +24,38 @@
 		
 	</head>
 
-	<body>
-	
-		<div class="container">
+	<body id="page-top">
 
   <!-- Navigation -->
-	  		<nav id="hcssmenu">
-	    		<ul>
-	        		<li>
-	        			<a th:href="@{/procurement/tests/emailSel(quserId=${quserId})}"><span>Back</span></a>
-	           		</li>
-	            	
-	            </ul>
-	      	</nav>
+  		<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<form th:action="@{/procurement/sites/list}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
+        		</li>
+            	
+            </ul>
+      	</nav>
+
+		<div class="container">
 			<div class="row">&nbsp;</div>
 			<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
- 			<div class="row">&nbsp;</div>
+			<div class="row">&nbsp;</div>
+ 
   			<section class="page-section" id="mainBody">
     			
       				<div class="row" >
-        				<div class="col-4">
-				          	<p style="color:indigo;">Results of sending email to :  <b><label th:text="${toEmail}" style="color:navy;"></label></b></p>
+        				<div class="col-lg-6">
+				          	<div style="color:navy;font-weight:bold;" th:text="${message}"></div>
+				         	
         				</div>
       				</div>
-     			    				
-					<div th:text="${message}">No information available..</div>
-													
-  					<hr/>
+     			    
   			  		
   			</section>
   		</div>

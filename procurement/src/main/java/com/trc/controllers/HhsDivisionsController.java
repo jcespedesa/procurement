@@ -6,14 +6,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.HhsDivisionsEntity;
+import com.trc.entities.UsersEntity;
 import com.trc.services.HhsDivisionsService;
 import com.trc.services.RecordNotFoundException;
+import com.trc.services.UsersService;
 
 
 @Controller
@@ -23,14 +24,23 @@ public class HhsDivisionsController
 	@Autowired
 	HhsDivisionsService service;
 	
+	@Autowired
+	UsersService serviceUsers;
+	
 	//CRUD operations for HHS Divisions
 	
-		@GetMapping("/list")
-		public String getAllDivisions(Model model)
+		@RequestMapping(path="/list", method=RequestMethod.POST)
+		public String getAllDivisions(Model model, Long quserId)
 		{
 			//List<HhsDivisionsEntity> list=service.getAllDivisions();
 			
 			List<HhsDivisionsEntity> list=service.getAllByName();
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 			
 			model.addAttribute("divisions",list);
 			
@@ -39,11 +49,10 @@ public class HhsDivisionsController
 			
 		}
 		
-		@RequestMapping(path={"/edit","/edit/{id}"})
-		public String editDivisionsById(Model model,@PathVariable("id") Optional<Long> id) throws RecordNotFoundException 
+		@RequestMapping(path="/edit", method=RequestMethod.POST)
+		public String editDivisionsById(Model model,Optional<Long> id, Long quserId) throws RecordNotFoundException 
 		{
-			
-						
+									
 			if(id.isPresent())
 			{
 				HhsDivisionsEntity entity=service.getDivisionById(id.get());
@@ -55,28 +64,55 @@ public class HhsDivisionsController
 				
 			}
 			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
 						
 			return "hhsDivisionsAddEdit";
 		}
 		
-		@RequestMapping(path="/delete/{id}")
-		public String deleteSiteById(Model model, @PathVariable("id") Long id) throws RecordNotFoundException
+		@RequestMapping(path="/delete", method=RequestMethod.POST)
+		public String deleteSiteById(Model model, Long id, Long quserId) throws RecordNotFoundException
 		{
-			
+			String message=null;
+						
 			service.deleteDivisionById(id);
 			
-			return "redirect:/procurement/hhsDivisions/list";
+			message="Division was deleted...";
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
+			model.addAttribute("message",message);
+			
+			return "hhsDivisionsRedirect";
 			
 		}
 		
 		@RequestMapping(path="/createDivision", method=RequestMethod.POST)
-		public String createOrUpdateDivision(HhsDivisionsEntity division)
+		public String createOrUpdateDivision(Model model, HhsDivisionsEntity division, Long quserId)
 		{
-			//System.out.println("Inside the controller to update or create. Object is: "+ division);
+			String message=null;
 			
 			service.createOrUpdate(division);
 			
-			return "redirect:/procurement/hhsDivisions/list";
+			message="List was successful updated...";
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
+			model.addAttribute("message",message);
+			
+			return "hhsDivisionsRedirect";
 			
 			
 		}

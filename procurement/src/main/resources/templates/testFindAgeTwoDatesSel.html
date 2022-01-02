@@ -35,7 +35,13 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a th:href="@{/procurement/index}">Back</a>
+           			<form th:action="@{/portal/mainMenu}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             	
             </ul>
@@ -71,6 +77,8 @@
 	                    	<div class="form-group">
 	                       		<input type="submit" class="btn btn-primary btn-sm" value="Submit >> ">
 	                    	</div>
+	                    	
+	                    	<input type="hidden" th:value="${quserId}" name="quserId"> 
 	                	                        	
 	            		</form>
 	  				</div>

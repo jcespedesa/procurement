@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,8 @@ public class UsersService
 	@Autowired
 	UsersRepository repository;
 	
-	//@Autowired
-    //private PasswordEncoder passwordEncoder;
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	SettingsRepository repositorySettings;
@@ -61,7 +62,6 @@ public class UsersService
 				newEntity.setRole(entity.getRole());
 				newEntity.setDomain(entity.getDomain());
 				
-				newEntity.setPassword(entity.getPassword());
 				newEntity.setActive(entity.getActive());
 								
 				newEntity=repository.save(newEntity);
@@ -128,27 +128,15 @@ public class UsersService
     {
     	    	
     	String encodedPass=null;
-    	//String username=null;
-    	
+    	    	
     	//Trying to set user's new password
     	
-    	//Encoding the default password
-        //encodedPass=passwordEncoder.encode(newPass);
+    	//Encoding the sent password
+        encodedPass=passwordEncoder.encode(newPass);
     	
-    	//Encoding is not available yet
-    	encodedPass=newPass;
-                 	
     	repository.setDefaultPass(id,encodedPass);
     	
-    	//Converting Long to String
-    	//String clientIdString=String.valueOf(id);
-    	
-    	//Getting username
-    	//username=(String) servlet.getSession().getAttribute("name");
-    	
-    	//Creating the log
-    	//repositoryLogs.generateLog("Setting New Password",clientIdString,username);
-    	
+    	    	
     	
     }
 
@@ -160,7 +148,7 @@ public class UsersService
 				
 		UsersEntity user=repository.getUserByEmail(email);
 		
-		return user;
+		return user; 
 	}
 
 
@@ -181,13 +169,49 @@ public class UsersService
 			
 		}	
 		else
-			if(storedPassword.equals(password))
-				priznakSuccess=true;
+		{
+				//checking if the input password matches with the stored password
+		    	boolean isPasswordMatch=passwordEncoder.matches(password,storedPassword);
+		    	
+		    	if(isPasswordMatch)
+					priznakSuccess=true;
 		
+		}
 				
 		return priznakSuccess;
 	}
 	
 	
+	
+	public String checkString(String str) 
+	{
+		
+	    int i=0;
+		
+		char ch;
+	    
+	    boolean capitalFlag=false;
+	    boolean numberFlag=false;
+	    
+	    for(i=0;i<str.length();i++) 
+	    {
+	        ch=str.charAt(i);
+	        
+	        if(Character.isDigit(ch)) 
+	        {
+	            numberFlag=true;
+	        }
+	        else 
+	        	if(Character.isUpperCase(ch)) 
+	        	{
+	        		capitalFlag=true;
+	        		
+	        	} 
+	        	if(numberFlag && capitalFlag)
+	        		return "true";
+	      }
+	      return "false";
+	}
+
 	
 }

@@ -35,7 +35,7 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a th:href="@{/procurement/index}">Cancel</a>
+           			
         		</li>
             	
             </ul>
@@ -49,6 +49,8 @@
 				          
         			</div>
       			</div>
+      			
+      			<div class="row"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>	
       			
       			<div class="row">
       			
@@ -71,6 +73,7 @@
 	                        </div> 
 	                        
 	                        <input type="hidden" name="kluch" th:value="${kluch}">
+	                        <input type="hidden" th:value="${quserId}" name="quserId">
 	                        	                      	                                                           
 	                    	<div class="form-group">
 	                       		<input type="submit" class="btn btn-primary btn-sm" value=" Continue >> ">
