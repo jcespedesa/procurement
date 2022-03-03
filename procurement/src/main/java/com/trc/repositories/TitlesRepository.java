@@ -17,4 +17,7 @@ public interface TitlesRepository extends CrudRepository<TitlesEntity,Long>
 	
 	@Query("Select u from TitlesEntity u Order by titleDesc")
 	List<TitlesEntity>  getAllByName();
+	
+	@Query("Select count(u) from TitlesEntity u where u.titleNum=?1")
+	int findTitleDuplicity(String titleNum);
 }

@@ -24,6 +24,7 @@ import org.supercsv.prefs.CsvPreference;
 import com.trc.entities.AssetAssigEntity;
 import com.trc.entities.AssetsEntity;
 import com.trc.entities.ItemsEntity;
+import com.trc.entities.LogsEntity;
 import com.trc.entities.PeripheralsEntity;
 import com.trc.entities.ProjectsEntity;
 import com.trc.entities.SitesEntity;
@@ -32,6 +33,7 @@ import com.trc.entities.UsersEntity;
 import com.trc.services.AssetsAssigService;
 import com.trc.services.AssetsService;
 import com.trc.services.ItemsService;
+import com.trc.services.LogsService;
 import com.trc.services.PeripheralsService;
 import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
@@ -67,6 +69,9 @@ public class AssetsController
 	
 	@Autowired
 	UsersService serviceUsers;
+	
+	@Autowired
+	LogsService serviceLogs;
 	
 	//CRUD operations for assets
 	
@@ -106,7 +111,7 @@ public class AssetsController
 	
 		
 		@RequestMapping(path="/list",method=RequestMethod.POST)
-		public String getAllAssets(Model model,String stringSearch,String priznak, Long quserId) throws RecordNotFoundException
+		public String getAllAssets(Model model,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
 			List<AssetsEntity> list=service.getAllAssets();
 			
@@ -265,8 +270,7 @@ public class AssetsController
 			AssetsEntity entity=service.getAssetById(id);
 				
 			String assetId=null;
-			
-						
+									
 			assetId=String.valueOf(id);
 				
 			//Retrieving related peripherals for this asset				
@@ -321,13 +325,22 @@ public class AssetsController
 		@RequestMapping(path="/delete", method=RequestMethod.POST)
 		public String deleteAssetById(Model model,Long id,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
-			String message="Record was deleted...";
+			String message="Asset was deleted...";
+			
+			AssetsEntity asset=service.getAssetById(id);
 			
 			//Deleting the record
 			service.deleteAssetById(id);
 			
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        //Processing logs
+			LogsEntity log=new LogsEntity();
+			log.setSubject(quser.getEmail());
+			log.setAction("Deleting asset from the database. Item ID is "+ asset.getAssetNumber());
+			log.setObject(asset.getItem());
+			serviceLogs.saveLog(log);
 	        
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
@@ -346,13 +359,19 @@ public class AssetsController
 			//System.out.println("Inside the controller, arrived string search was: "+ stringSearch);
 			
 			String message="Asset was updated successfully...";
-			
-						
+									
 			service.createOrUpdate(asset);
 			
 			
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        //Processing logs
+			LogsEntity log=new LogsEntity();
+			log.setSubject(quser.getEmail());
+			log.setAction("Creating/modifying asset. Item ID is "+ asset.getAssetNumber());
+			log.setObject(asset.getItem());
+			serviceLogs.saveLog(log);
 	        
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
@@ -984,8 +1003,15 @@ public class AssetsController
 	         
 	        csvWriter.close();
 	        
-	      //Retrieving user identity
+	        //Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        //Processing logs
+			LogsEntity log=new LogsEntity();
+			log.setSubject(quser.getEmail());
+			log.setAction("Exporting Assets Information to CSV file");
+			log.setObject("Kind of exported asset is "+ stringSearch);
+			serviceLogs.saveLog(log);
 	        
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
@@ -1117,10 +1143,16 @@ public class AssetsController
 			//Saving changes to the asset object
 			service.assetReassignation(id,newUsername,newTitle,newEmpStatus,newProject,newEmail,reassignedBy,emailReassigner);
 			
-			
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
-	        
+			
+			//Processing logs
+			LogsEntity log=new LogsEntity();
+			log.setSubject(quser.getEmail());
+			log.setAction("Reassigning asset number "+ assetReassig.getAssetNumber());
+			log.setObject("New recipient of this asset is "+ assetReassig.getAssigName());
+			serviceLogs.saveLog(log);
+				        
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
 			

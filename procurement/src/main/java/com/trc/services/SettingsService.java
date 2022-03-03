@@ -88,5 +88,32 @@ public class SettingsService
 		
 		
 	}
+	
+	public String findEmailSender(String setting)
+	{
+		String sender=null;
+		
+		sender=repository.getEmailSender(setting);
+		
+		
+		return sender;
+	}
+	
+	public SettingsEntity getSettingByDescription(String description) throws RecordNotFoundException
+	{
+		SettingsEntity setting=repository.getBySname(description);
+		
+		return setting;
+	}
+	
+	public int findDuplicates(String sname)
+	{
+		int priznakDuplicate=0;
+		
+		priznakDuplicate=repository.findSettingDuplicity(sname);
+		
+		
+		return priznakDuplicate;
+	}
 
 }

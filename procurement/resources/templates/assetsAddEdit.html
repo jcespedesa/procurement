@@ -60,13 +60,15 @@
 	        		
 	        		<li th:if="${priznakNew=='Yes'}">
 	           			
-	           			<form th:action="@{/procurement/peripherals/list}" method="post">
-               				<button type="submit" class="btn btn-light">Peripherals</button>	
+	           			<label>
+               				<button class="btn btn-light">Peripherals</button>	
 	           			
+	           				<input type="hidden" th:value="${asset.assetid}" name="assetId">
+	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+	           				<input type="hidden" th:value="${priznak}" name="priznak">
 	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
-	           				<input type="hidden" th:value="${asset.assetid}" name="id">
 	           			
-	           			</form>
+	           			</label>
 	           			
 	        		</li>
 	        		<li th:if="${priznakNew=='No'}">
@@ -119,6 +121,8 @@
 			         </tr><tr>
 			          <td th:text="'Priznak is '+ ${priznak}"></td>
 			          <td><label style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+			          <td th:text="'Priznak New is '+ ${priznakNew}"></td>
+			          
 			       </tr>   
 			    </table>
       		</div>

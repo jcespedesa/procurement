@@ -110,4 +110,13 @@ public class TitlesService
 			return title;
 		
 	}
+	
+	public int findDuplicates(String titleNum)
+	{
+		int priznakDuplicate=0;
+		
+		priznakDuplicate=repository.findTitleDuplicity(titleNum);
+		
+		return priznakDuplicate;
+	}
 }

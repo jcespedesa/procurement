@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Items</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
+			
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<form th:action="@{/portal/mainMenu}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
+        		</li>
+            	<li>
+           			<form th:action="@{/procurement/items/edit}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">New</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
+        		</li>
+            </ul>
+      	</nav>
+   		<div class="row"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>
+   		
+      			<div class="row">
+        			<div class="col-6">
+				          <p class="navbar-brand" style="color:navy;">All Items</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<table class="table table-striped table-responsive-md">
+  					<thead>
+  						<tr>
+  							<th style="color:#006400;font-size:12px;">ID</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Item</th>
+  							<th style="color:#006400;font-size:12px;">Item Number</th>
+  							<th style="color:#006400;font-size:12px;">Class</th>
+  							<th style="color:#006400;font-size:12px;">HHS Form</th>
+  							<th style="color:#006400;font-size:12px;">Edit</th>
+  							<th style="color:#006400;font-size:12px;">Delete</th>
+  						</tr>
+  					</thead>
+  					<tbody>
+  						<tr th:each="item : ${items}">
+  							<td th:text="${item.itemid}" style="font-size:12px;"></td>
+  							<td th:text="${item.item}" style="font-size:12px;"></td>
+  							<td th:text="${item.itemNumber}" style="font-size:12px;"></td>
+  							<td th:text="${item.klass}" style="font-size:12px;"></td>
+  							  							
+  							<td th:if="${item.hhsForm == 'Yes'}" th:text="${item.hhsForm}" style="font-size:12px;"></td>
+  							<td th:unless="${item.hhsForm == 'Yes'}" th:text="${item.hhsForm}" style="font-size:12px;background-color:#ffcc99"></td>
+  							 							  							
+  							<td>
+                            	<form th:action="@{/procurement/items/edit}" method="post">
+                            	
+	           			        	<button type="submit" class="btn btn-primary fa fa-edit btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${item.itemid}" name="id"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           					</form>
+                            </td>
+                            <td>
+                                <form th:action="@{/procurement/items/delete}" method="post" onClick="return confirmDelete();">
+                            	
+	           			        	<button type="submit" class="btn btn-danger fa fa-trash btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${item.itemid}" name="id"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           					</form>
+                            </td>
+                                                                                   
+  						</tr>	
+  					</tbody>	
+  				</table>
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  		
+ 	</body>
+</html>			

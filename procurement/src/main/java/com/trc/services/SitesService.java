@@ -147,4 +147,13 @@ public class SitesService
 		
 	}
 	
+	public int findDuplicates(String siteNumber)
+	{
+		int priznakDuplicate=0;
+		
+		priznakDuplicate=repository.findSiteDuplicity(siteNumber);
+		
+		return priznakDuplicate;
+	}
+	
 }

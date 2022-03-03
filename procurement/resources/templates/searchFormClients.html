@@ -34,7 +34,13 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a href="/procurement/clients/list">Back</a>
+           			<form th:action="@{/procurement/clients/list}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             	
             </ul>
@@ -42,7 +48,7 @@
    		
       			<div class="row">
         			<div class="col-lg-12 text-center">
-				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Search Clients</p>
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Search Employees</p>
 				          
         			</div>
       			</div>
@@ -51,7 +57,7 @@
       			
       				<div class="col">
       				
-      					<label class="warning">Search by Client first/last name</label>
+      					<label class="warning">Search by first/last name</label>
       				
       					<form class="utilityForm" th:action="@{/procurement/clients/findByName}" method="post">
 	                    
@@ -65,19 +71,21 @@
 		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
 		                       	
 		                    </div>
-		                      	
+		                    <input type="hidden" th:value="${quserId}" name="quserId">    	
 	            		</form>
       				
       				</div>
       				<div class="col">
       				
-      					<label class="warning">Search by Project Name</label>
+      					<label class="warning">Search by Project</label>
       				
       					<form class="utilityForm" th:action="@{/procurement/clients/findByProgram}" method="post">
 	                    
 		                    <div class="form-group">
-		                       	<label for="project" class="col-form-label">String to search<sup>[No spaces]</sup>:</label> 
-		                       	<input type="text" name="stringSearch" placeholder="Part of the program name" required  size="20" maxlength="20"/>
+		                       	<label for="requester" class="col-form-label">Select Program<sup>*</sup>:</label> 
+		                       	<select name="stringSearch" required>
+                       				<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}" ></option>
+                       			</select>
 		                    </div>
 		                                        
 		                    
@@ -85,7 +93,7 @@
 		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
 		                       	
 		                    </div>
-		                      	
+		                    <input type="hidden" th:value="${quserId}" name="quserId">    	
 	            		</form>
       				
       				

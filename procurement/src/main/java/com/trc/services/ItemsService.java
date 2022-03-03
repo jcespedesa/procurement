@@ -172,4 +172,14 @@ public class ItemsService
 		return description;
 	}
 	
+	public int findDuplicates(String itemNumber)
+	{
+		int priznakDuplicate=0;
+		
+		priznakDuplicate=repository.findItemDuplicity(itemNumber);
+		
+		
+		return priznakDuplicate;
+	}
+	
 }

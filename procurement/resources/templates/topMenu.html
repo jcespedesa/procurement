@@ -75,6 +75,15 @@
 	           			
 	           					</form>
 							</li>
+							<li>
+								<form th:action="@{/procurement/clients/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-light">Employees</button>	
+	           			
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           					</form>
+							</li>
          					
       					</ul>
    					</li>
@@ -106,12 +115,21 @@
 	           			</form>
 	           		</li>
 	           		<li>
+   						<form th:action="@{/procurement/about}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light" style="font-size:11px;">About</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
+	           		</li>
+	           		<li>
    						<form th:action="@{/procurement/logOut}" method="post">
                             	
 	           				<button type="submit" class="btn btn-light" style="font-size:11px;">Logout</button>	
 	           			
 	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
-	           			
+	           				
 	           			</form>
 	           		</li>
    				</ul>

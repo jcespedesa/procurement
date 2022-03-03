@@ -24,5 +24,8 @@ public interface UsersRepository  extends CrudRepository<UsersEntity,Long>
 		
 	@Query("Select u.password from UsersEntity u Where u.email=?1")
 	String  getPassByEmail(String email);
+	
+	@Query("Select count(u) from UsersEntity u where u.email=?1")
+	int findEmailDuplicity(String email);
 
 }

@@ -94,4 +94,5 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	@Query("Select u from AssetsEntity u WHERE u.email=?1")
 	List<AssetsEntity> getByAssignee(String email);
 	
+		
 }

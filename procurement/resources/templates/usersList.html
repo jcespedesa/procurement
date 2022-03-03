@@ -6,7 +6,7 @@
   		<meta charset="utf-8">
   		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   		
-  		<title>Items</title>
+  		<title>Users List</title>
   		
   		<!-- Bootstrap core CSS -->
   		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
@@ -28,6 +28,8 @@
 
   <!-- Navigation -->
   		
+
+
    		<div class="container">
    		
    			<nav id="hcssmenu">
@@ -41,8 +43,8 @@
 	           			
 	           		</form>
         		</li>
-            	<li>
-           			<form th:action="@{/procurement/items/edit}" method="post">
+        		<li>
+           			<form th:action="@{/procurement/users/edit}" method="post">
                             	
 	           			<button type="submit" class="btn btn-light">New</button>	
 	           			
@@ -52,11 +54,10 @@
         		</li>
             </ul>
       	</nav>
-   		<div class="row"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>
-   		
+   		<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div> 
       			<div class="row">
-        			<div class="col-6">
-				          <p class="navbar-brand" style="color:navy;">All Items</p>
+        			<div class="col-lg-12 ">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">All Users</p>
 				          
         			</div>
       			</div>
@@ -65,40 +66,55 @@
   					<thead>
   						<tr>
   							<th style="color:#006400;font-size:12px;">ID</th>
-  							<th style="color:#006400;font-size:12px;" noWrap>Item</th>
-  							<th style="color:#006400;font-size:12px;">Item Number</th>
-  							<th style="color:#006400;font-size:12px;">Class</th>
-  							<th style="color:#006400;font-size:12px;">HHS Form</th>
+  							<th style="color:#006400;font-size:12px;">Username</th>
+  							<th style="color:#006400;font-size:12px;">Email</th>
+  							<th style="color:#006400;font-size:12px;">Role</th>
+  							<th style="color:#006400;font-size:12px;">Domain</th>
+  							<th style="color:#006400;font-size:12px;">Active</th>
+  							
   							<th style="color:#006400;font-size:12px;">Edit</th>
   							<th style="color:#006400;font-size:12px;">Delete</th>
+  							<th style="color:#006400;font-size:12px;">Reset Password</th>
   						</tr>
   					</thead>
   					<tbody>
-  						<tr th:each="item : ${items}">
-  							<td th:text="${item.itemid}" style="font-size:12px;"></td>
-  							<td th:text="${item.item}" style="font-size:12px;"></td>
-  							<td th:text="${item.itemNumber}" style="font-size:12px;"></td>
-  							<td th:text="${item.klass}" style="font-size:12px;"></td>
-  							  														
-  							<td th:if="${item.hhsForm}=='Yes'" th:text="${item.hhsForm}" style="text-align:center;"></td>
-  							<td th:unless="${item.hhsForm}=='Yes'" th:text="${item.hhsForm}" style="background-color:bisque;text-align:center;"></td>  
-  							 							  							
+  						<tr th:each="user : ${users}">
+  							<td th:text="${user.userid}" style="font-size:12px;"></td>
+  							<td th:text="${user.username}" style="font-size:12px;"></td>
+  							<td th:text="${user.email}" style="font-size:12px;"></td>
+  							<td th:text="${user.role}" style="font-size:12px;"></td>
+  							<td th:text="${user.domain}" style="font-size:12px;"></td>
+  							
+  							<td th:if="${user.active}=='Yes'" th:text="${user.active}" style="font-size:12px;"></td>
+  							<td th:unless="${user.active}=='Yes'" th:text="${user.active}" style="font-size:12px;background-color: #ffcc99"></td>
+  							  
+  							
   							<td>
-                            	<form th:action="@{/procurement/items/edit}" method="post">
+                            	<form th:action="@{/procurement/users/edit}" method="post">
                             	
 	           			        	<button type="submit" class="btn btn-primary fa fa-edit btn-sm"></button>	
 	           			
-	           						<input type="hidden" th:value="${item.itemid}" name="id"> 
+	           						<input type="hidden" th:value="${user.userid}" name="id"> 
 	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
 	           						
 	           					</form>
                             </td>
                             <td>
-                                <form th:action="@{/procurement/items/delete}" method="post" onClick="return confirmDelete();">
+                                <form th:action="@{/procurement/users/delete}" method="post" onClick="return confirmDelete();">
                             	
 	           			        	<button type="submit" class="btn btn-danger fa fa-trash btn-sm"></button>	
 	           			
-	           						<input type="hidden" th:value="${item.itemid}" name="id"> 
+	           						<input type="hidden" th:value="${user.userid}" name="id"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           					</form>
+                            </td>
+                            <td>
+                            	<form th:action="@{/procurement/users/resetPass}" method="post">
+                            	
+	           			        	<button type="submit" class="btn btn-primary fa fa-edit btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${user.userid}" name="id"> 
 	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
 	           						
 	           					</form>

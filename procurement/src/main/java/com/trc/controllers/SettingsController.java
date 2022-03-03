@@ -10,8 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.trc.entities.LogsEntity;
 import com.trc.entities.SettingsEntity;
 import com.trc.entities.UsersEntity;
+import com.trc.services.LogsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.SettingsService;
 import com.trc.services.UsersService;
@@ -26,6 +28,9 @@ public class SettingsController
 	
 	@Autowired
 	UsersService serviceUsers;
+	
+	@Autowired
+	LogsService serviceLogs;
 	
 	//CRUD operations for Settings
 	
@@ -77,12 +82,22 @@ public class SettingsController
 		
 		String message=null;
 		
+		//Retrieving setting identity
+        SettingsEntity setting=service.getSettingById(id);
+		
 		service.deleteSettingById(id);
 		
 		message="Setting was deleted...";
 		
 		//Retrieving user identity
         UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+      //Processing logs
+		LogsEntity log=new LogsEntity();
+		log.setSubject(quser.getEmail());
+		log.setAction("Deleting Setting definition from the database. Setting was ID:  "+ setting.getSettingid());
+		log.setObject(setting.getSname());
+		serviceLogs.saveLog(log);
         
         model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);
@@ -96,14 +111,66 @@ public class SettingsController
 	@RequestMapping(path="/createSetting", method=RequestMethod.POST)
 	public String createOrUpdateSetting(Model model, SettingsEntity setting, Long quserId)
 	{
+		int priznakDuplicate=0;
+		
 		String message=null;
-		
-		service.createOrUpdate(setting);
-		
-		message="List was updated...";
+		String localSetting=null;
 		
 		//Retrieving user identity
         UsersEntity quser=serviceUsers.getUserById(quserId);
+		
+        if(setting.getSettingid()!=null)
+        {
+        	//Modify the record
+		
+        	service.createOrUpdate(setting);
+		
+        	message="Setting information was updated successfully...";
+		
+        	//Processing logs
+			LogsEntity log=new LogsEntity();
+			log.setSubject(quser.getEmail());
+			log.setAction("Modifying a Setting in the system. Setting ID is "+ setting.getSettingid());
+			log.setObject(setting.getSname());
+			serviceLogs.saveLog(log);
+        }
+        else
+        {
+        	//Creating a new record
+        	
+        	//Checking if this item is not already in the system
+        	localSetting=setting.getSname();
+        	priznakDuplicate=service.findDuplicates(localSetting);
+		
+        	if(priznakDuplicate==0)
+        	{
+        
+        		service.createOrUpdate(setting);
+			
+        		message="New setting was created successfully...";
+			
+        		//Processing logs
+        		LogsEntity log=new LogsEntity();
+        		log.setSubject(quser.getEmail());
+        		log.setAction("Creating new setting in the system. Setting ID is "+ setting.getSettingid());
+        		log.setObject(setting.getSname());
+        		serviceLogs.saveLog(log);
+		
+        	}
+        	else
+        	{
+        		message="Error: Setting duplicated found, new record was not created at this time. Please review the list of settings again...";
+			
+        		//Processing logs
+        		LogsEntity log=new LogsEntity();
+        		log.setSubject(quser.getEmail());
+        		log.setAction("Failing to create a new setting due to duplicity");
+        		log.setObject(setting.getSname());
+        		serviceLogs.saveLog(log);
+			
+        	}	
+        
+        }	
         
         model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);

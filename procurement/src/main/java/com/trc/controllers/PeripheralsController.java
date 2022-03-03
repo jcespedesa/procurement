@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.AssetsEntity;
 import com.trc.entities.ItemsEntity;
+import com.trc.entities.LogsEntity;
 import com.trc.entities.PeripheralsEntity;
 import com.trc.entities.UsersEntity;
 import com.trc.services.AssetsService;
 import com.trc.services.ItemsService;
+import com.trc.services.LogsService;
 import com.trc.services.PeripheralsService;
 import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
@@ -48,6 +50,9 @@ public class PeripheralsController
 	
 	@Autowired
 	UsersService serviceUsers;
+	
+	@Autowired
+	LogsService serviceLogs;
 	
 	//CRUD operations for peripherals
 	
@@ -85,7 +90,7 @@ public class PeripheralsController
 	}
 	
 	@RequestMapping(path={"/edit"}, method=RequestMethod.POST)
-	public String editPeripheral(Model model,Long id, String assetId,String stringSearch,String priznak, Long quserId) throws RecordNotFoundException 
+	public String editPeripheral(Model model,String assetId,String stringSearch,String priznak, Long quserId, Long id) throws RecordNotFoundException 
 	{
 		List<ItemsEntity> items=serviceItems.getAllPeripheralsHHS();		
 		
@@ -110,7 +115,7 @@ public class PeripheralsController
 	}
 	
 	@RequestMapping(path={"/create"}, method=RequestMethod.POST)
-	public String newPeripheral(Model model,String assetId, String stringSearch, String priznak, Long quserId) throws RecordNotFoundException 
+	public String newPeripheral(Model model,Long assetId, String stringSearch, String priznak, Long quserId) throws RecordNotFoundException 
 	{
 		List<ItemsEntity> items=serviceItems.getAllPeripheralsHHS();		
 		
@@ -120,7 +125,7 @@ public class PeripheralsController
 		
 		//Retrieving user identity
         UsersEntity quser=serviceUsers.getUserById(quserId);
-        
+                
         model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);
 		
@@ -135,14 +140,24 @@ public class PeripheralsController
 	
 	
 	@RequestMapping(path="/delete", method=RequestMethod.POST)
-	public String deletePeripheralById(Model model, Long id, String assetId, String stringSearch, String priznak, Long quserId) throws RecordNotFoundException
+	public String deletePeripheralById(Model model, Long id, Long assetId, String stringSearch, String priznak, Long quserId) throws RecordNotFoundException
 	{
 		String message="Peripheral was deleted successfully...";
+		
+		//Retrieving peripheral identity
+        PeripheralsEntity peripheral=service.getPeripheralById(id);
 		
 		service.deletePeripheralById(id);
 		
 		//Retrieving user identity
         UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+      //Processing logs
+		LogsEntity log=new LogsEntity();
+		log.setSubject(quser.getEmail());
+		log.setAction("Deleting a Peripheral related to the IT Asset with ID: "+ assetId);
+		log.setObject("Description of the peripheral is: "+ peripheral.getDescription());
+		serviceLogs.saveLog(log);
         
         model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);
@@ -158,7 +173,7 @@ public class PeripheralsController
 	}
 	
 	@RequestMapping(path="/createPeripheral", method=RequestMethod.POST)
-	public String createOrUpdatePeripheral(Model model, PeripheralsEntity peripheral, String assetId,String priznak,String stringSearch,String id, Long quserId) throws RecordNotFoundException
+	public String createOrUpdatePeripheral(Model model, PeripheralsEntity peripheral, Long assetId,String priznak,String stringSearch,String id, Long quserId) throws RecordNotFoundException
 	{
 		//System.out.println("Inside the controller to update or create. Object is: "+ peripheral);
 		
@@ -166,15 +181,17 @@ public class PeripheralsController
 		String message="Peripheral was added/modified successfully...";
 		String description=null;
 		String itemNumber=null;
-		
-				
-		itemNumber=peripheral.getPeripheralNum();
-		
+		String assetIdString=null;
 						
+		itemNumber=peripheral.getPeripheralNum();
+								
 		//Obtaining peripheral description
 		description=serviceItems.getItemByNumber(itemNumber);
 		
-		peripheral.setAssetId(assetId);
+		//Converting assetId from Long to String
+		assetIdString=String.valueOf(assetId);  
+		
+		peripheral.setAssetId(assetIdString);
 		peripheral.setKluch(kluch);
 		peripheral.setDescription(description);
 		
@@ -182,6 +199,13 @@ public class PeripheralsController
 		
 		//Retrieving user identity
         UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+      //Processing logs
+		LogsEntity log=new LogsEntity();
+		log.setSubject(quser.getEmail());
+		log.setAction("Creating/modifying peripheral related to the Asset ID:  "+ assetId);
+		log.setObject("Description of the peripheral is: "+ peripheral.getDescription());
+		serviceLogs.saveLog(log);
         
         model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);

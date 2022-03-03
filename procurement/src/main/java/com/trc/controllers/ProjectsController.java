@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.DivisionsEntity;
+import com.trc.entities.LogsEntity;
 import com.trc.entities.ProjectsEntity;
 import com.trc.entities.SitesEntity;
 import com.trc.entities.UsersEntity;
 import com.trc.services.DivisionsService;
+import com.trc.services.LogsService;
 import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.SitesService;
@@ -37,6 +39,9 @@ public class ProjectsController
 	
 	@Autowired
 	UsersService serviceUsers;
+	
+	@Autowired
+	LogsService serviceLogs;
 	
 	//CRUD operations for projects
 	
@@ -133,12 +138,22 @@ public class ProjectsController
 		{
 			String message=null;
 			
+			//Retrieving project identity
+	        ProjectsEntity project=service.getProjectById(id);
+			
 			service.deleteProjectById(id);
 			
 			message="Item was removed...";
 			
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        //Processing logs
+			LogsEntity log=new LogsEntity();
+			log.setSubject(quser.getEmail());
+			log.setAction("Deleting Project from the database. Item ID is "+ project.getProjectNumber());
+			log.setObject("And project description was "+ project.getProject());
+			serviceLogs.saveLog(log);
 	        
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
@@ -152,20 +167,72 @@ public class ProjectsController
 		@RequestMapping(path="/createProject", method=RequestMethod.POST)
 		public String createOrUpdateProject(Model model, ProjectsEntity project,  Long quserId)
 		{
+			int priznakDuplicate=0;
+			
 			String message=null;
-			
-			service.createOrUpdate(project);
-			
-			message="List was updated successfully...";
+			String localProject=null;
 			
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
 	        
-	        model.addAttribute("quserId",quserId);
+	        if(project.getProjectid()!=null)
+	        {
+	        	//Modify the record
+	        	
+	        	service.createOrUpdate(project);
+	        	
+	        	message="Project was updated successfully...";
+				
+        		//Processing logs
+        		LogsEntity log=new LogsEntity();
+        		log.setSubject(quser.getEmail());
+        		log.setAction("Modifying Project record. Item ID is "+ project.getProjectid());
+        		log.setObject(project.getProject());
+        		serviceLogs.saveLog(log);
+	        	
+	        }
+	        else
+	        {
+	        	//Creating a new record
+	        	
+	        	//Checking if this item is not already in the system
+	        	localProject=project.getProjectNumber();
+	        	priznakDuplicate=service.findDuplicates(localProject);
+	        	
+	        	if(priznakDuplicate==0)
+	        	{
+			
+	        		service.createOrUpdate(project);
+			
+	        		message="New project was added successfully...";
+			
+	        	        
+			        //Processing logs
+					LogsEntity log=new LogsEntity();
+					log.setSubject(quser.getEmail());
+					log.setAction("Creating new Project. Item ID is "+ project.getProjectNumber());
+					log.setObject("Project description is "+ project.getProject());
+					serviceLogs.saveLog(log);
+				
+	        	}
+	        	else
+	        	{
+	        		message="Error: Duplicate Project found, new record was not created at this time. Please review the list of projects again...";
+					
+	        		//Processing logs
+	        		LogsEntity log=new LogsEntity();
+	        		log.setSubject(quser.getEmail());
+	        		log.setAction("Failing to create a new project due to duplicity: "+ project.getProjectNumber());
+	        		log.setObject(project.getProject());
+	        		serviceLogs.saveLog(log);
+	        	}
+	        }	
+		        
+		    model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
-			
+				
 			model.addAttribute("message",message);
-			
+				
 			return "projectsRedirect";
 			
 			

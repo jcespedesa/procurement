@@ -17,4 +17,7 @@ public interface DivisionsRepository extends CrudRepository<DivisionsEntity,Long
 	
 	@Query("Select u from DivisionsEntity u Order by dname")
 	List<DivisionsEntity>  getAllByName();
+	
+	@Query("Select count(u) from DivisionsEntity u where u.dnumber=?1")
+	int findDivisionDuplicity(String dnumber);
 }

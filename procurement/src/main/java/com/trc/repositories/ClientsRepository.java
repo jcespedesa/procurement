@@ -21,10 +21,13 @@ public interface ClientsRepository extends CrudRepository<ClientsEntity,Long>
 	@Query("Select u from ClientsEntity u WHERE u.cname LIKE '%' || ?1 || '%' Order by cname")
 	List<ClientsEntity>  getClientsByName(String stringSearch);
 	
-	@Query("Select u from ClientsEntity u WHERE u.program LIKE '%' || ?1 || '%' Order by cname")
+	@Query("Select u from ClientsEntity u WHERE u.projectNumber LIKE '%' || ?1 || '%' Order by cname")
 	List<ClientsEntity>  getClientsByProgram(String stringSearch);
 	
 	@Query("Select u from ClientsEntity u WHERE (u.division='300' and u.hhsDivision=?1 and vacStatus=?2 and active='Yes') Order by cname")
 	List<ClientsEntity>  getClieByVacStatus(String division, String vacStatus);
+	
+	@Query("Select count(u) from UsersEntity u where u.email=?1")
+	int findEmailDuplicity(String email);
 	
 }

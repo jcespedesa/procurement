@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+ 
+	<head>
+    	<title>Utility Operations</title>
+		
+			<meta charset="utf-8">
+    		<meta http-equiv="x-ua-compatible" content="ie=edge">
+    		<meta name="viewport" content="width=device-width, initial-scale=1">
+    	
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  			<script type="text/javascript" th:src="@{/js/citiesDropDown.js}" src="../static/js/citiesDropDown.js"></script>
+					
+  			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+  			<link th:href="@{/css/style.css}" rel="stylesheet">
+  			  		
+    	
+	</head>
+ 
+	<body>
+    	<div class="container my-5">
+        	
+        	<div class="card">
+				<div class="card-body">
+					
+					<!-- Navigation -->
+			  		<nav id="hcssmenu">
+			    		<ul>
+			        		<li>
+			           			<form th:action="@{/portal/mainMenu}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
+			        		</li>
+			            	
+			            </ul>
+			      	</nav>
+			      	<div class="row">&nbsp;</div>
+  					<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
+  					<div class="row">&nbsp;</div>
+  					<div class="row" >
+        				<div class="col-lg-6">
+				          	<div style="color:navy;font-weight:bold;" th:text="${message}"></div>
+				         	
+        				</div>
+      				</div>			                	                    
+                </div>
+            </div>
+           	<div style="color:#000088; font-size:10px;font-weight: bold;" class="card-footer text-muted">TRC Corp</div>
+         </div>   
+	</body>
+ 
+</html>

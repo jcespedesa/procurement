@@ -18,58 +18,41 @@ public class ClientsEntity
 	@Column(name="cname")
 	private String cname;
 	
+	@Column(name="email")
+	private String email;
+	
 	@Column(name="division")
 	private String division;
-	
-	@Column(name="program")
-	private String program;
-	
-	@Column(name="projectnumber")
-	private String projectNumber;
 	
 	@Column(name="hhsdivision")
 	private String hhsDivision;
 	
-	@Column(name="email")
-	private String email;
+	@Column(name="projectnumber")
+	private String projectNumber;
 	
-	@Column(name="active")
-	private String active;
+	@Column(name="sitenumber")
+	private String siteNumber;
+	
+	@Column(name="title")
+	private String title;
+	
+	@Column(name="empstatus")
+	private String empStatus;
 	
 	@Column(name="vacstatus")
 	private String vacStatus;
 	
-	@Column(name="completiontime")
-	private String completionTime;
-	
-	@Column(name="realcompletiontime")
-	private String realCompletionTime;
+	@Column(name="active")
+	private String active;
 	
 	@Column(name="notes")
 	private String notes;
 	
-	@Column(name="dateseconddose")
-	private String dateSecondDose;
-	
-	@Column(name="realdateseconddose")
-	private String realDateSecondDose;
-	
-	@Column(name="datecreation")
-	private String dateCreation;
-	
-	@Column(name="realdatecreation")
-	private String realDateCreation;
-	
-	@Column(name="type")
-	private String type;
-	
-	@Column(name="hmisnum")
-	private String hmisNum;
-	
+		
 	@Override
 	public String toString()
 	{
-		return "ClientsEntity[clientid="+ clientid +",cname="+ cname +",division="+ division +",program="+ program +",projectNumber="+ projectNumber +",hhsDivision="+ hhsDivision +",email="+ email +",active="+ active +",vacStatus="+ vacStatus +",completionTime="+ completionTime +",realCompletionTime="+ realCompletionTime +",notes="+ notes +",dateSecondDose="+ dateSecondDose +",realDateSecondDose="+ realDateSecondDose +",type="+ type +",dateCreation="+ dateCreation +",realDateCreation="+ realDateCreation +",hmisNum="+ hmisNum +"]";				
+		return "ClientsEntity[clientid="+ clientid +",cname="+ cname +",division="+ division +",projectNumber="+ projectNumber +",hhsDivision="+ hhsDivision +",email="+ email +",active="+ active +",vacStatus="+ vacStatus +",siteNumber="+ siteNumber +",title="+ title +",empStatus="+ empStatus +",notes="+ notes +"]";				
 		
 	}
 
@@ -110,18 +93,7 @@ public class ClientsEntity
 	}
 
 
-	public String getProgram() 
-	{
-		return program;
-	}
-
-
-	public void setProgram(String program) 
-	{
-		this.program=program;
-	}
-
-
+	
 	public String getProjectNumber() 
 	{
 		return projectNumber;
@@ -182,18 +154,6 @@ public class ClientsEntity
 	}
 
 
-	public String getCompletionTime() 
-	{
-		return completionTime;
-	}
-
-
-	public void setCompletionTime(String completionTime) 
-	{
-		this.completionTime=completionTime;
-	}
-
-
 	public String getNotes() 
 	{
 		return notes;
@@ -206,89 +166,40 @@ public class ClientsEntity
 	}
 
 
-	public String getDateSecondDose() 
+	public String getSiteNumber() 
 	{
-		return dateSecondDose;
+		return siteNumber;
 	}
 
 
-	public void setDateSecondDose(String dateSecondDose) 
+	public void setSiteNumber(String siteNumber) 
 	{
-		this.dateSecondDose=dateSecondDose;
+		this.siteNumber=siteNumber;
 	}
 
 
-	public String getDateCreation() 
+	public String getTitle() 
 	{
-		return dateCreation;
+		return title;
 	}
 
 
-	public void setDateCreation(String dateCreation) 
+	public void setTitle(String title) 
 	{
-		this.dateCreation=dateCreation;
+		this.title=title;
 	}
 
 
-	public String getType() 
+	public String getEmpStatus() 
 	{
-		return type;
+		return empStatus;
 	}
 
 
-	public void setType(String type) 
+	public void setEmpStatus(String empStatus) 
 	{
-		this.type=type;
+		this.empStatus=empStatus;
 	}
 
-
-	public String getHmisNum() 
-	{
-		return hmisNum;
-	}
-
-
-	public void setHmisNum(String hmisNum) 
-	{
-		this.hmisNum=hmisNum;
-	}
-
-
-	public String getRealCompletionTime() 
-	{
-		return realCompletionTime;
-	}
-
-
-	public void setRealCompletionTime(String realCompletionTime) 
-	{
-		this.realCompletionTime=realCompletionTime;
-	}
-
-
-	public String getRealDateSecondDose() 
-	{
-		return realDateSecondDose;
-	}
-
-
-	public void setRealDateSecondDose(String realDateSecondDose) 
-	{
-		this.realDateSecondDose=realDateSecondDose;
-	}
-
-
-	public String getRealDateCreation() 
-	{
-		return realDateCreation;
-	}
-
-
-	public void setRealDateCreation(String realDateCreation) 
-	{
-		this.realDateCreation=realDateCreation;
-	}
-	
-	
 	
 }

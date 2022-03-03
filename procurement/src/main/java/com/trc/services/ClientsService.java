@@ -57,10 +57,6 @@ public class ClientsService
 		if(entity.getClientid()==null)
 		{
 			
-			//Trying to save special fields
-			entity.setRealCompletionTime(entity.getCompletionTime());
-			entity.setRealDateSecondDose(entity.getDateSecondDose());
-			entity.setRealDateCreation(entity.getDateCreation());
 			
 			entity=repository.save(entity);
 			
@@ -77,24 +73,17 @@ public class ClientsService
 				
 				newEntity.setCname(entity.getCname());
 				newEntity.setDivision(entity.getDivision());
-				newEntity.setProgram(entity.getProgram());
 				newEntity.setProjectNumber(entity.getProjectNumber());
 				newEntity.setHhsDivision(entity.getHhsDivision());
 				newEntity.setEmail(entity.getEmail());
 				newEntity.setActive(entity.getActive());
 				newEntity.setVacStatus(entity.getVacStatus());
-				newEntity.setCompletionTime(entity.getCompletionTime());
 				newEntity.setNotes(entity.getNotes());
-				newEntity.setDateSecondDose(entity.getDateSecondDose());
-				newEntity.setDateCreation(entity.getDateCreation());
-				newEntity.setType(entity.getType());
-				newEntity.setHmisNum(entity.getHmisNum());
 				
-				//Special fields setup
-				newEntity.setRealCompletionTime(entity.getCompletionTime());
-				newEntity.setRealDateSecondDose(entity.getDateSecondDose());
-				newEntity.setRealDateCreation(entity.getDateCreation());
-				
+				newEntity.setSiteNumber(entity.getSiteNumber());
+				newEntity.setTitle(entity.getTitle());
+				newEntity.setEmpStatus(entity.getEmpStatus());
+								
 				newEntity=repository.save(newEntity);
 				
 				return newEntity;
@@ -148,6 +137,16 @@ public class ClientsService
 		
 		return result;
 		
+	}
+	
+	public int findDuplicates(String email)
+	{
+		int priznakDuplicate=0;
+		
+		priznakDuplicate=repository.findEmailDuplicity(email);
+		
+		
+		return priznakDuplicate;
 	}
 	
 }

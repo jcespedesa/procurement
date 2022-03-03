@@ -222,5 +222,15 @@ public class ProjectsService
 		return listUB;
 		
 	}
+	
+	public int findDuplicates(String projectNumber)
+	{
+		int priznakDuplicate=0;
+		
+		priznakDuplicate=repository.findProjectDuplicity(projectNumber);
+		
+		
+		return priznakDuplicate;
+	}
 
 }

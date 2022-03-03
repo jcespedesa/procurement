@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.HhsDivisionsEntity;
+import com.trc.entities.LogsEntity;
 import com.trc.entities.UsersEntity;
 import com.trc.services.HhsDivisionsService;
+import com.trc.services.LogsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.UsersService;
 
@@ -26,6 +28,9 @@ public class HhsDivisionsController
 	
 	@Autowired
 	UsersService serviceUsers;
+	
+	@Autowired
+	LogsService serviceLogs;
 	
 	//CRUD operations for HHS Divisions
 	
@@ -78,6 +83,9 @@ public class HhsDivisionsController
 		public String deleteSiteById(Model model, Long id, Long quserId) throws RecordNotFoundException
 		{
 			String message=null;
+			
+			//Retrieving division identity
+	        HhsDivisionsEntity division=service.getDivisionById(id);
 						
 			service.deleteDivisionById(id);
 			
@@ -85,6 +93,13 @@ public class HhsDivisionsController
 			
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	      //Processing logs
+			LogsEntity log=new LogsEntity();
+			log.setSubject(quser.getEmail());
+			log.setAction("Deleting HHS Division from the database. Item ID is "+ division.getDivisionNumber());
+			log.setObject(division.getDivision());
+			serviceLogs.saveLog(log);
 	        
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
@@ -98,15 +113,65 @@ public class HhsDivisionsController
 		@RequestMapping(path="/createDivision", method=RequestMethod.POST)
 		public String createOrUpdateDivision(Model model, HhsDivisionsEntity division, Long quserId)
 		{
+			int priznakDuplicate=0;
+			
 			String message=null;
-			
-			service.createOrUpdate(division);
-			
-			message="List was successful updated...";
+			String localDivision=null;
 			
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
 	        
+	        if(division.getDivisionid()!=null)
+	        {
+	        	//Modify the record
+	        
+				service.createOrUpdate(division);
+			
+				message="HHS Division was successfully modified...";
+				        
+				//Processing logs
+				LogsEntity log=new LogsEntity();
+				log.setSubject(quser.getEmail());
+				log.setAction("Modifying HHS Division record. Item ID is "+ division.getDivisionNumber());
+				log.setObject(division.getDivision());
+				serviceLogs.saveLog(log);
+			
+	        }
+	        else
+	        {
+	        	//Creating a new record
+	        	
+	        	//Checking if this item is not already in the system
+	        	localDivision=division.getDivisionNumber();
+	        	priznakDuplicate=service.findDuplicates(localDivision);
+	        	
+	        	if(priznakDuplicate==0)
+	        	{
+	        		service.createOrUpdate(division);
+					
+	        		message="New HHS Division was created successfully...";
+	        		
+			   		//Processing logs
+	        		LogsEntity log=new LogsEntity();
+	        		log.setSubject(quser.getEmail());
+	        		log.setAction("Creating new HHS Division record in the database. HHS Division ID is "+ division.getDivisionNumber());
+	        		log.setObject(division.getDivision());
+	        		serviceLogs.saveLog(log);
+	        	}
+	        	else
+	        	{
+	        		message="Error: Duplicate HHS Division number was found. New record was not created at this time. Please review the list of HHS Divisions again...";
+					
+	        		//Processing logs
+	        		LogsEntity log=new LogsEntity();
+	        		log.setSubject(quser.getEmail());
+	        		log.setAction("Failing to create a new HHS Division due to duplicity: "+ division.getDivisionNumber());
+	        		log.setObject(division.getDivision());
+	        		serviceLogs.saveLog(log);
+	        	}
+	        	        	
+	        }
+	        	        
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
 			

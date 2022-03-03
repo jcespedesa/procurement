@@ -1,14 +1,15 @@
 package com.trc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.trc.entities.LogsEntity;
 import com.trc.entities.UsersEntity;
+import com.trc.services.LogsService;
 import com.trc.services.UsersService;
 
 
@@ -19,17 +20,16 @@ public class MainController
 	@Autowired
 	UsersService serviceUsers;
 	
-	//@Autowired
-    private PasswordEncoder passwordEncoder;
+	@Autowired
+	LogsService serviceLogs;
 	
-		
+			
 	@GetMapping("/login")
 	public String login()
 	{
 				
 		return "login";
-		
-		
+			
 	}
 	
 	@GetMapping("/index")
@@ -37,8 +37,7 @@ public class MainController
 	{
 		
 		return "index";
-		
-		
+			
 	}
 	
 	@RequestMapping(path="/logOut",method=RequestMethod.POST)
@@ -48,12 +47,18 @@ public class MainController
 		//Retrieving user identity
         UsersEntity quser=serviceUsers.getUserById(quserId);
         
+      //Processing logs
+		LogsEntity log=new LogsEntity();
+		log.setSubject(quser.getEmail());
+		log.setAction("User is leaving the system, using the LogOff button");
+		log.setObject("");
+		serviceLogs.saveLog(log);
+        
         model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);
 		
 		return "login";
-		
-		
+			
 	}
 	
 	
@@ -78,9 +83,12 @@ public class MainController
 		String message=null;
 		String priznak=null;
 		String fileLocator=null;
-		String encodedPass=null;
 		
-		System.out.println(pass1);
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+				
+		//System.out.println(pass1);
+        LogsEntity log=new LogsEntity();
 					
 		if(pass1.equals(pass2))
 		{
@@ -89,6 +97,12 @@ public class MainController
 			{
 				message="Password is too short...";
 				fileLocator="false";
+				
+				//Processing logs
+				log.setSubject(quser.getEmail());
+				log.setAction("User failing to change password");
+				log.setObject("Reported error is: Password is too short... ");
+				serviceLogs.saveLog(log);
 			}
 			else
 			{	
@@ -99,15 +113,26 @@ public class MainController
 				{
 					message="Password is invalid...";
 					fileLocator="false";
+					
+					//Processing logs
+					log.setSubject(quser.getEmail());
+					log.setAction("User failing to change password");
+					log.setObject("Reported error is: Password is not meeting the required format... ");
+					serviceLogs.saveLog(log);
+					
 				}
 				if(priznak.equals("true"))
 				{
-					//Encoding password
-			    	encodedPass=passwordEncoder.encode(pass1);
-			    				    	
-					serviceUsers.setPass(quserId,encodedPass);
+								    				    	
+					serviceUsers.setPass(quserId,pass1);
 					message="Password was updated successfully...";
 					fileLocator="true";
+					
+					//Processing logs
+					log.setSubject(quser.getEmail());
+					log.setAction("User successfully changed her/his password");
+					log.setObject("User is using the 'Change My Password' feature from the main menu");
+					serviceLogs.saveLog(log);
 					
 				}
 				
@@ -118,11 +143,14 @@ public class MainController
 		{
 			message="Password fields do not match...";
 			fileLocator="false";
-		}
 			
-		//Retrieving user identity
-        UsersEntity quser=serviceUsers.getUserById(quserId);
-        
+			//Processing logs
+			log.setSubject(quser.getEmail());
+			log.setAction("User failed to change his/her password");
+			log.setObject("Reported error: The two strings do not match..");
+			serviceLogs.saveLog(log);
+		}
+		                
         model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);
 		
@@ -130,8 +158,29 @@ public class MainController
 		model.addAttribute("fileLocator",fileLocator);
 					
 				
-		return "usersRedirect";
+		return "usersPCredirect";
 				
+	}
+	
+	@RequestMapping(path="/about",method=RequestMethod.POST)
+	public String about(Model model, Long quserId)
+	{
+		
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+      //Processing logs
+		LogsEntity log=new LogsEntity();
+		log.setSubject(quser.getEmail());
+		log.setAction("User is visiting the 'About' section");
+		log.setObject("");
+		serviceLogs.saveLog(log);
+        
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
+		return "about";
+			
 	}
 	
 }

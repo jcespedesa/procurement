@@ -18,4 +18,7 @@ public interface HhsDivisionsRepository extends CrudRepository<HhsDivisionsEntit
 	@Query("Select u from HhsDivisionsEntity u Order by division")
 	List<HhsDivisionsEntity>  getAllByName();
 	
+	@Query("Select count(u) from HhsDivisionsEntity u where u.divisionNumber=?1")
+	int findDivisionDuplicity(String divisionNumber);
+	
 }

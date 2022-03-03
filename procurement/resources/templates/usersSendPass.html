@@ -37,22 +37,24 @@
         			<form th:action="@{/portal/passSendCon}" name="sendForm" method="post">
         				<table class="table-striped">
             				<tr>
-            					<td colspan="2">
+            					<td colspan="2" style="padding:5px;">
             						<label>CC Email : </label>
-            						<input type="text" name="toEmail" pattern="[a-zA-Z0-9.]+" title="Type only your name dot your last name" required><b>@cc-dc.org</b>
+            						<input type="text" name="email" pattern="[a-zA-Z0-9.]+" title="Type only your name dot your last name" required><b>@cc-dc.org</b>
             					</td>
             				</tr>
-            				<tr><td colspan="2"><label>Please provide a valid CC email where to receive the code</label></td></tr>
+            				<tr><td colspan="2" style="padding:5px;"><label>Please provide a valid CC email where to receive the code</label></td></tr>
             				<tr>
-            					<td colspan="2" style="background-color: lightGreen;">
+            					<td colspan="2" style="background-color: lightGreen;padding:5px;">
             						<label>And I am not a robot : </label> 
             						<input type="checkbox" name="captcha" value="true" required>
             					</td>
             				</tr>
             				<tr><td colspan="2">&nbsp;</td></tr>	
             				<tr>
-            					<td><input class="btn btn-primary" type="submit" name="submitButton" value="Send me the code"/></td>
-            					<td><a href="/login" class="btn btn-secondary" role="button">Back</a></td>
+            					<td style="padding:5px;"><input class="btn btn-primary" type="submit" name="submitButton" value="Send me the code"/></td>
+            					<td style="padding:5px;">
+            						<a th:href="@{/procurement/login}" class="btn btn-secondary" role="button">Back</a>
+            					</td>
             				</tr>
             				<tr><td colspan="2">&nbsp;</td></tr>
             				

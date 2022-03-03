@@ -38,5 +38,8 @@ public interface ProjectsRepository extends CrudRepository<ProjectsEntity,Long>
 	
 	@Query("Select u from ProjectsEntity u where (u.department=?1 and u.active='Yes') Order by udelnyBes")
 	List<ProjectsEntity>  getHhsFormView(String department);
+	
+	@Query("Select count(u) from ProjectsEntity u where u.projectNumber=?1")
+	int findProjectDuplicity(String projectNumber);
 }
 

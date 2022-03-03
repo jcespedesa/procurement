@@ -37,11 +37,10 @@
            				<form th:action="@{/procurement/peripherals/list}" method="post">
                             	
 	           				<button type="submit" class="btn btn-light">Back</button>
-	           				
-	           				<input type="hidden" th:value="${assetId}" name="assetId"> 	
-	           			
+	           					           					           			
 	           				<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
 	           				<input type="hidden" th:value="${priznak}" name="priznak">
+	           				<input type="hidden" th:value="${assetId}" name="assetId">
 	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
 	           				
 	           			</form>

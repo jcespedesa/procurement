@@ -24,4 +24,7 @@ public interface SitesRepository extends CrudRepository<SitesEntity,Long>
 	@Query("Select u from SitesEntity u WHERE (u.division=?1) Order by u.sname")
 	List<SitesEntity>  searchByDivision(String stringSearch);
 	
+	@Query("Select count(u) from SitesEntity u where u.siteNumber=?1")
+	int findSiteDuplicity(String siteNumber);
+	
 }

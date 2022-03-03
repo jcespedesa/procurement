@@ -113,4 +113,14 @@ public class HhsDivisionsService
 			return division;
 		
 	}
+	
+	public int findDuplicates(String divisionNumber)
+	{
+		int priznakDuplicate=0;
+		
+		priznakDuplicate=repository.findDivisionDuplicity(divisionNumber);
+		
+		
+		return priznakDuplicate;
+	}
 }

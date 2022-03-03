@@ -93,9 +93,9 @@ public class PeripheralsEntity
 		return assetId;
 	}
 
-	public void setAssetId(String assetId) 
+	public void setAssetId(String assetId2) 
 	{
-		this.assetId=assetId;
+		this.assetId=assetId2;
 	}
 
 	public String getKluch() 

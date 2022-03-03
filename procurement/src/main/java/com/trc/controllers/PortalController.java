@@ -16,18 +16,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.trc.entities.AssetsEntity;
+
 import com.trc.entities.ItemsEntity;
+import com.trc.entities.LogsEntity;
 import com.trc.entities.PeripheralsEntity;
 import com.trc.entities.ProjectsEntity;
+import com.trc.entities.SettingsEntity;
 import com.trc.entities.SitesEntity;
 import com.trc.entities.TitlesEntity;
 import com.trc.entities.UsersEntity;
 import com.trc.services.AssetsService;
+import com.trc.services.ClientsService;
 import com.trc.services.EmailService;
 import com.trc.services.ItemsService;
+import com.trc.services.LogsService;
 import com.trc.services.PeripheralsService;
 import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
+import com.trc.services.SettingsService;
 import com.trc.services.SitesService;
 import com.trc.services.TempUsersService;
 import com.trc.services.TitlesService;
@@ -63,6 +69,15 @@ public class PortalController
 	
 	@Autowired
 	UsersService serviceUsers;
+	
+	@Autowired
+	SettingsService serviceSettings;
+	
+	@Autowired
+	LogsService serviceLogs;
+	
+	@Autowired
+	ClientsService serviceClients;
 	
 
 	@RequestMapping(path={"/menu"})
@@ -332,7 +347,7 @@ public class PortalController
 		
 		//Creating the object
 		AssetsEntity newAsset=new AssetsEntity();
-		
+					
 		newAsset.setItem(asset.getItem());
 		newAsset.setAssetNumber(asset.getAssetNumber());
 		
@@ -357,6 +372,14 @@ public class PortalController
 				
 		//Saving the asset
 		service.createAsset(newAsset);
+		
+		//Processing logs
+		LogsEntity log=new LogsEntity();
+		log.setSubject(quser.getEmail());
+		log.setAction("Creating new IT asset with number: "+ newAsset.getAssetNumber());
+		log.setObject("New asset has a description as: "+ newAsset.getItem());
+		serviceLogs.saveLog(log);
+		
 				
 		//Retrieving asset ID
 		Long assetIdLong=newAsset.getAssetid();
@@ -421,17 +444,31 @@ public class PortalController
 		String description=null;
 		String peripheralNum=null;
 		String active="Yes";
+		String assetIdString=null;
 		
 		//Retrieving peripheral description
 		peripheralNum=peripheral.getPeripheralNum();
 		description=serviceItems.getItemByNumber(peripheralNum);
+		
+		//Converting id from long to string
+		assetIdString=String.valueOf(assetId);  
 						
 		//Setting the connection with the original asset, active 
-		peripheral.setAssetId(assetId);
+		peripheral.setAssetId(assetIdString);
 		peripheral.setActive(active);
+		
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
 						
 		//Save peripheral information
 		servicePeripherals.createOrUpdate(peripheral);
+		
+		//Processing logs
+		LogsEntity log=new LogsEntity();
+		log.setSubject(quser.getEmail());
+		log.setAction("Creating a new peripheral for IT Item. Item ID is "+ assetId);
+		log.setObject("Description of the peripheral is "+ peripheral.getDescription());
+		serviceLogs.saveLog(log);
 		
 		
 		//Generating the list of already input peripherals
@@ -445,9 +482,7 @@ public class PortalController
 			periph.setDescription(description);
 		}
 		
-		//Retrieving user identity
-		UsersEntity quser=serviceUsers.getUserById(quserId);
-		
+			
 		model.addAttribute("peripherals",list);
 		
 		model.addAttribute("assetId",assetId);
@@ -524,6 +559,13 @@ public class PortalController
 		//Retrieving user identity
 		UsersEntity quser=serviceUsers.getUserById(quserId);
 		
+		//Processing logs
+		LogsEntity log=new LogsEntity();
+		log.setSubject(quser.getEmail());
+		log.setAction("Sending Receipt confirmation for session of new Assets creation: "+ asset.getAssetNumber());
+		log.setObject("Description of the asset(s) is ;"+ asset.getItem());
+		serviceLogs.saveLog(log);
+		
 		model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);
 		
@@ -542,63 +584,70 @@ public class PortalController
 	
 	
 	@RequestMapping(path="/passSendCon", method=RequestMethod.POST)
-	public String sendPass(Model model,String toEmail)
+	public String sendPass(Model model,String email) throws RecordNotFoundException
 	{
-		Boolean priznakNewUser=false;
+		SettingsEntity setting=serviceSettings.getSettingByDescription("emailSettings");
 		
-		int passwordInt=0;
+		int existentEmail=0;
 		
-		String password=null;
-		String domain="@cc-dc.org";
-		String message="An email was sent to your address. Please review your inbox and use that code as your password...";
-		String subject="Sending pass code for the HHS App";
-		String body="Your passcode is : ";
-		String pustoy="";
-		String trail=null;
-		String role="user";
+		String pass=null;
+		String localMessage="An email was sent to your inbox, please review...";
+		String message="This is your code to access the HHS IT Inventory System: ";	
+		String subject="Your code for the HHS IT Inventory System";
+		String pustoy=" ";
+		String arrobaSymbol="@";
 		
-		//Email address concatenation
-		toEmail=toEmail+domain;
+		//Concatening full email string
+		email=email+arrobaSymbol+setting.getParam2();
 		
-		//Generating a random password of 4 digits
-		passwordInt=serviceEmails.generateRandomIntIntRange(1000,9999);
+				
+		//Verifying if this is an existent email in the system
+		existentEmail=serviceUsers.findDuplicates(email);
 		
-		//Generating a random symbol as trailer
-		trail=serviceEmails.generateRandomSymbol();
+		//System.out.println("Sent email: "+ email);
+		//System.out.println("The value of existentEmail is: "+ existentEmail);
 		
-		//Converting the password int to password string
-		password=Integer.toString(passwordInt);
+		LogsEntity log=new LogsEntity();
 		
-		//Finalizing the password formation
-		password=password+trail;
-		
-		//Body message concatenation
-		body=body+pustoy+password;
-		
-		//System.out.println("The password is "+ password);
-		//System.out.println("The subject is "+ subject);
-		//System.out.println("The message is "+ body);
-		
-		//Checking if this is a new user
-		priznakNewUser=serviceTempUsers.checkNewUser(toEmail);
-		
-		if(priznakNewUser)
-		{	
-			//Updating password for this user
-			serviceTempUsers.updatePass(toEmail,password);
+		if(existentEmail==0)
+		{
+			localMessage="Invalid or no registered email. Please contact your System Administrator ";
 			
+			log.setSubject(email);
+			log.setAction("Failed to receive an access code due to misspelled or unregistered email");
+			log.setObject("Main login page");
+				
 		}
 		else
 		{
-			//Registering the new user in the temp table
-			serviceTempUsers.saveNewTempUser(toEmail,password,role);
-		}
+			//Retrieving user information
+			UsersEntity user=serviceUsers.getUserByEmail(email);
 			
-			
-		//Sending the email
-		serviceEmails.sendMail(toEmail, subject, body);
+			//Creating the access code
+			pass=serviceUsers.createAccessCode(user.getUserid());
 		
-		model.addAttribute("message",message);
+			//Assembling the message
+			message=message+pustoy+pass;
+			
+									
+			//Sending the registration email
+			serviceEmails.sendMail(user.getEmail(), subject, message, setting.getParam1());
+			
+			//Encoding password
+	    	//encodedPass=serviceUsers.encodePass(pass);
+									
+			//Saving the new password for this user
+			serviceUsers.setPass(user.getUserid(),pass);
+			
+			log.setSubject(email);
+			log.setAction("Receiving a new automatic generated code to access the system");
+			log.setObject("Main login page");
+						
+		}
+		
+		serviceLogs.saveLog(log);
+		
+		model.addAttribute("message",localMessage);
 		
 		return "login";
 		
@@ -654,8 +703,24 @@ public class PortalController
 		model.addAttribute("quserId",quserId);
 		
 		return "mainMenu";
+			
+	}
+	
+	@RequestMapping(path="/insertValues")
+	public String insertValuesForm(Model model,Long quserId)
+	{		
 		
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
+				
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
+		return "insertValuesForm";
 		
 	}
+	
+	
 	
 }

@@ -147,5 +147,19 @@ public class EmailService
     	
         return s;
     }
+    
+    public void sendMail(String toEmail, String subject, String message, String sender) 
+    {
+
+    	SimpleMailMessage mailMessage=new SimpleMailMessage();
+
+        mailMessage.setTo(toEmail);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(message);
+
+        mailMessage.setFrom(sender);
+
+        javaMailSender.send(mailMessage);
+    }
 	
 }

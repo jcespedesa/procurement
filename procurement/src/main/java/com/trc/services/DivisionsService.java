@@ -112,4 +112,13 @@ public class DivisionsService
 		
 	}
 	
+	public int findDuplicates(String dnumber)
+	{
+		int priznakDuplicate=0;
+		
+		priznakDuplicate=repository.findDivisionDuplicity(dnumber);
+		
+		
+		return priznakDuplicate;
+	}
 }

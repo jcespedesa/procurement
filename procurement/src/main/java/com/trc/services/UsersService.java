@@ -3,6 +3,7 @@ package com.trc.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,8 +37,6 @@ public class UsersService
 			return new ArrayList<UsersEntity>();
 		
 	}
-	
-			
 	
 	
 	public UsersEntity createOrUpdate(UsersEntity entity)
@@ -105,19 +104,19 @@ public class UsersService
 	public void resetPass(Long id) 
     {
     	String encodedPass=null;
-    	String path="defaultPass";
+    	String param1="defaultPass";
     	String newPassword=null;
     	    	
     	//Trying to set client's password to the default one
     	
     	//Retrieving the default password
-    	newPassword=repositorySettings.getDefaultPass(path);
+    	newPassword=repositorySettings.getDefaultPass(param1);
     	
     	//Encoding is disabled for the moment
-    	encodedPass=newPassword;
+    	//encodedPass=newPassword;
     	
     	//Encoding the default password
-        //encodedPass=passwordEncoder.encode("newPassword");
+        encodedPass=this.encodePass(newPassword);
                  	
     	repository.setDefaultPass(id,encodedPass);
     	    	    	
@@ -161,6 +160,9 @@ public class UsersService
 		
 		//Retrieving stored password for this email
 		storedPassword=repository.getPassByEmail(email);
+		
+		//Coding input password
+		//password=this.encodePass(password);
 		
 		
 		if(storedPassword==null)
@@ -212,6 +214,61 @@ public class UsersService
 	      }
 	      return "false";
 	}
+	
+	public String encodePass(String password) 
+	{
+		String encodedPass=null;		
+		
+		encodedPass=passwordEncoder.encode(password);
+		
+		return encodedPass; 
+	}
 
+	public int findDuplicates(String email)
+	{
+		int priznakDuplicate=0;
+		
+		priznakDuplicate=repository.findEmailDuplicity(email);
+		
+		
+		return priznakDuplicate;
+	}
+	
+	
+	public String createAccessCode(Long id)
+	{
+		int min=100000;
+		int max=999999;
+		int passInt=0;
+		
+		String passNum=null;
+		String passString=null;
+		String pass=null;
+		
+		Random r=new Random();
+        passInt=r.nextInt((max-min)+1)+ min;
+        
+      //Converting the password int to password string
+		passNum=Integer.toString(passInt);
+		
+		//Trying to get a random symbol
+		passString=this.generateRandomSymbol();
+		
+		//Concatenation of the password
+		pass=passNum+passString;
+		
+		return pass;
+	}
+	
+	public String generateRandomSymbol() 
+    {
+    	String[] arr={"!","@","#","$","%","*","&","?"};
+    	
+    	int idx=new Random().nextInt(arr.length);
+    	String s=(arr[idx]);
+    	
+    	
+        return s;
+    }
 	
 }

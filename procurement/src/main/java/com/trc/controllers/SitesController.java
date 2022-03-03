@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.DivisionsEntity;
+import com.trc.entities.LogsEntity;
 import com.trc.entities.SitesEntity;
 import com.trc.entities.UsersEntity;
 import com.trc.services.DivisionsService;
+import com.trc.services.LogsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.SitesService;
 import com.trc.services.UsersService;
@@ -31,6 +33,9 @@ public class SitesController
 	
 	@Autowired
 	UsersService serviceUsers;
+	
+	@Autowired
+	LogsService serviceLogs;
 	
 	//CRUD operations for sites
 	
@@ -87,11 +92,21 @@ public class SitesController
 	public String deleteSiteById(Model model, Long id, Long quserId) throws RecordNotFoundException
 	{
 		String message=null;
+		
+		//Retrieving site identity
+        SitesEntity site=service.getSiteById(id);
 				
 		service.deleteSiteById(id);
 		
 		//Retrieving user identity
         UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+      //Processing logs
+		LogsEntity log=new LogsEntity();
+		log.setSubject(quser.getEmail());
+		log.setAction("Deleting Site record from the database. Site ID was "+ site.getSiteNumber());
+		log.setObject(site.getSname());
+		serviceLogs.saveLog(log);
         
         model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);
@@ -107,15 +122,65 @@ public class SitesController
 	@RequestMapping(path="/createSite", method=RequestMethod.POST)
 	public String createOrUpdateSite(Model model, SitesEntity site, Long quserId)
 	{
+		int priznakDuplicate=0;
+		
 		String message=null;
-		
-		service.createOrUpdate(site);
-		
-		message="List was updated...";
+		String localSite=null;
 		
 		//Retrieving user identity
         UsersEntity quser=serviceUsers.getUserById(quserId);
+		
         
+		if(site.getSiteid()!=null)
+        {
+        	//Modify the record
+        	
+        	service.createOrUpdate(site);
+        	
+        	message="Site was updated successfully...";
+			
+    		//Processing logs
+    		LogsEntity log=new LogsEntity();
+    		log.setSubject(quser.getEmail());
+    		log.setAction("Modifying Site record. Item ID is "+ site.getSiteid());
+    		log.setObject(site.getSname());
+    		serviceLogs.saveLog(log);
+        	
+        }
+		else
+        {
+        	//Creating a new record
+        	
+        	//Checking if this item is not already in the system
+        	localSite=site.getSiteNumber();
+        	priznakDuplicate=service.findDuplicates(localSite);
+        	
+        	if(priznakDuplicate==0)
+        	{
+        		service.createOrUpdate(site);
+				
+        		message="Site was created successfully...";
+        		
+		   		//Processing logs
+        		LogsEntity log=new LogsEntity();
+        		log.setSubject(quser.getEmail());
+        		log.setAction("Creating new site record in the database. Site ID is "+ site.getSiteNumber());
+        		log.setObject(site.getSname());
+        		serviceLogs.saveLog(log);
+        	}
+        	else
+        	{
+        		message="Error: Duplicate Site was found, new record was not created at this time. Please review the list of sites again...";
+				
+        		//Processing logs
+        		LogsEntity log=new LogsEntity();
+        		log.setSubject(quser.getEmail());
+        		log.setAction("Failing to create a new site due to duplicity: "+ site.getSiteNumber());
+        		log.setObject(site.getSname());
+        		serviceLogs.saveLog(log);
+        	}
+        }	
+        		
         model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);
 		

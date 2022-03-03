@@ -31,4 +31,7 @@ public interface ItemsRepository extends CrudRepository<ItemsEntity,Long>
 	
 	@Query("Select u.item from ItemsEntity u Where u.itemNumber=?1")
 	String getItemByNumber(String itemNumber);
+	
+	@Query("Select count(u) from ItemsEntity u where u.itemNumber=?1")
+	int findItemDuplicity(String itemNumber);
 }

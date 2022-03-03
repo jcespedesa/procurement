@@ -39,8 +39,12 @@
       		
       			<div id='vcssmenu'>
 					<ul>
-					   <li><a href=""><span>Reports</span></a></li>
-					   
+					   <li><a href="#"><span>Reports</span></a>
+					   		<ul>
+      							<li style="white-space: nowrap;">
+      								<a th:href="@{/procurement/logs/view(quserId=${quserId})}">Logs View</a>
+      							</li>
+					   		</ul>
    						<li><a href=""><span>Tickets</span></a></li>
    						  						
    						<li><a href='#'><span>Services</span></a>
@@ -48,13 +52,13 @@
       							<li style="white-space: nowrap;">
       								<a th:href="@{/portal/init(quserId=${quserId})}">Asset Portal Inventory</a>
       							</li>
-      							
-      							
-         						<li style="white-space: nowrap;"><a th:href="@{/procurement/services/bedListHHSsel(quserId=${quserId})}"><span>Bed Lists Compare</span></a>
-         						
-         						
+      							<li style="white-space: nowrap;">
+      								<a th:href="@{/procurement/services/bedListHHSsel(quserId=${quserId})}"><span>Bed Lists Compare</span></a>
          						</li>
-         						<li style="white-space: nowrap;"><a th:href="@{/procurement/services/billableFileSel(quserId=${quserId})}"><span>Billables Report</span></a></li>		
+         						<li style="white-space: nowrap;">
+         							<a th:href="@{/procurement/services/billableFileSel(quserId=${quserId})}"><span>Billables Report</span></a>
+         						</li>
+         							
       						</ul>
    						</li>
    						<li><a href='#'><span>HHS IT Inventory</span></a>

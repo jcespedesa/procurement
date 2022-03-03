@@ -32,7 +32,13 @@
    			<nav id="hcssmenu">
     		<ul>
         		<li>
-           			<a href="/procurement/users/list">Back</a>
+           			<form th:action="@{/procurement/users/list}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
         		</li>
             	
             </ul>
