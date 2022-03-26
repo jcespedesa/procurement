@@ -30,7 +30,7 @@ public class DivisionsService
 	
 	public List<DivisionsEntity> getAllByName()
 	{
-		List<DivisionsEntity> result=(List<DivisionsEntity>) repository.getAllByName();
+		List<DivisionsEntity> result=repository.getAllByName();
 		
 		if(result.size() > 0)
 			return result;

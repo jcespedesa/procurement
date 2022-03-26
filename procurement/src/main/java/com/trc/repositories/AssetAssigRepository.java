@@ -2,6 +2,7 @@ package com.trc.repositories;
 
 import java.util.List;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,5 @@ public interface AssetAssigRepository extends JpaRepository<AssetAssigEntity,Lon
 	@Query("Select u from AssetAssigEntity u where assetId=?1")
 	List<AssetAssigEntity> getAllAssigById(String assetId);
 	
-		
+			
 }

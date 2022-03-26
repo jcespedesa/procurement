@@ -21,6 +21,9 @@ public class AssetAssigEntity
 	@Column(name="assetnumber")
 	private String assetNumber;
 	
+	@Column(name="assigid")
+	private String assigId;
+	
 	@Column(name="assigname")
 	private String assigName;
 	
@@ -35,6 +38,9 @@ public class AssetAssigEntity
 	
 	@Column(name="assigtitle")
 	private String assigTitle;
+	
+	@Column(name="newassigid")
+	private String newAssigId;
 	
 	@Column(name="newassigname")
 	private String newAssigName;
@@ -51,7 +57,7 @@ public class AssetAssigEntity
 	@Column(name="newassigtitle")
 	private String newAssigTitle;
 	
-	@Column(name="datereassignation")
+	@Column(name="datereassignation",updatable=false, insertable=false)
 	private String dateReassignation;
 	
 	@Column(name="reassignedby")
@@ -69,7 +75,7 @@ public class AssetAssigEntity
 	@Override
 	public String toString()
 	{
-		return "AssetsAssigEntity[reassigid="+ reassigid +",assetId="+ assetId +",assetNumber="+ assetNumber +",assigName="+ assigName +",assigEmail="+ assigEmail +",assigEmpStatus="+ assigEmpStatus +",assigProject="+ assigProject +",assigTitle="+ assigTitle +",newAssigName="+ newAssigName +",newAssigEmail="+ newAssigEmail +",newAssigEmpStatus="+ newAssigEmpStatus +",newAssigProject="+ newAssigProject +",newAssigTitle="+ newAssigTitle +",dateReassignation="+ dateReassignation +",reassignedBy="+ reassignedBy +",emailReassigner="+ emailReassigner +",notes="+ notes +",kluch="+ kluch +"]";				
+		return "AssetsAssigEntity[reassigid="+ reassigid +",assetId="+ assetId +",assetNumber="+ assetNumber +",assigName="+ assigName +",assigEmail="+ assigEmail +",assigEmpStatus="+ assigEmpStatus +",assigProject="+ assigProject +",assigTitle="+ assigTitle +",newAssigName="+ newAssigName +",newAssigEmail="+ newAssigEmail +",newAssigEmpStatus="+ newAssigEmpStatus +",newAssigProject="+ newAssigProject +",newAssigTitle="+ newAssigTitle +",dateReassignation="+ dateReassignation +",reassignedBy="+ reassignedBy +",emailReassigner="+ emailReassigner +",notes="+ notes +",kluch="+ kluch +",assigId="+ assigId +",newAssigId="+ newAssigId +"]";				
 		
 	}
 
@@ -251,6 +257,26 @@ public class AssetAssigEntity
 	public void setKluch(String kluch) 
 	{
 		this.kluch=kluch;
+	}
+
+	public String getAssigId() 
+	{
+		return assigId;
+	}
+
+	public void setAssigId(String assigId) 
+	{
+		this.assigId=assigId;
+	}
+
+	public String getNewAssigId() 
+	{
+		return newAssigId;
+	}
+
+	public void setNewAssigId(String newAssigId) 
+	{
+		this.newAssigId=newAssigId;
 	}
 			
 }

@@ -11,6 +11,7 @@ import com.trc.entities.AssetAssigEntity;
 import com.trc.repositories.AssetAssigRepository;
 
 
+
 @Service
 public class AssetsAssigService 
 {
@@ -19,7 +20,7 @@ public class AssetsAssigService
 
 	public List<AssetAssigEntity> getAllAssetAssig()
 	{
-		List<AssetAssigEntity> result=(List<AssetAssigEntity>) repository.findAll();
+		List<AssetAssigEntity> result=repository.findAll();
 		
 		if(result.size() > 0)
 			return result;
@@ -30,7 +31,7 @@ public class AssetsAssigService
 	
 	public List<AssetAssigEntity> getAssigById(String assetId)
 	{
-		List<AssetAssigEntity> result=(List<AssetAssigEntity>) repository.getAllAssigById(assetId);
+		List<AssetAssigEntity> result=repository.getAllAssigById(assetId);
 		
 		if(result.size() > 0)
 			return result;
@@ -75,6 +76,7 @@ public class AssetsAssigService
 		
 		
 	}
+	
 
 	
 }

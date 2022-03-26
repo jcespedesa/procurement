@@ -30,7 +30,18 @@ public class ClientsService
 	
 	public List<ClientsEntity> getAllClientsAlphab()
 	{
-		List<ClientsEntity> result=(List<ClientsEntity>) repository.getAllAlphab();
+		List<ClientsEntity> result=repository.getAllAlphab();
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<ClientsEntity>();
+		
+	}
+	
+	public List<ClientsEntity> getAllActives()
+	{
+		List<ClientsEntity> result=repository.getAllActives();
 		
 		if(result.size() > 0)
 			return result;
@@ -116,7 +127,7 @@ public class ClientsService
 	
 	public List<ClientsEntity> searchClientsByName(String stringSearch)
 	{
-		List<ClientsEntity> result=(List<ClientsEntity>) repository.getClientsByName(stringSearch);
+		List<ClientsEntity> result=repository.getClientsByName(stringSearch);
 		
 		return result;
 		
@@ -125,7 +136,7 @@ public class ClientsService
 	
 	public List<ClientsEntity> searchClientsByProgram(String stringSearch)
 	{
-		List<ClientsEntity> result=(List<ClientsEntity>) repository.getClientsByProgram(stringSearch);
+		List<ClientsEntity> result=repository.getClientsByProgram(stringSearch);
 		
 		return result;
 		
@@ -133,7 +144,7 @@ public class ClientsService
 	
 	public List<ClientsEntity> viewVaxStatus(String division, String vacStatus)
 	{
-		List<ClientsEntity> result=(List<ClientsEntity>) repository.getClieByVacStatus(division,vacStatus);
+		List<ClientsEntity> result=repository.getClieByVacStatus(division,vacStatus);
 		
 		return result;
 		
@@ -147,6 +158,15 @@ public class ClientsService
 		
 		
 		return priznakDuplicate;
+	}
+
+	public String getCnameById(Long clientId) 
+	{
+		String cname=null;
+		
+		cname=repository.getCnameById(clientId);
+				
+		return cname;
 	}
 	
 }

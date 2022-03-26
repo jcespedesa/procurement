@@ -28,7 +28,7 @@ public class ProjectsService
 	
 	public List<ProjectsEntity> getAllProjects()
 	{
-		List<ProjectsEntity> result=(List<ProjectsEntity>) repository.getAllByProject();
+		List<ProjectsEntity> result=repository.getAllByProject();
 		
 		if(result.size() > 0)
 			return result;
@@ -39,7 +39,7 @@ public class ProjectsService
 	
 	public List<ProjectsEntity> getAllHHSprojects()
 	{
-		List<ProjectsEntity> result=(List<ProjectsEntity>) repository.getAllHHSprojects();
+		List<ProjectsEntity> result=repository.getAllHHSprojects();
 		
 		if(result.size() > 0)
 			return result;
@@ -50,7 +50,7 @@ public class ProjectsService
 	
 	public List<ProjectsEntity> getAllHHSbyUB()
 	{
-		List<ProjectsEntity> result=(List<ProjectsEntity>) repository.getAllHHSbyUB();
+		List<ProjectsEntity> result=repository.getAllHHSbyUB();
 		
 		if(result.size() > 0)
 			return result;
@@ -61,7 +61,7 @@ public class ProjectsService
 	
 	public List<ProjectsEntity> getAllByProject()
 	{
-		List<ProjectsEntity> result=(List<ProjectsEntity>) repository.getAllByProject();
+		List<ProjectsEntity> result=repository.getAllByProject();
 		
 		if(result.size() > 0)
 			return result;
@@ -74,7 +74,7 @@ public class ProjectsService
 	{
 		String department="300";
 		
-		List<ProjectsEntity> result=(List<ProjectsEntity>) repository.getHhsFormView(department);
+		List<ProjectsEntity> result=repository.getHhsFormView(department);
 		
 		if(result.size() > 0)
 			return result;
@@ -182,7 +182,7 @@ public class ProjectsService
 	
 	public List<ProjectsEntity> searchProjectsByNum(String stringSearch)
 	{
-		List<ProjectsEntity> result=(List<ProjectsEntity>) repository.getProjectsByNum(stringSearch);
+		List<ProjectsEntity> result=repository.getProjectsByNum(stringSearch);
 		
 		return result;
 		
@@ -190,7 +190,7 @@ public class ProjectsService
 	
 	public List<ProjectsEntity> searchProjectsByName(String stringSearch)
 	{
-		List<ProjectsEntity> result=(List<ProjectsEntity>) repository.getProjectsByName(stringSearch);
+		List<ProjectsEntity> result=repository.getProjectsByName(stringSearch);
 		
 		return result;
 		
@@ -198,7 +198,7 @@ public class ProjectsService
 	
 	public String getProjectByNum(String stringSearch)
 	{
-		String programName=(String) repository.getProjectName(stringSearch);
+		String programName=repository.getProjectName(stringSearch);
 		
 		return programName;
 		

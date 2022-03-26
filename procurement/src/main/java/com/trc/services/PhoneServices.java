@@ -25,7 +25,7 @@ public class PhoneServices
 	
 	public List<PhoneAddress> getAllPhones()
 	{
-		List<PhoneAddress> result=(List<PhoneAddress>) repository.getAllByPhoneName();
+		List<PhoneAddress> result=repository.getAllByPhoneName();
 		
 		if(result.size() > 0)
 			return result;
@@ -118,7 +118,7 @@ public class PhoneServices
 	
 	public List<PhoneAddress> getByPhoneNum(String stringSearch)
 	{
-		List<PhoneAddress> result=(List<PhoneAddress>) repository.getByPhoneNum(stringSearch);
+		List<PhoneAddress> result=repository.getByPhoneNum(stringSearch);
 		
 		//System.out.println("Inside the service to search by string. Object is: "+ stringSearch);
 		
@@ -131,7 +131,7 @@ public class PhoneServices
 	
 	public List<PhoneAddress> getBySiteNum(String stringSearch)
 	{
-		List<PhoneAddress> result=(List<PhoneAddress>) repository.getBySiteNum(stringSearch);
+		List<PhoneAddress> result=repository.getBySiteNum(stringSearch);
 		
 		if(result.size() > 0)
 			return result;
@@ -142,7 +142,7 @@ public class PhoneServices
 	
 	public List<String> findDistincStatuses()
 	{
-		List<String> result=(List<String>) repository.findDistStatuses();
+		List<String> result=repository.findDistStatuses();
 		
 	
 		return result;
@@ -151,7 +151,7 @@ public class PhoneServices
 	
 	public List<String> findDistincKlasses()
 	{
-		List<String> result=(List<String>) repository.findDistKlasses();
+		List<String> result=repository.findDistKlasses();
 		
 	
 		return result;
@@ -160,7 +160,7 @@ public class PhoneServices
 	
 	public List<PhoneAddress> getByStatus(String stringSearch)
 	{
-		List<PhoneAddress> result=(List<PhoneAddress>) repository.getByStatus(stringSearch);
+		List<PhoneAddress> result=repository.getByStatus(stringSearch);
 		
 		if(result.size() > 0)
 			return result;
@@ -171,7 +171,7 @@ public class PhoneServices
 	
 	public List<PhoneAddress> getByKlass(String stringSearch)
 	{
-		List<PhoneAddress> result=(List<PhoneAddress>) repository.getByKlass(stringSearch);
+		List<PhoneAddress> result=repository.getByKlass(stringSearch);
 		
 		if(result.size() > 0)
 			return result;
@@ -182,7 +182,7 @@ public class PhoneServices
 	
 	public List<PhoneAddress> getSiteNumKlass(String siteNum,String klass)
 	{
-		List<PhoneAddress> result=(List<PhoneAddress>) repository.getSiteNumKlass(siteNum,klass);
+		List<PhoneAddress> result=repository.getSiteNumKlass(siteNum,klass);
 		
 		
 		//System.out.println("Selected site is: "+ siteNum +" and selected status was "+ klass);
@@ -196,7 +196,7 @@ public class PhoneServices
 	
 	public String getSiteNameBySiteNum(String siteNum)
 	{
-		String siteName=(String) repositorySites.getLocationName(siteNum);
+		String siteName=repositorySites.getLocationName(siteNum);
 		
 		//System.out.println("Selected site is: "+ siteNum);
 		
@@ -206,7 +206,7 @@ public class PhoneServices
 	
 	public List<PhoneAddress> getSiteNumStatus(String siteNum,String status)
 	{
-		List<PhoneAddress> result=(List<PhoneAddress>) repository.getSiteNumStatus(siteNum,status);
+		List<PhoneAddress> result=repository.getSiteNumStatus(siteNum,status);
 		
 		
 		//System.out.println("Selected site is: "+ siteNum +" and selected status was "+ status);
@@ -229,7 +229,7 @@ public class PhoneServices
 	
 	public List<PhoneAddress> getByExtension(String stringSearch)
 	{
-		List<PhoneAddress> result=(List<PhoneAddress>) repository.getByExtension(stringSearch);
+		List<PhoneAddress> result=repository.getByExtension(stringSearch);
 		
 		//System.out.println("Inside the service to search by string. Object is: "+ stringSearch);
 		

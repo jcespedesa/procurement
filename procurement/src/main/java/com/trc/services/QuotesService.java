@@ -45,7 +45,7 @@ public class QuotesService
 	
 	public List<QuotesEntity> getAllByDate()
 	{
-		List<QuotesEntity> result=(List<QuotesEntity>) repository.getAllByDate();
+		List<QuotesEntity> result=repository.getAllByDate();
 		
 		if(result.size() > 0)
 			return result;
@@ -245,7 +245,7 @@ public class QuotesService
 	
 	public List<QuotesEntity> searchQuotesByNum(String stringSearch)
 	{
-		List<QuotesEntity> result=(List<QuotesEntity>) repository.getQuotesByNum(stringSearch);
+		List<QuotesEntity> result=repository.getQuotesByNum(stringSearch);
 		
 		return result;
 		
@@ -253,7 +253,7 @@ public class QuotesService
 	
 	public List<QuotesEntity> searchQuotesByName(String stringSearch)
 	{
-		List<QuotesEntity> result=(List<QuotesEntity>) repository.getQuotesByName(stringSearch);
+		List<QuotesEntity> result=repository.getQuotesByName(stringSearch);
 		
 		return result;
 		
@@ -261,7 +261,7 @@ public class QuotesService
 	
 	public List<QuotesEntity> searchQuotesByItem(String stringSearch)
 	{
-		List<QuotesEntity> result=(List<QuotesEntity>) repository.getQuotesByItem(stringSearch);
+		List<QuotesEntity> result=repository.getQuotesByItem(stringSearch);
 		
 		return result;
 		

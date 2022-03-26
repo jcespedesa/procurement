@@ -23,6 +23,8 @@ import org.supercsv.prefs.CsvPreference;
 
 import com.trc.entities.AssetAssigEntity;
 import com.trc.entities.AssetsEntity;
+import com.trc.entities.ClientsEntity;
+import com.trc.entities.DivisionsEntity;
 import com.trc.entities.ItemsEntity;
 import com.trc.entities.LogsEntity;
 import com.trc.entities.PeripheralsEntity;
@@ -32,6 +34,8 @@ import com.trc.entities.TitlesEntity;
 import com.trc.entities.UsersEntity;
 import com.trc.services.AssetsAssigService;
 import com.trc.services.AssetsService;
+import com.trc.services.ClientsService;
+import com.trc.services.DivisionsService;
 import com.trc.services.ItemsService;
 import com.trc.services.LogsService;
 import com.trc.services.PeripheralsService;
@@ -73,12 +77,20 @@ public class AssetsController
 	@Autowired
 	LogsService serviceLogs;
 	
+	@Autowired
+	ClientsService serviceClients;
+	
+	@Autowired
+	DivisionsService serviceDivisions;
+	
 	//CRUD operations for assets
 	
 		@RequestMapping(path="/menu")
 		public String menuAssets(Model model, Long quserId)
 		{
-						
+			//Preparing list of users
+			List<ClientsEntity> clients=serviceClients.getAllClientsAlphab();
+			
 			//Preparing list of items
 			List<ItemsEntity> items=serviceItems.getAllMainItems();
 			
@@ -101,6 +113,8 @@ public class AssetsController
 			model.addAttribute("emails",emails);
 			model.addAttribute("projects",projects);
 			model.addAttribute("assigEmails",assigEmails);
+			
+			model.addAttribute("clients",clients);
 			
 			return "assetsMenu";
 			
@@ -128,9 +142,14 @@ public class AssetsController
 			
 			String assetId=null;
 			
-					
+			String cname=null;
+			String clientId=null;
+			String authorId=null;
+			String authorName=null;
+			
 			Long assetIdLong=null;
-									
+			Long clientIdLong=null;
+			Long authorIdLong=null;						
 			
 			for(AssetsEntity asset : list)
 			{
@@ -148,6 +167,16 @@ public class AssetsController
 				titleNumber=asset.getTitle();
 				titleName=serviceTitles.getTitleByNumber(titleNumber);
 				
+				//finding employee name
+				clientId=asset.getClientId();
+				clientIdLong=Long.parseLong(clientId);
+				cname=serviceClients.getCnameById(clientIdLong);
+				
+				//finding author name
+				authorId=asset.getAuthorId();
+				authorIdLong=Long.parseLong(authorId);
+				authorName=serviceClients.getCnameById(authorIdLong);
+								
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -159,6 +188,8 @@ public class AssetsController
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
+				asset.setUsername(cname);
+				asset.setAuthor(authorName);
 							
 			}
 			
@@ -181,21 +212,22 @@ public class AssetsController
 		@RequestMapping(path={"/new"},method=RequestMethod.POST)
 		public String newAsset(Model model, String stringSearch, Long quserId)
 		{
-			
-								
 			//Preparing list of items
 			List<ItemsEntity> items=serviceItems.getAllMainItems();
+								
+			//Preparing list of clients
+			List<ClientsEntity> clients=serviceClients.getAllActives();
 			
 			//Preparing list of sites
 			List<SitesEntity> sites=serviceSites.getAllHHSsites();
 			
+			//Preparing list of Divisions
+			List<DivisionsEntity> divisions=serviceDivisions.getAllByName();
+			
 			//Preparing list of active projects by udelny bes
 			List<ProjectsEntity> projects=serviceProjects.getAllHHSbyUB();
 			
-			//Preparing list of titles
-			List<TitlesEntity> titles=serviceTitles.getAllTitles();
 						
-			
 			String priznakNew=null;
 					
 			
@@ -226,9 +258,10 @@ public class AssetsController
 			model.addAttribute("kluch",todayDate);
 						
 			model.addAttribute("items",items);
+			model.addAttribute("clients",clients);
 			model.addAttribute("sites",sites);
 			model.addAttribute("projects",projects);
-			model.addAttribute("titles",titles);
+			model.addAttribute("divisions",divisions);
 			
 			model.addAttribute("priznakNew",priznakNew);
 			model.addAttribute("stringSearch",stringSearch);
@@ -241,57 +274,71 @@ public class AssetsController
 		@RequestMapping(path={"/edit"},method=RequestMethod.POST)
 		public String editAssetsById(Model model,Long id,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException 
 		{
+			ClientsEntity client=new ClientsEntity();
+			new ClientsEntity();
 			
-								
+			Long clientIdLong=null;
+			Long authorIdLong=null;
+			
+			String assetId=null;
+			String username=null;
+			String authorName=null;
+			
 			//Preparing list of items
 			List<ItemsEntity> items=serviceItems.getAllMainItems();
 			
+			//Preparing list of clients
+			List<ClientsEntity> clients=serviceClients.getAllActives();
+						
 			//Preparing list of sites
 			List<SitesEntity> sites=serviceSites.getAllHHSsites();
+			
+			//Preparing list of Divisions
+			List<DivisionsEntity> divisions=serviceDivisions.getAllByName();
 			
 			//Preparing list of active projects by udelny bes
 			List<ProjectsEntity> projects=serviceProjects.getAllHHSbyUB();
 			
-			//Preparing list of titles
-			List<TitlesEntity> titles=serviceTitles.getAllTitles();
-						
-			
+									
 			String site=null;
 			String project=null;
 						
 			String itemName=null;
 			String itemNumber=null;
 			
-			String titleName=null;
-			String titleNumber=null;
-			
+					
 			String priznakNew=null;
 											
 			AssetsEntity entity=service.getAssetById(id);
-				
-			String assetId=null;
-									
+												
 			assetId=String.valueOf(id);
-				
+							
 			//Retrieving related peripherals for this asset				
 			List<PeripheralsEntity> peripherals=servicePeripherals.getByAssetId(assetId);
 				
 			//Preparing history of re-assignations 
 			List<AssetAssigEntity> assigs=serviceReassig.getAssigById(assetId);
-				
-								
+											
 			itemNumber=entity.getItem();
-			titleNumber=entity.getTitle();
-												
+															
 			priznakNew="No";
 								
 			//Finding names or descriptions
-				
 			site=serviceSites.getSiteByNumber(entity.getSite());
 			project=serviceProjects.getSiteBySiteNumber1(entity.getProject());
 			itemName=serviceItems.getItemByNumber(itemNumber);
-			titleName=serviceTitles.getTitleByNumber(titleNumber);
+						
+			//Finding cname(assignee)
+			clientIdLong=Long.parseLong(entity.getClientId());
 			
+			client=serviceClients.getClientById(clientIdLong);
+			username=client.getCname();
+			
+			//Finding authorName(person reporting the asset)
+			authorIdLong=Long.parseLong(entity.getAuthorId());
+			
+			serviceClients.getClientById(authorIdLong);
+			authorName=client.getCname();
 			
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
@@ -304,21 +351,23 @@ public class AssetsController
 			model.addAttribute("siteName",site);
 			model.addAttribute("projectName",project);
 			model.addAttribute("itemName",itemName);
-			model.addAttribute("titleName",titleName);
-			
+						
 			model.addAttribute("peripherals",peripherals);
 			model.addAttribute("assigs",assigs);
-			
-			
+						
 			model.addAttribute("items",items);
 			model.addAttribute("sites",sites);
 			model.addAttribute("projects",projects);
-			model.addAttribute("titles",titles);
+			model.addAttribute("divisions",divisions);
+			
+			model.addAttribute("clients",clients);
 			
 			model.addAttribute("priznakNew",priznakNew);
 			model.addAttribute("stringSearch",stringSearch);
 			model.addAttribute("priznak",priznak);
-			
+			model.addAttribute("username",username);
+			model.addAttribute("authorName",authorName);
+						
 			return "assetsAddEdit";
 		}
 		
@@ -354,18 +403,17 @@ public class AssetsController
 		}
 		
 		@RequestMapping(path="/createAsset", method=RequestMethod.POST)
-		public String createOrUpdateAsset(Model model,AssetsEntity asset,String stringSearch,String priznak,Long quserId)
+		public String createOrUpdateAsset(Model model,AssetsEntity asset,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
-			//System.out.println("Inside the controller, arrived string search was: "+ stringSearch);
-			
+						
 			String message="Asset was updated successfully...";
 									
 			service.createOrUpdate(asset);
-			
-			
+						
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
-	        
+	               
+	        	        	        
 	        //Processing logs
 			LogsEntity log=new LogsEntity();
 			log.setSubject(quser.getEmail());
@@ -396,7 +444,7 @@ public class AssetsController
 			//Preparing list of projects
 			List<ProjectsEntity> projects=serviceProjects.getAllHHSprojects();
 						
-			//Preparing list of authors email
+			//Preparing list of authors 
 			List<String> emails=service.getAuthorEmails();
 			
 			//Retrieving user identity
@@ -417,9 +465,13 @@ public class AssetsController
 		@RequestMapping(path="/findAssetByNum", method=RequestMethod.POST)
 		public String findByAssetNum(Model model,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
-			
+			String cname=null;
+			String clientId=null;
+			String authorId=null;
+			String authorName=null;
 						
 			List<AssetsEntity> list=service.getByAssetNum(stringSearch);
+			new ClientsEntity();
 			
 			int priznakPeripherals=0;
 			
@@ -435,7 +487,8 @@ public class AssetsController
 			String titleNumber=null;
 			
 			Long assetIdLong=null;
-						
+			Long clientIdLong=null;	
+			Long authorIdLong=null;
 			
 			for(AssetsEntity asset : list)
 			{
@@ -451,6 +504,16 @@ public class AssetsController
 				titleNumber=asset.getTitle();
 				titleName=serviceTitles.getTitleByNumber(titleNumber);
 				
+				//finding employee name
+				clientId=asset.getClientId();
+				clientIdLong=Long.parseLong(clientId);
+				cname=serviceClients.getCnameById(clientIdLong);
+				
+				//finding author name
+				authorId=asset.getAuthorId();
+				authorIdLong=Long.parseLong(authorId);
+				authorName=serviceClients.getCnameById(authorIdLong);
+				
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -462,7 +525,8 @@ public class AssetsController
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
-							
+				asset.setUsername(cname);
+				asset.setAuthor(authorName);			
 			}
 			
 			//Retrieving user identity
@@ -482,9 +546,13 @@ public class AssetsController
 		@RequestMapping(path="/findAssetsByItem", method=RequestMethod.POST)
 		public String findByKlass(Model model,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
-			
+			String cname=null;
+			String clientId=null;
+			String authorId=null;
+			String authorName=null;
 						
 			List<AssetsEntity> list=service.getByItem(stringSearch);
+			new ClientsEntity();
 			
 			int priznakPeripherals=0;
 			
@@ -500,7 +568,8 @@ public class AssetsController
 			String assetId=null;
 			
 			Long assetIdLong=null;
-						
+			Long clientIdLong=null;	
+			Long authorIdLong=null;
 			
 			for(AssetsEntity asset : list)
 			{
@@ -515,6 +584,17 @@ public class AssetsController
 				titleNumber=asset.getTitle();
 				titleName=serviceTitles.getTitleByNumber(titleNumber);
 				
+				//finding employee name
+				clientId=asset.getClientId();
+				clientIdLong=Long.parseLong(clientId);
+				cname=serviceClients.getCnameById(clientIdLong);
+				
+				//finding author name
+				authorId=asset.getAuthorId();
+				authorIdLong=Long.parseLong(authorId);
+				authorName=serviceClients.getCnameById(authorIdLong);
+				
+				
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -526,7 +606,8 @@ public class AssetsController
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
-							
+				asset.setUsername(cname);
+				asset.setAuthor(authorName);
 			}
 			
 			//Retrieving user identity
@@ -546,8 +627,13 @@ public class AssetsController
 		@RequestMapping(path="/findAssetsByAuthor", method=RequestMethod.POST)
 		public String findByAuthor(Model model,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
-									
+			String cname=null;
+			String clientId=null;
+			String authorId=null;
+			String authorName=null;
+			
 			List<AssetsEntity> list=service.getByAuthor(stringSearch);
+			new ClientsEntity();
 			
 			int priznakPeripherals=0;
 						
@@ -562,7 +648,9 @@ public class AssetsController
 			
 			String assetId=null;
 			
-			Long assetIdLong=null;					
+			Long assetIdLong=null;
+			Long clientIdLong=null;
+			Long authorIdLong=null;
 			
 			for(AssetsEntity asset : list)
 			{
@@ -577,6 +665,16 @@ public class AssetsController
 				titleNumber=asset.getTitle();
 				titleName=serviceTitles.getTitleByNumber(titleNumber);
 				
+				//finding employee name
+				clientId=asset.getClientId();
+				clientIdLong=Long.parseLong(clientId);
+				cname=serviceClients.getCnameById(clientIdLong);
+				
+				//finding author name
+				authorId=asset.getAuthorId();
+				authorIdLong=Long.parseLong(authorId);
+				authorName=serviceClients.getCnameById(authorIdLong);
+				
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -588,7 +686,8 @@ public class AssetsController
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
-							
+				asset.setUsername(cname);
+				asset.setAuthor(authorName);
 			}
 			
 			//Retrieving user identity
@@ -609,8 +708,13 @@ public class AssetsController
 		@RequestMapping(path="/findAssetsByProgram", method=RequestMethod.POST)
 		public String findByProgram(Model model,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
-									
+			String cname=null;
+			String clientId=null;
+			String authorId=null;
+			String authorName=null;
+			
 			List<AssetsEntity> list=service.getByProgram(stringSearch);
+			new ClientsEntity();
 			
 			int priznakPeripherals=0;
 			
@@ -625,7 +729,9 @@ public class AssetsController
 			
 			String assetId=null;
 			
-			Long assetIdLong=null;					
+			Long assetIdLong=null;	
+			Long clientIdLong=null;
+			Long authorIdLong=null;
 			
 			for(AssetsEntity asset : list)
 			{
@@ -640,6 +746,16 @@ public class AssetsController
 				titleNumber=asset.getTitle();
 				titleName=serviceTitles.getTitleByNumber(titleNumber);
 				
+				//finding employee name
+				clientId=asset.getClientId();
+				clientIdLong=Long.parseLong(clientId);
+				cname=serviceClients.getCnameById(clientIdLong);
+				
+				//finding author name
+				authorId=asset.getAuthorId();
+				authorIdLong=Long.parseLong(authorId);
+				authorName=serviceClients.getCnameById(authorIdLong);
+				
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -651,7 +767,8 @@ public class AssetsController
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
-							
+				asset.setUsername(cname);	
+				asset.setAuthor(authorName);
 			}
 			
 			//Retrieving user identity
@@ -672,8 +789,13 @@ public class AssetsController
 		@RequestMapping(path="/findAssetsByAssignee", method=RequestMethod.POST)
 		public String findByAssignee(Model model,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException
 		{
-									
-			List<AssetsEntity> list=service.getByAssignee(stringSearch);
+			String cname=null;
+			String clientId=null;
+			String authorId=null;
+			String authorName=null;
+			
+			List<AssetsEntity> list=service.getByClientId(stringSearch);
+			new ClientsEntity();
 			
 			int priznakPeripherals=0;
 						
@@ -688,8 +810,10 @@ public class AssetsController
 			
 			String assetId=null;
 			
-			Long assetIdLong=null;					
-			
+			Long assetIdLong=null;	
+			Long clientIdLong=null;
+			Long authorIdLong=null;
+						
 			for(AssetsEntity asset : list)
 			{
 			
@@ -703,6 +827,16 @@ public class AssetsController
 				titleNumber=asset.getTitle();
 				titleName=serviceTitles.getTitleByNumber(titleNumber);
 				
+				//finding employee name
+				clientId=asset.getClientId();
+				clientIdLong=Long.parseLong(clientId);
+				cname=serviceClients.getCnameById(clientIdLong);
+				
+				//finding author name
+				authorId=asset.getAuthorId();
+				authorIdLong=Long.parseLong(authorId);
+				authorName=serviceClients.getCnameById(authorIdLong);
+				
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -714,7 +848,8 @@ public class AssetsController
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
-							
+				asset.setUsername(cname);
+				asset.setAuthor(authorName);
 			}
 			
 			//Retrieving user identity
@@ -772,6 +907,9 @@ public class AssetsController
 			
 			int age=0;
 			
+			Long clientIdLong=null;
+			Long authorIdLong=null;
+			
 			String assetId=null;
 			String projectNumber=null;
 			String projectName=null;
@@ -782,6 +920,7 @@ public class AssetsController
 			String viewTitle=null;
 			String header="Assets View by Program : ";
 			String username=null;
+			String author=null;
 			String datePurchased=null;
 			
 			String periphNumber=null;
@@ -800,6 +939,14 @@ public class AssetsController
 			for(AssetsEntity asset : list)
 			{
 				age=0;
+				
+				//Finding username
+				clientIdLong=Long.parseLong(asset.getClientId());
+				username=serviceClients.getCnameById(clientIdLong);
+				
+				//Finding name of the person reporting the asset
+				authorIdLong=Long.parseLong(asset.getAuthorId());
+				author=serviceClients.getCnameById(authorIdLong);
 			
 				//Finding project name
 				projectNumber=asset.getProject();
@@ -833,6 +980,8 @@ public class AssetsController
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
 				asset.setAge(ageString);
+				asset.setUsername(username);
+				asset.setAuthor(author);
 			}
 			
 			for(PeripheralsEntity peripheral : listPeripherals)
@@ -841,6 +990,7 @@ public class AssetsController
 				assetIdLong=Long.parseLong(assetId);
 				username=service.getUsername(assetIdLong);
 				
+								
 				//Finding item name
 				periphNumber=peripheral.getPeripheralNum();
 				periphName=serviceItems.getItemByNumber(periphNumber);
@@ -906,6 +1056,9 @@ public class AssetsController
 			//Retrieving peripherals list 
 			List<PeripheralsEntity> listPeripherals=servicePeripherals.getByProject(stringSearch);
 			
+			Long clientIdLong=null;
+			Long authorIdLong=null;
+			
 			String assetId=null;
 			String projectNumber=null;
 			String projectName=null;
@@ -920,6 +1073,7 @@ public class AssetsController
 			String day=null;
 			String podcherk="/";
 			String username=null;
+			String author=null;
 			
 			String periphNumber=null;
 			String periphName=null;
@@ -929,16 +1083,25 @@ public class AssetsController
 			for(AssetsEntity asset : list)
 			{
 			
+				//Finding username
+				clientIdLong=Long.parseLong(asset.getClientId());
+				username=serviceClients.getCnameById(clientIdLong);
+				
+				//Finding name of person reporting the asset
+				authorIdLong=Long.parseLong(asset.getAuthorId());
+				author=serviceClients.getCnameById(authorIdLong);
+				
+				//Finding project name
 				projectNumber=asset.getProject();
 				projectName=serviceProjects.getProjectByNum(projectNumber);
 				
+				//Finding item name
 				itemNumber=asset.getItem();
 				itemName=serviceItems.getItemByNumber(itemNumber);
 				
+				//Finding title name (unused)
 				titleNumber=asset.getTitle();
 				titleName=serviceTitles.getTitleByNumber(titleNumber);
-				
-				
 				
 				dateRaw=asset.getDateCreation();
 				
@@ -956,7 +1119,9 @@ public class AssetsController
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
-				asset.setDateCreation(dateConverted);	
+				asset.setDateCreation(dateConverted);
+				asset.setUsername(username);
+				asset.setAuthor(author);
 				
 			}
 			
@@ -978,8 +1143,8 @@ public class AssetsController
 	 
 	        ICsvBeanWriter csvWriter=new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 	        	        
-	        String[] csvHeader={"Item","Asset Number","Maker", "Model", "Date Purchased","User","Title","Emp. Status","Project","Program","Date Inventory","Registered by","Email","Item Class"};
-	        String[] nameMapping={"site","assetNumber","maker","model","datePurchased","username","title","empStatus","project","program","dateCreation","author","authorEmail","klass"};
+	        String[] csvHeader={"Item","Asset Number","Maker", "Model", "Date Purchased","User","Project","Program","Date Inventory","Registered by"};
+	        String[] nameMapping={"site","assetNumber","maker","model","datePurchased","username","project","program","dateCreation","author"};
 	        
 	        String[] csvHeader2={"Description","Item Related","User"};
 	        String[] nameMapping2={"description","itemId","notes"};
@@ -1022,12 +1187,20 @@ public class AssetsController
 		@RequestMapping(path="/reassign", method=RequestMethod.POST)
 		public String reassign(Model model,Long assetId, String stringSearch, String priznak, Long quserId) throws RecordNotFoundException
 		{
+			//Preparing list of clients
+			List<ClientsEntity> clients=serviceClients.getAllActives();
+			
+			ClientsEntity client=new ClientsEntity();
+			
 			String itemName=null;
 			String itemNumber=null;
 			String titleName=null;
 			String titleNumber=null;
 			String projectName=null;
 			String projectNumber=null;
+			String clientId=null;
+			
+			Long clientIdLong=null;
 			
 			//Retrieving asset entity
 			AssetsEntity entity=service.getAssetById(assetId);
@@ -1035,6 +1208,9 @@ public class AssetsController
 			itemNumber=entity.getItem();
 			titleNumber=entity.getTitle();
 			projectNumber=entity.getProject();
+			clientId=entity.getClientId();
+			
+			clientIdLong=Long.parseLong(clientId);
 			
 			//Retrieving item description
 			itemName=serviceItems.getItemByNumber(itemNumber);
@@ -1044,6 +1220,9 @@ public class AssetsController
 			
 			//Retrieving project description
 			projectName=serviceProjects.getProjectByNum(projectNumber);
+			
+			//Retrieving client profile
+			client=serviceClients.getClientById(clientIdLong);
 			
 			//Preparing list of titles
 			List<TitlesEntity> titles=serviceTitles.getAllTitles();
@@ -1065,8 +1244,11 @@ public class AssetsController
 			model.addAttribute("assetReassig",new AssetAssigEntity());
 						
 			model.addAttribute("asset",entity);
+			model.addAttribute("client",client);
+			
 			model.addAttribute("projects",projects);
 			model.addAttribute("titles",titles);
+			model.addAttribute("clients",clients);
 			
 			model.addAttribute("itemName",itemName);
 			model.addAttribute("titleName",titleName);
@@ -1080,68 +1262,42 @@ public class AssetsController
 		}
 		
 		@RequestMapping(path="/reassignAsset", method=RequestMethod.POST)
-		public String reassignAsset(Model model,Long id, AssetAssigEntity assetReassig, String stringSearch, String priznak, Long quserId,
-				
-				String username,
-				String email,
-				String empStatus,
-				String title,
-				String project,
-				
-				String assetNumber,
-				String kluch
-				
-		) throws RecordNotFoundException
+		public String reassignAsset(Model model,String assetId,String newAssigId,String oldAssigId,String reassignedBy,String notes,String stringSearch,String priznak, Long quserId) throws RecordNotFoundException
 		{
-									
-			String assetIdString=null;
-			String todayDate=null;
 			
-			String newUsername=null;
-			String newTitle=null;
-			String newEmpStatus=null;
-			String newProject=null;
-			String newEmail=null;
-			String reassignedBy=null;
-			String emailReassigner=null;
+			AssetsEntity asset=new AssetsEntity();									
+			ClientsEntity newAssignee=new ClientsEntity();
+			ClientsEntity oldAssignee=new ClientsEntity();
 			
-			newUsername=assetReassig.getNewAssigName();
-			newTitle=assetReassig.getNewAssigTitle();
-			newEmpStatus=assetReassig.getNewAssigEmpStatus();
-			newProject=assetReassig.getNewAssigProject();
-			newEmail=assetReassig.getNewAssigEmail();
-			reassignedBy=assetReassig.getReassignedBy();
-			emailReassigner=assetReassig.getEmailReassigner();
+			AssetAssigEntity assignation=new AssetAssigEntity();
+			
+			Long assetIdLong=null;
+			Long newAssigIdLong=null;
+			Long oldAssigIdLong=null;
 						
-			//Converting Long to String
-			assetIdString=String.valueOf(id);
-			
-			LocalDateTime now=LocalDateTime.now(); 
-			
-			//Generating today's date
-			DateTimeFormatter dtfRecord=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
+			//Converting strings to long
+			assetIdLong=Long.parseLong(assetId);
+			newAssigIdLong=Long.parseLong(newAssigId);
+			oldAssigIdLong=Long.parseLong(oldAssigId);
 						
-			todayDate=dtfRecord.format(now);
+			//Retrieving identities of the old and new assignee, and asset
+			newAssignee=serviceClients.getClientById(newAssigIdLong);
+			oldAssignee=serviceClients.getClientById(oldAssigIdLong);
+			asset=service.getAssetById(assetIdLong);
 			
-			//Complementing the Re-Assignation object
-			assetReassig.setAssetId(assetIdString);
-			assetReassig.setAssetNumber(assetNumber);
-			assetReassig.setAssigName(username);
-			assetReassig.setAssigEmail(email);
-			assetReassig.setAssigEmpStatus(empStatus);
-			assetReassig.setAssigProject(project);
-			assetReassig.setAssigTitle(title);
-					
-			assetReassig.setDateReassignation(todayDate);
-			assetReassig.setKluch(kluch);
+			//Creating the object
+			assignation.setAssetId(assetId);
+			assignation.setAssigId(oldAssigId);
+			assignation.setNewAssigId(newAssigId);
+			assignation.setReassignedBy(reassignedBy);
+			assignation.setNotes(notes);
 			
-			//System.out.println(assetReassig);
-			
+						
 			//Saving re-assignation information
-			serviceReassig.createReassig(assetReassig);
-			
+			serviceReassig.createReassig(assignation);
+									
 			//Saving changes to the asset object
-			service.assetReassignation(id,newUsername,newTitle,newEmpStatus,newProject,newEmail,reassignedBy,emailReassigner);
+			service.assetReassignation(assetIdLong,newAssigId);
 			
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
@@ -1149,25 +1305,22 @@ public class AssetsController
 			//Processing logs
 			LogsEntity log=new LogsEntity();
 			log.setSubject(quser.getEmail());
-			log.setAction("Reassigning asset number "+ assetReassig.getAssetNumber());
-			log.setObject("New recipient of this asset is "+ assetReassig.getAssigName());
+			log.setAction("Reassigning asset number "+ assetId);
+			log.setObject("New recipient of this asset is client ID: "+ newAssigId);
 			serviceLogs.saveLog(log);
 				        
+						
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
-			
-			model.addAttribute("assetReassig",assetReassig);
-			
-			model.addAttribute("username",username);
-			model.addAttribute("email",email);
-			model.addAttribute("empStatus",empStatus);
-			model.addAttribute("title",title);
-			model.addAttribute("project",project);
-			
-			model.addAttribute("assetNumber",assetNumber);
-			
+									
 			model.addAttribute("stringSearch",stringSearch);												
 			model.addAttribute("priznak",priznak);
+			
+			model.addAttribute("asset",asset);
+			model.addAttribute("newAssignee",newAssignee);
+			model.addAttribute("oldAssignee",oldAssignee);
+			model.addAttribute("reassignedBy",reassignedBy);
+			model.addAttribute("notes",notes);
 						
 			return "assetsReassigRedirect";
 

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.trc.entities.AssetsEntity;
 import com.trc.repositories.AssetAssigRepository;
 import com.trc.repositories.AssetsRepository;
+import com.trc.repositories.ClientsRepository;
 import com.trc.repositories.PeripheralsRepository;
 import com.trc.repositories.ProjectsRepository;
 
@@ -29,6 +30,9 @@ public class AssetsService
 	
 	@Autowired
 	AssetAssigRepository repositoryReassig;
+	
+	@Autowired
+	ClientsRepository repositoryClients;
 	
 	public List<AssetsEntity> getAllAssets()
 	{
@@ -98,8 +102,7 @@ public class AssetsService
 			
 			if(asset.isPresent())
 			{
-				
-						
+										
 				//Setting variables to update real date quote
 				Long localId=entity.getAssetid();
 				String localDatePurchased=entity.getDatePurchased();
@@ -115,6 +118,7 @@ public class AssetsService
 				newEntity.setDatePurchased(entity.getDatePurchased());
 				newEntity.setUsername(entity.getUsername());
 				newEntity.setTitle(entity.getTitle());
+				newEntity.setClientId(entity.getClientId());
 				
 				newEntity.setDivision(entity.getDivision());
 				newEntity.setSite(entity.getSite());
@@ -123,6 +127,8 @@ public class AssetsService
 				newEntity.setNotes(entity.getNotes());
 				
 				newEntity.setProject(entity.getProject());
+				
+				newEntity.setAuthorId(entity.getAuthorId());
 				newEntity.setAuthor(entity.getAuthor());
 				newEntity.setAuthorEmail(entity.getAuthorEmail());
 				
@@ -227,7 +233,7 @@ public class AssetsService
 	
 	public List<AssetsEntity> findThisSessionAssets(String kluch)
 	{
-		List<AssetsEntity> result=(List<AssetsEntity>) repository.getThisSessionAssets(kluch);
+		List<AssetsEntity> result=repository.getThisSessionAssets(kluch);
 		
 		if(result.size() > 0)
 			return result;
@@ -265,7 +271,7 @@ public class AssetsService
 	
 	public List<AssetsEntity> getByAssetNum(String assetNumber)
 	{
-		List<AssetsEntity> result=(List<AssetsEntity>) repository.getByAssetNumber(assetNumber);
+		List<AssetsEntity> result=repository.getByAssetNumber(assetNumber);
 		
 		if(result.size() > 0)
 			return result;
@@ -277,7 +283,7 @@ public class AssetsService
 	public List<AssetsEntity> getByItem(String item)
 	{
 				
-		List<AssetsEntity> result=(List<AssetsEntity>) repository.getByItem(item);
+		List<AssetsEntity> result=repository.getByItem(item);
 		
 		if(result.size() > 0)
 			return result;
@@ -289,7 +295,7 @@ public class AssetsService
 	public List<String> getAuthorEmails()
 	{
 				
-		List<String> result=(List<String>) repository.getDistAuthorEmails();
+		List<String> result=repository.getDistAuthorEmails();
 		
 		if(result.size() > 0)
 			return result;
@@ -301,7 +307,7 @@ public class AssetsService
 	public List<String> getAssigneeEmails()
 	{
 				
-		List<String> result=(List<String>) repository.getDistAssigneeEmails();
+		List<String> result=repository.getDistAssigneeEmails();
 		
 		if(result.size() > 0)
 			return result;
@@ -310,10 +316,10 @@ public class AssetsService
 		
 	}
 	
-	public List<AssetsEntity> getByAuthor(String authorEmail)
+	public List<AssetsEntity> getByAuthor(String authorClientId)
 	{
 				
-		List<AssetsEntity> result=(List<AssetsEntity>) repository.getByAuthor(authorEmail);
+		List<AssetsEntity> result=repository.getByAuthor(authorClientId);
 		
 		if(result.size() > 0)
 			return result;
@@ -325,7 +331,7 @@ public class AssetsService
 	public List<AssetsEntity> getByProgram(String projectNumber)
 	{
 				
-		List<AssetsEntity> result=(List<AssetsEntity>) repository.getByProgram(projectNumber);
+		List<AssetsEntity> result=repository.getByProgram(projectNumber);
 		
 		if(result.size() > 0)
 			return result;
@@ -387,11 +393,11 @@ public class AssetsService
 		
 	}
 	
-	public void assetReassignation(Long id,String newUsername,String newTitle,String newEmpStatus,String newProject,String newEmail,String reassignedBy,String emailReassigner)
+	public void assetReassignation(Long assetId,String newAssigId)
 	{
 					
 		//Making changes and saving information
-		repository.putReassignation(id,newUsername,newTitle,newEmpStatus,newProject,newEmail);
+		repository.putReassignation(assetId,newAssigId);
 		
 		
 	}
@@ -418,7 +424,7 @@ public class AssetsService
 	public List<AssetsEntity> getByAssignee(String email)
 	{
 				
-		List<AssetsEntity> result=(List<AssetsEntity>) repository.getByAssignee(email);
+		List<AssetsEntity> result=repository.getByAssignee(email);
 		
 		if(result.size() > 0)
 			return result;
@@ -426,6 +432,17 @@ public class AssetsService
 			return new ArrayList<AssetsEntity>();
 		
 	}
-	
+
+
+	public List<AssetsEntity> getByClientId(String clientId) 
+	{
+		List<AssetsEntity> result=repository.getByAssignee(clientId);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<AssetsEntity>();
+	}
+		
 		
 }

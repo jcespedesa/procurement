@@ -34,7 +34,7 @@ public class ProvidersService
 	
 	public List<ProvidersEntity> getAllProvidersListByCode()
 	{
-		List<ProvidersEntity> result=(List<ProvidersEntity>) repository.getAllListByCode();
+		List<ProvidersEntity> result=repository.getAllListByCode();
 		
 		if(result.size() > 0)
 			return result;
@@ -45,7 +45,7 @@ public class ProvidersService
 	
 	public List<ProvidersEntity> getAllProvidersListByName()
 	{
-		List<ProvidersEntity> result=(List<ProvidersEntity>) repository.getAllListByName();
+		List<ProvidersEntity> result=repository.getAllListByName();
 		
 		if(result.size() > 0)
 			return result;

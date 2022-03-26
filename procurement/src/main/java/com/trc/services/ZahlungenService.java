@@ -45,7 +45,7 @@ public class ZahlungenService
 		 monthInt=Integer.parseInt(month);
 		 yearInt=Integer.parseInt(year);
 		
-		List<ZahlungenEntity> result=(List<ZahlungenEntity>) repository.findByMonthYear(monthInt,yearInt);
+		List<ZahlungenEntity> result=repository.findByMonthYear(monthInt,yearInt);
 		
 		if(result.size() > 0)
 			return result;
@@ -160,7 +160,7 @@ public class ZahlungenService
 		yearInt=Integer.parseInt(year);
 		
 		//trying to get the list of periodicals
-		List<PeriodicalsEntity> listPeriodicals=(List<PeriodicalsEntity>) repositoryPeriodicals.getAllActives();
+		List<PeriodicalsEntity> listPeriodicals=repositoryPeriodicals.getAllActives();
 		
 		for(i=0;i<listPeriodicals.size();i++)
 		{

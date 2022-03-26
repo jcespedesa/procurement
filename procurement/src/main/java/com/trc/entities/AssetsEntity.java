@@ -30,6 +30,9 @@ public class AssetsEntity
 	@Column(name="datepurchased")
 	private String datePurchased;
 	
+	@Column(name="clientid")
+	private String clientId;
+	
 	@Column(name="username")
 	private String username;
 	
@@ -60,6 +63,9 @@ public class AssetsEntity
 	@Column(name="strobe")
 	private String strobe;
 	
+	@Column(name="authorid")
+	private String authorId;
+	
 	@Column(name="author")
 	private String author;
 	
@@ -78,7 +84,7 @@ public class AssetsEntity
 	@Column(name="klass")
 	private String klass;
 	
-	@Column(name="datecreation")
+	@Column(name="datecreation",updatable=false, insertable=false)
 	private String dateCreation;
 	
 	@Column(name="age")
@@ -90,7 +96,7 @@ public class AssetsEntity
 	@Override
 	public String toString()
 	{
-		return "AssetsEntity[assetid="+ assetid +",item="+ item +",assetNumber="+ assetNumber +",maker="+ maker +",model="+ model +",datePurchased="+ datePurchased +",username="+ username +",title="+ title +",empStatus="+ empStatus +",division="+ division +",site="+ site +",active="+ active +",notes="+ notes +",realDatePurchased="+ realDatePurchased +",project="+ project +",strobe="+ strobe +",author="+ author +",authorEmail="+ authorEmail +",kluch="+ kluch +",email="+ email +",program="+ program +",klass="+ klass +",dateCreation="+ dateCreation +",age="+ age +",status="+ status +"]";				
+		return "AssetsEntity[assetid="+ assetid +",item="+ item +",assetNumber="+ assetNumber +",maker="+ maker +",model="+ model +",datePurchased="+ datePurchased +",username="+ username +",title="+ title +",empStatus="+ empStatus +",division="+ division +",site="+ site +",active="+ active +",notes="+ notes +",realDatePurchased="+ realDatePurchased +",project="+ project +",strobe="+ strobe +",author="+ author +",authorEmail="+ authorEmail +",kluch="+ kluch +",email="+ email +",program="+ program +",klass="+ klass +",dateCreation="+ dateCreation +",age="+ age +",status="+ status +",clientId="+ clientId +",authorId="+ authorId +"]";				
 		
 	}
 	
@@ -345,6 +351,30 @@ public class AssetsEntity
 	public void setStatus(String status) 
 	{
 		this.status=status;
+	}
+
+
+	public String getClientId() 
+	{
+		return clientId;
+	}
+
+
+	public void setClientId(String clientId) 
+	{
+		this.clientId=clientId;
+	}
+
+
+	public String getAuthorId() 
+	{
+		return authorId;
+	}
+
+
+	public void setAuthorId(String authorId) 
+	{
+		this.authorId=authorId;
 	}
 	
 	

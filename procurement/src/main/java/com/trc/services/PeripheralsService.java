@@ -105,7 +105,7 @@ public class PeripheralsService
 	
 	public List<PeripheralsEntity> getByKluch(String kluch)
 	{
-		List<PeripheralsEntity> result=(List<PeripheralsEntity>) repository.getAllByKluch(kluch);
+		List<PeripheralsEntity> result=repository.getAllByKluch(kluch);
 		
 		if(result.size() > 0)
 			return result;
@@ -116,7 +116,7 @@ public class PeripheralsService
 	
 	public List<PeripheralsEntity> getByAssetId(String assetId)
 	{
-		List<PeripheralsEntity> result=(List<PeripheralsEntity>) repository.getAllByAssetId(assetId);
+		List<PeripheralsEntity> result=repository.getAllByAssetId(assetId);
 		
 		if(result.size() > 0)
 			return result;
@@ -127,7 +127,7 @@ public class PeripheralsService
 	
 	public List<PeripheralsEntity> getByProject(String project)
 	{
-		List<PeripheralsEntity> result=(List<PeripheralsEntity>) repository.getByProject(project);
+		List<PeripheralsEntity> result=repository.getByProject(project);
 		
 		if(result.size() > 0)
 			return result;

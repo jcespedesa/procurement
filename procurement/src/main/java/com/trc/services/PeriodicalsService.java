@@ -41,7 +41,7 @@ public class PeriodicalsService
 	
 	public List<PeriodicalsEntity> getAllByDescription()
 	{
-		List<PeriodicalsEntity> result=(List<PeriodicalsEntity>) repository.getAllByDescription();
+		List<PeriodicalsEntity> result=repository.getAllByDescription();
 		
 		if(result.size() > 0)
 			return result;
@@ -52,7 +52,7 @@ public class PeriodicalsService
 	
 	public List<PeriodicalsEntity> getAllActive()
 	{
-		List<PeriodicalsEntity> result=(List<PeriodicalsEntity>) repository.getAllActives();
+		List<PeriodicalsEntity> result=repository.getAllActives();
 		
 		if(result.size() > 0)
 			return result;

@@ -30,7 +30,7 @@ public class SitesService
 	
 	public List<SitesEntity> getAllHHSsites()
 	{
-		List<SitesEntity> result=(List<SitesEntity>) repository.findAllHHSsites();
+		List<SitesEntity> result=repository.findAllHHSsites();
 		
 		if(result.size() > 0)
 			return result;
@@ -42,7 +42,7 @@ public class SitesService
 		
 	public List<SitesEntity> getAllByName()
 	{
-		List<SitesEntity> result=(List<SitesEntity>) repository.getAllByName();
+		List<SitesEntity> result=repository.getAllByName();
 		
 		if(result.size() > 0)
 			return result;
@@ -141,7 +141,7 @@ public class SitesService
 	
 	public List<SitesEntity> searchByDivision(String stringSearch)
 	{
-		List<SitesEntity> result=(List<SitesEntity>) repository.searchByDivision(stringSearch);
+		List<SitesEntity> result=repository.searchByDivision(stringSearch);
 		
 		return result;
 		

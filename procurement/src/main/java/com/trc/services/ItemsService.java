@@ -29,7 +29,7 @@ public class ItemsService
 	
 	public List<ItemsEntity> getAllItemsListDesc()
 	{
-		List<ItemsEntity> result=(List<ItemsEntity>) repository.getAllDesc();
+		List<ItemsEntity> result=repository.getAllDesc();
 		
 		if(result.size() > 0)
 			return result;
@@ -40,7 +40,7 @@ public class ItemsService
 	
 	public List<ItemsEntity> getAllMainItems()
 	{
-		List<ItemsEntity> result=(List<ItemsEntity>) repository.getAllMain();
+		List<ItemsEntity> result=repository.getAllMain();
 		
 		if(result.size() > 0)
 			return result;
@@ -51,7 +51,7 @@ public class ItemsService
 	
 	public List<ItemsEntity> getAllPeripherals()
 	{
-		List<ItemsEntity> result=(List<ItemsEntity>) repository.getAllPeripherals();
+		List<ItemsEntity> result=repository.getAllPeripherals();
 		
 		if(result.size() > 0)
 			return result;
@@ -62,7 +62,7 @@ public class ItemsService
 	
 	public List<ItemsEntity> getAllPeripheralsHHS()
 	{
-		List<ItemsEntity> result=(List<ItemsEntity>) repository.getAllPeripheralsHHS();
+		List<ItemsEntity> result=repository.getAllPeripheralsHHS();
 		
 		if(result.size() > 0)
 			return result;

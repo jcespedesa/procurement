@@ -722,5 +722,22 @@ public class PortalController
 	}
 	
 	
-	
+	@RequestMapping(path="/apiEmailSwitch", method=RequestMethod.POST)
+	public void sendEmail(Model model,String email,String subject,String message, String project) throws RecordNotFoundException
+	{
+		SettingsEntity setting=serviceSettings.getSettingByDescription("emailSettings");
+		
+		LogsEntity log=new LogsEntity();
+		
+		log.setSubject(email);
+		log.setAction("Sending email using the Email Switch Feature in behalf of the "+ project);
+		log.setObject("API Email Switch");
+		
+		//Sending the registration email
+		serviceEmails.sendMail(email,subject,message, setting.getParam1());
+		
+		
+						
+	}
+
 }

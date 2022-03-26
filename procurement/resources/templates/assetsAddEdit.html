@@ -143,158 +143,157 @@
                     
                 </div>
                     
-                    <div class="form-group">    	
-                    	<label for="maker" class="col-form-label">Maker/Brand <sup>*</sup>:</label> 
-                       	<input type="text" th:field="*{maker}" id="maker" placeholder="Maker/Brand" size="15" maxlength="15"/>
+                <div class="form-group">    	
+                   	<label for="maker" class="col-form-label">Maker/Brand <sup>*</sup>:</label> 
+                   	<input type="text" th:field="*{maker}" id="maker" placeholder="Maker/Brand" size="15" maxlength="15"/>
                        	                     
-                       	<label for="model" class="col-form-label">Model<sup>*</sup>:</label> 
-                       	<input type="text" th:field="*{model}" id="model" placeholder="Model" size="50" maxlength="50"/>
-                    </div>    	
+                   	<label for="model" class="col-form-label">Model<sup>*</sup>:</label> 
+                   	<input type="text" th:field="*{model}" id="model" placeholder="Model" size="50" maxlength="50"/>
+                </div>    	
                         	
                 
-                   <div class="form-group">   
-                       	<label for="datePurchased" class="col-form-label">Date Purchased :</label> 
-                       	<input type="text" th:field="*{datePurchased}" id="datePurchased" placeholder="Date" size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
+                <div class="form-group">   
+                   	<label for="datePurchased" class="col-form-label">Date Purchased :</label> 
+                   	<input type="text" th:field="*{datePurchased}" id="datePurchased" placeholder="Date" size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
                        	
-                    	<label for="status" class="col-form-label">Status : </label> 
-	                   	<select th:field="*{status}" id="status">
-	                   		<option th:value="*{status}" th:text="*{status}"></option>
-	                   		<option value="On line">On line</option>
-	                   		<option value="Unusable">Unusable</option>
-	                   		<option value="With missing/broken parts">With missing/broken parts</option>
-	                   		<option value="Unknown">Unknown</option>
-	                   		<option value=""></option>
-	                   	</select>
-	                   	<label for="active">Active</label>
-     					<select th:field="*{active}" id="active">
-					     	<option th:value="*{active}" th:text="*{active}"></option>
-					    	<option th:value="'Yes'" th:text="Yes"></option>
-					    	<option th:value="'No'" th:text="No"></option>
-     					</select>  
-                   </div>
+                   	<label for="status" class="col-form-label">Status : </label> 
+	               	<select th:field="*{status}" id="status">
+	               		<option th:value="*{status}" th:text="*{status}"></option>
+	               		<option value="On line">On line</option>
+	               		<option value="Unusable">Unusable</option>
+	               		<option value="With missing/broken parts">With missing/broken parts</option>
+	               		<option value="Unknown">Unknown</option>
+	               		<option value=""></option>
+	               	</select>
+	               	<label for="active">Active</label>
+     				<select th:field="*{active}" id="active">
+					   	<option th:value="*{active}" th:text="*{active}"></option>
+					   	<option th:value="'Yes'" th:text="Yes"></option>
+					   	<option th:value="'No'" th:text="No"></option>
+     				</select>  
+                 </div>
                     
-                    <hr>
+                 <hr>
+                   
+                 <div class="form-group">
+                       	                       	
+                   	<label for="division" class="col-form-label">Division :</label> 
+                   	<select th:field="*{division}" id="division">
+                   		<option th:value="*{division}" th:text="${divisionName}"></option>
+                   		<option th:each="division : ${divisions}" th:value="${division.dnumber}" th:text="${division.dname}" ></option>
+                   	</select>
+                                      
                     
-                    <div class="form-group">
-                       	<label for="username" class="col-form-label">User Name:</label> 
-                       	<input type="text" th:field="*{username}" id="username" placeholder="User name" size="50" maxlength="50"/>
+                   	<label for="program" class="col-form-label">Program :</label> 
+                   	<select th:field="*{project}" id="project">
+                   		<option th:value="*{project}" th:text="${projectName}"></option>
+                   		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}" ></option>
+                   		<option value="Unknown">Unknown</option>
+                   	</select>
+                       	
+                 </div>
+                 
+                 <div class="form-group">
                     
-                       	<label for="title" class="col-form-label">Title :</label> 
-                       	<select th:field="*{title}" id="title">
-                       		<option th:value="*{title}" th:text="${titleName}"></option>
-                       		<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
-                       		<option value="Other">Other (Add notes)</option>
-                       	</select>
-                    </div>
-                    
-                    <div class="form-group">
-     					<label for="active">Employment Status</label>
-     					<select th:field="*{empStatus}">
-					     	<option th:value="*{empStatus}" th:text="*{empStatus}"></option>
-					    	<option value="Perm">Perm</option>
-					    	<option value="Temp">Temp</option>
-     					</select>    						
-						  						
-					</div>       	
+                 	<label for="siteNumber" class="col-form-label">Site :</label> 
+                  	<select th:field="*{site}" id="site">
+                   		<option th:value="*{site}" th:text="${sname}"></option>
+                   		<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}" ></option>
+                   		<option value="Other">Other</option>
+                   	</select>
                                        
-                    <div class="form-group">
-                       	<label for="project" class="col-form-label">Project :</label> 
-                       	<select th:field="*{project}" id="project">
-                       		<option th:value="*{project}" th:text="${projectName}"></option>
-                       		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}" ></option>
-                       		<option value="Other">Other (Add notes)</option>
-                       	</select>
-                       	<label for="email" class="col-form-label">Email :</label> 
-                       	<input type="text" th:field="*{email}" id="email" placeholder="someone@cc-dc.org" size="50" maxlength="70"/>
-                    </div>
+                 </div> 
                     
-                    <div class="form-group">
-                       	<label for="site" class="col-form-label">Site :</label> 
-                       	<select th:field="*{site}" id="site">
-                       		<option th:value="*{site}" th:text="${siteName}"></option>
-                       		<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}" ></option>
-                       		<option value="Other">Other (Add notes)</option>
-                       	</select>
-                    </div>
+                 <hr>
                     
+                 <div class="form-group">
+                       	                       	
+                   	<label for="username" class="col-form-label">Assignee</label> 
+                  	<select th:field="*{clientId}" id="clientId" required>
+                   		<option th:value="*{clientId}" th:text="${username}"></option>
+                  		<option th:each="client : ${clients}" th:value="${client.clientid}" th:text="${client.cname}" ></option>
+                   	</select>
                     
+                 </div>   	
                     
-                    <hr>   	
+                 <hr>   	
                      
-                    <div class="form-group">   	
-                       	<label for="author" class="col-form-label"> Form Completed by :</label> 
-                       	<input type="text" th:field="*{author}" id="author" placeholder="" required size="50" maxlength="50"/>
-                       	<label for="email" class="col-form-label">Email :</label> 
-                       	<input type="text" th:field="*{authorEmail}" id="authorEmail" placeholder="someone@cc-dc.org" size="50" maxlength="70"/>
-                    </div>
+                 <div class="form-group">   	
+                   	<label for="author" class="col-form-label"> Form Completed by :</label> 
+                   	<select th:field="*{authorId}" id="authorId" required>
+                   		<option th:value="*{authorId}" th:text="${authorName}"></option>
+                  		<option th:each="client : ${clients}" th:value="${client.clientid}" th:text="${client.cname}" ></option>
+                   	</select>
+                  	
+                 </div>
                     
                                                             
-                    <div class="form-group">
-      					<label for="notes">Notes/Observations:</label><br>
-      					<textarea id="notes" th:field="*{notes}" rows="7" cols="80"></textarea>
-      				</div>	
-      				<div th:if="${priznakNew=='No'}" class="form-group">
+                 <div class="form-group">
+      				<label for="notes">Notes/Observations:</label><br>
+      				<textarea id="notes" th:field="*{notes}" rows="7" cols="80"></textarea>
+      			</div>	
+      			<div th:if="${priznakNew=='No'}" class="form-group">
       					
-      					<table class="table table-bordered" style="width:30%">
-      						<thead>
-      							<tr class="table-active">
-      								<td style="font-weight:bold">Related peripherals</td>
-      							</tr>
-      						</thead>
-      						<tbody>
-      							<tr th:each="peripheral : ${peripherals}">
-      								<td th:text="${peripheral.description}"></td>
-      							</tr>
-     						</tbody>		
-      					</table>
+      				<table class="table table-bordered" style="width:30%">
+      					<thead>
+      						<tr class="table-active">
+      							<td style="font-weight:bold">Related peripherals</td>
+      						</tr>
+      					</thead>
+      					<tbody>
+      						<tr th:each="peripheral : ${peripherals}">
+      							<td th:text="${peripheral.description}"></td>
+      						</tr>
+     					</tbody>		
+      				</table>
       					
-      					<table class="table table-bordered-sm">
-      						<thead>
-      							<tr class="table-active">
-      								<td colspan="4" style="font-weight:bold">Previous Owners</td>
-      							</tr>
-      						</thead>
-      						<tbody>
-      							<tr th:each="assig : ${assigs}">
-      								<td th:text="${assig.assigName}"></td>
-      								<td th:text="${assig.assigEmail}"></td>
-      								<td th:text="${assig.assigTitle}"></td>
-      								<td th:text="${assig.assigProject}"></td>
-      							</tr>
-     						</tbody>		
-      					</table>
+      				<table class="table table-bordered-sm">
+      					<thead>
+      						<tr class="table-active">
+      							<td colspan="4" style="font-weight:bold">Previous Owners</td>
+      						</tr>
+      					</thead>
+      					<tbody>
+      						<tr th:each="assig : ${assigs}">
+      							<td th:text="${assig.assigName}"></td>
+      							<td th:text="${assig.assigEmail}"></td>
+      							<td th:text="${assig.assigTitle}"></td>
+      							<td th:text="${assig.assigProject}"></td>
+      						</tr>
+     					</tbody>		
+      				</table>
       					
-      					<table class="table table-bordered" style="width:50%">
-      						<thead>
-      							<tr class="table-active">
-      								<td style="font-weight:bold">Asset Date Creation</td>
-      								<td style="font-weight:bold">Key Record ID</td>
-      							</tr>
-      						</thead>
-      						<tbody>
-      							<tr>
-      								<td th:text="*{dateCreation}"></td>
-      								<td th:text="*{kluch}"></td>
-      							</tr>
-      						</tbody>		
-      					</table>
+      				<table class="table table-bordered" style="width:50%">
+      					<thead>
+      						<tr class="table-active">
+      							<td style="font-weight:bold">Asset Date Creation</td>
+      							<td style="font-weight:bold">Key Record ID</td>
+      						</tr>
+      					</thead>
+      					<tbody>
+      						<tr>
+      							<td th:text="*{dateCreation}"></td>
+      							<td th:text="*{kluch}"></td>
+      						</tr>
+      					</tbody>		
+      				</table>
       					
-					</div>
+				</div>
 					
 					                                       
-                    <div class="form-group">
-                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                <div class="form-group">
+                   	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
                        	
-                    </div>   	
+                </div>   	
                                                 	
-                    <input type="hidden" id="id" th:field="*{assetid}"> 
-                    <input type="hidden" th:value="${seed}" th:attr="name='strobe'"> 
-                    <input type="hidden" th:value="${kluch}" th:attr="name='kluch'"> 
-                    <input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
-                    <input type="hidden" th:value="${priznak}" name="priznak"> 
-                    <input type="hidden" th:value="${quserId}" name="quserId">
+                <input type="hidden" id="id" th:field="*{assetid}"> 
+                <input type="hidden" th:value="${seed}" th:attr="name='strobe'"> 
+                <input type="hidden" th:value="${kluch}" th:attr="name='kluch'"> 
+                <input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+                <input type="hidden" th:value="${priznak}" name="priznak"> 
+                <input type="hidden" th:value="${quserId}" name="quserId">
                          				                        	
-            	</form>
+            </form>
             	  				
   		</div>
   		

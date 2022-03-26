@@ -218,8 +218,8 @@ public class servicesController
 	public String bedListComparation(Model model,String kluch, Long quserId)
 	{
 				
-		List<BedListsEntityHHS> bedListHHS=(List<BedListsEntityHHS>) service.getCompListHHS(kluch);
-		List<BedListsEntityHMIS> bedListHMIS=(List<BedListsEntityHMIS>) service.getCompListHMIS(kluch);
+		List<BedListsEntityHHS> bedListHHS=service.getCompListHHS(kluch);
+		List<BedListsEntityHMIS> bedListHMIS=service.getCompListHMIS(kluch);
 		
 		String room1=null;
 		String bed1=null;

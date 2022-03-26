@@ -89,7 +89,7 @@
   							<td th:unless="${user.active}=='Yes'" th:text="${user.active}" style="font-size:12px;background-color: #ffcc99"></td>
   							  
   							
-  							<td>
+  							<td th:if="${user.username}!='root'">
                             	<form th:action="@{/procurement/users/edit}" method="post">
                             	
 	           			        	<button type="submit" class="btn btn-primary fa fa-edit btn-sm"></button>	
@@ -99,7 +99,7 @@
 	           						
 	           					</form>
                             </td>
-                            <td>
+                            <td th:if="${user.username}!='root'">
                                 <form th:action="@{/procurement/users/delete}" method="post" onClick="return confirmDelete();">
                             	
 	           			        	<button type="submit" class="btn btn-danger fa fa-trash btn-sm"></button>	
@@ -109,7 +109,7 @@
 	           						
 	           					</form>
                             </td>
-                            <td>
+                            <td th:if="${user.username}!='root'">
                             	<form th:action="@{/procurement/users/resetPass}" method="post">
                             	
 	           			        	<button type="submit" class="btn btn-primary fa fa-edit btn-sm"></button>	

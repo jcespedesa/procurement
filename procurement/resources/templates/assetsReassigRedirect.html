@@ -51,7 +51,7 @@
       				<div class="row" >
         				<div class="col-lg-8 text-center">
 				          	<label style="color:#880000;">Re-Assignation of Asset # : </label>
-				         	<label style="font-weight:bold;color:teal;" th:text="${assetNumber}"></label>
+				         	<label style="font-weight:bold;color:teal;" th:text="${asset.assetNumber}"></label>
         				</div>
       				</div>
       				
@@ -69,28 +69,27 @@
 				
 					<hr/>
 					<table class="table table-sm table-bordered">
-						<tr><td th:text="'Old User:  '+ ${username}"></td></tr>
-						<tr><td th:text="'Title:  '+ ${title}"></td></tr>
-						<tr><td th:text="'Email:  '+ ${email}"></td></tr>
-						<tr><td th:text="'Old Project:  '+ ${project}"></td></tr>
-						<tr><td th:text="'Employment Status:  '+ ${empStatus}"></td></tr>
+						<tr><td th:text="'Old User:  '+ ${oldAssignee.cname}"></td></tr>
+						<tr><td th:text="'Title:  '+ ${oldAssignee.title}"></td></tr>
+						<tr><td th:text="'Email:  '+ ${oldAssignee.email}"></td></tr>
+						<tr><td th:text="'Project:  '+ ${oldAssignee.projectNumber}"></td></tr>
+						<tr><td th:text="'Employment Status:  '+ ${oldAssignee.empStatus}"></td></tr>
 					</table>
 					
 					<hr/>
 					<table class="table table-sm table-bordered">
-						<tr><td th:text="'New User:  '+ ${assetReassig.newAssigName}"></td></tr>
-						<tr><td th:text="'Title:  '+ ${assetReassig.newAssigTitle}"></td></tr>
-						<tr><td th:text="'Email:  '+ ${assetReassig.newAssigEmail}"></td></tr>
-						<tr><td th:text="'New Project:  '+ ${assetReassig.newAssigProject}"></td></tr>
-						<tr><td th:text="'Employment Status:  '+ ${assetReassig.newAssigEmpStatus}"></td></tr>
+						<tr><td th:text="'New User:  '+ ${newAssignee.cname}"></td></tr>
+						<tr><td th:text="'Title:  '+ ${newAssignee.title}"></td></tr>
+						<tr><td th:text="'Email:  '+ ${newAssignee.email}"></td></tr>
+						<tr><td th:text="'Project:  '+ ${newAssignee.projectNumber}"></td></tr>
+						<tr><td th:text="'Employment Status:  '+ ${newAssignee.empStatus}"></td></tr>
 					</table>
 					
 					<hr/>
 					<table class="table table-sm table-bordered">
-						<tr><td th:text="'Reassigned by:  '+ ${assetReassig.reassignedBy}"></td></tr>
-						<tr><td th:text="'Email:  '+ ${assetReassig.emailReassigner}"></td></tr>
-						<tr><td th:text="'Notes:  '+ ${assetReassig.notes}"></td></tr>
-						<tr><td th:text="'Re-assignation Date:  '+ ${assetReassig.dateReassignation}"></td></tr>
+						<tr><td th:text="'Reassigned by:  '+ ${reassignedBy}"></td></tr>
+						<tr><td th:text="'Notes:  '+ ${notes}"></td></tr>
+						
 					</table>
 					
 					<br>

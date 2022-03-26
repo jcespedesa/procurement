@@ -46,7 +46,7 @@ public class ServicesService
 	public void bedCorrectionHHS(String kluch)
 	{
 		
-		List<BedListsEntityHHS> bedList=(List<BedListsEntityHHS>) repositoryHHS.getSessionList(kluch);
+		List<BedListsEntityHHS> bedList=repositoryHHS.getSessionList(kluch);
 		
 		String bedName=null;
 		
@@ -201,7 +201,7 @@ public class ServicesService
 	
 	public List<BedListsEntityHHS> getCompListHHS(String kluch)
 	{
-		List<BedListsEntityHHS> result=(List<BedListsEntityHHS>) repositoryHHS.getBedListByKluch(kluch);
+		List<BedListsEntityHHS> result=repositoryHHS.getBedListByKluch(kluch);
 		
 		if(result.size() > 0)
 			return result;
@@ -212,7 +212,7 @@ public class ServicesService
 	
 	public List<BedListsEntityHMIS> getCompListHMIS(String kluch)
 	{
-		List<BedListsEntityHMIS> result=(List<BedListsEntityHMIS>) repositoryHMIS.getBedListByKluch(kluch);
+		List<BedListsEntityHMIS> result=repositoryHMIS.getBedListByKluch(kluch);
 		
 		if(result.size() > 0)
 			return result;

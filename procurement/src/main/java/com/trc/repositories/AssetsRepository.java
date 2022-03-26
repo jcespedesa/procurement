@@ -74,8 +74,8 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	@Query("Select distinct u.email from AssetsEntity u Order by email")
 	List<String> getDistAssigneeEmails();
 	
-	@Query("Select u from AssetsEntity u WHERE u.authorEmail=?1")
-	List<AssetsEntity> getByAuthor(String authorEmail);
+	@Query("Select u from AssetsEntity u WHERE u.authorId=?1")
+	List<AssetsEntity> getByAuthor(String authorClientId);
 	
 	@Query("Select u from AssetsEntity u WHERE u.project=?1")
 	List<AssetsEntity> getByProgram(String projectNumber);
@@ -85,14 +85,14 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	
 	@Modifying
 	@Transactional
-	@Query("Update AssetsEntity u set u.username=?2, u.title=?3, u.empStatus=?4, u.project=?5, u.email=?6 where u.id=?1")
-	void putReassignation(Long assetId,String newUsername,String newTitle,String newEmpStatus,String newProject,String newEmail);
+	@Query("Update AssetsEntity u set u.clientId=?2 where u.assetid=?1")
+	void putReassignation(Long assetId,String newAssigId);
 	
 	@Query("Select assetid from AssetsEntity u where u.kluch=?1")
 	Long getIdByKluch(String kluch);
 	
-	@Query("Select u from AssetsEntity u WHERE u.email=?1")
-	List<AssetsEntity> getByAssignee(String email);
+	@Query("Select u from AssetsEntity u WHERE u.clientId=?1")
+	List<AssetsEntity> getByAssignee(String clientId);
 	
 		
 }

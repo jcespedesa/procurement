@@ -29,7 +29,7 @@ public class TitlesService
 	
 	public List<TitlesEntity> getAllByName()
 	{
-		List<TitlesEntity> result=(List<TitlesEntity>) repository.getAllByName();
+		List<TitlesEntity> result=repository.getAllByName();
 		
 		if(result.size() > 0)
 			return result;

@@ -29,7 +29,7 @@ public class HhsDivisionsService
 	
 	public List<HhsDivisionsEntity> getAllByName()
 	{
-		List<HhsDivisionsEntity> result=(List<HhsDivisionsEntity>) repository.getAllByName();
+		List<HhsDivisionsEntity> result=repository.getAllByName();
 		
 		if(result.size() > 0)
 			return result;
