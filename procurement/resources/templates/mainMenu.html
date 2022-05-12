@@ -12,7 +12,6 @@
   		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
   		
 		<!-- Custom styles for this template -->
-		
 		<link rel="stylesheet" th:href="@{/css/style.css}">
 		
 		<!-- Bootstrap core JavaScript -->
@@ -30,11 +29,30 @@
   <!-- Main Page -->
   		
   		<div class="container">
-  		
+  		  		
   			<span th:include="topMenu"> Top Menu </span>
-  		
-      		<div class="col-sm"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>	
-      		      		      		
+  			
+  			<div class="row">
+  				
+  				<div class="col-sm"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>
+      			
+      			<div class="col-sm">	
+      				
+      				<table th:if="${quser.role}!='dba'" class="table-condensed table-bordered table-striped" style="background-color:#fffff0;">					        			
+        		 		<thead>
+        		 			<tr><td colspan="2" style="color:#330099;font-size:12px;font-weight:bold;background-color:#d3d3d3;">Your Assigned Sections</td></tr>
+  						</thead>
+  						<tbody>
+  							<tr th:each="section : ${sections}">
+  								<td th:text="${section.assigSectionNumber}" style="font-size:12px;"></td>
+  								<td th:text="${section.username}" style="font-size:12px;"></td>
+  							</tr>	
+  						</tbody>
+        			</table>	
+      			
+      			</div> 
+      		</div>
+      		     		      		
       		<div class="row">
       		
       			<div id='vcssmenu'>
@@ -45,9 +63,9 @@
       								<a th:href="@{/procurement/logs/view(quserId=${quserId})}">Logs View</a>
       							</li>
 					   		</ul>
-   						<li><a href=""><span>Tickets</span></a></li>
+   						<!--  <li><a href=""><span>Tickets</span></a></li> -->
    						  						
-   						<li><a href='#'><span>Services</span></a>
+   						<li th:if="${quser.role}=='dba' Or ${#lists.contains(assignedSections,'40')}"><a href='#'><span>Services</span></a>
       						<ul>
       							<li style="white-space: nowrap;">
       								<a th:href="@{/portal/init(quserId=${quserId})}">Asset Portal Inventory</a>
@@ -58,23 +76,21 @@
          						<li style="white-space: nowrap;">
          							<a th:href="@{/procurement/services/billableFileSel(quserId=${quserId})}"><span>Billables Report</span></a>
          						</li>
+         						<li style="white-space: nowrap;">
+         							<a th:href="@{/procurement/services/tcpDataRep(quserId=${quserId})}"><span>TCP Data Graph</span></a>
+         						</li>
          							
       						</ul>
    						</li>
-   						<li><a href='#'><span>HHS IT Inventory</span></a>
-      						<ul>
-         						<li class='has-sub'><a th:href="@{/procurement/assets/menu(quserId=${quserId})}"><span>IT Assets</span></a></li>
-            					      						
-      						</ul>
-   						</li>
+   						<li th:if="${quser.role}=='dba' Or ${#lists.contains(assignedSections,'20')}">
+   							<a th:href="@{/procurement/assets/menu(quserId=${quserId})}"><span>HHS IT Inventory</span></a>
+      					</li>
    						
-   						<li><a href='#'><span>HHS IT Procurement</span></a>
-      						<ul>
-         						            					      						
-      						</ul>
-   						</li>
+   						<li th:if="${quser.role}=='dba'  Or ${#lists.contains(assignedSections,'10')}">
+   							<a  th:href="@{/purchases/mainMenu(quserId=${quserId})}"><span>HHS IT Procurement</span></a>
+      					</li>
    						
-   						<li><a href='#'><span>Tests</span></a>
+   						<li th:if="${quser.role}=='dba' Or ${#lists.contains(assignedSections,'50')}"><a href='#'><span>Tests</span></a>
       						<ul>
          						<li><a th:href="@{/procurement/tests/emailSel(quserId=${quserId})}"><span>Test Email Subsystem</span></a></li>	
             					<li><a th:href="@{/procurement/tests/sendAssetInfoSel(quserId=${quserId})}"><span>Test Email Object</span></a></li>

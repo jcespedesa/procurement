@@ -16,10 +16,8 @@
 			<div id='hcssmenu'>
 				<ul>
 					<li><a href="/procurement/index"><span>Home</span></a></li>
-				    <!--  <li><a href="/procurement/Quotes/list"><span>Quotes</span></a></li> -->
-				    <!--  <li><a href="/procurement/Periodicals/list"><span>Periodicals</span></a></li>  -->
-				    <!-- <li><a href="/procurement/clients/list"><span>Clients</span></a></li> -->
-				    <li class='active has-sub'><a href='#'><span>Lists</span></a>
+				    				    				  
+				    	<li class='active has-sub' th:if="${quser.role}=='dba'"><a href='#'><span>Lists</span></a>
 						<ul>
 							<li>
 								<form th:action="@{/procurement/divisions/list}" method="post">
@@ -84,10 +82,36 @@
 	           			
 	           					</form>
 							</li>
-         					
+							<li>
+								<form th:action="@{/procurement/sections/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-light">Sections</button>	
+	           			
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           					</form>
+							</li>
+         					<li>
+								<form th:action="@{/purchases/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-light">IT Requests</button>	
+	           			
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           					</form>
+							</li>
+							<li>
+								<form th:action="@{/dataComp/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-light">TCP Data Comp</button>	
+	           			
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           					</form>
+							</li>
       					</ul>
    					</li>
-   					<li>
+   					<li  th:if="${quser.role}=='dba'">
    						<form th:action="@{/procurement/users/list}" method="post">
                             	
 	           				<button type="submit" class="btn btn-light" style="font-size:11px;">Users</button>	
@@ -96,7 +120,7 @@
 	           			
 	           			</form>
    					</li>
-   					<li>
+   					<li  th:if="${quser.role}=='dba'">
    						<form th:action="@{/procurement/settings/list}" method="post">
                             	
 	           				<button type="submit" class="btn btn-light" style="font-size:11px;">Settings</button>	
@@ -132,6 +156,7 @@
 	           				
 	           			</form>
 	           		</li>
+	           		
    				</ul>
 			</div>
 		

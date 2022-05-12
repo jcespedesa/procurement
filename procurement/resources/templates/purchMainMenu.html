@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	
+	<body>
+	
+		<head>
+
+	  		<meta charset="utf-8">
+	  		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  		
+	  		<title>IT Purchases</title>
+	
+	  		<!-- Bootstrap core CSS -->
+	  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+	  		
+			<!-- Custom styles for this template -->
+			<link rel="stylesheet" th:href="@{/css/style.css}">
+			
+			<!-- Bootstrap core JavaScript -->
+	  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+
+		</head>
+	
+		<div class="container">
+				
+		
+			<div class="row">
+		
+				<div class="col-4">
+		
+					<img class="img-fluid mb-4" th:src="@{/images/procIt-pic.png}" style="height:150px;width:160px;">
+				
+				</div>
+					
+					
+				<div class="col-8">	
+		  	
+					<div id='hcssmenu'>
+						<ul>
+							<li>
+	   							<form th:action="@{/portal/mainMenu}" method="post">
+	                            	
+		           					<button type="submit" class="btn btn-light" style="font-size:11px;">Back to Main View</button>	
+		           			
+		           					<input type="hidden" th:value="${quserId}" name="quserId"> 
+		           			
+		           				</form>
+		           			</li>
+	   						<li>
+	   							<form th:action="@{/purchases/edit}" method="post">
+	                            	
+		           					<button type="submit" class="btn btn-light" style="font-size:11px;">New Request</button>	
+		           			
+		           					<input type="hidden" th:value="${quserId}" name="quserId"> 
+		           			
+		           				</form>
+	   						</li>
+	   						<li>
+	   							<form th:action="@{/purchases/list}" method="post">
+	                            	
+		           					<button type="submit" class="btn btn-light" style="font-size:11px;">My Requests</button>	
+		           			
+		           					<input type="hidden" th:value="${quserId}" name="quserId"> 
+		           			
+		           				</form>
+		           			</li>
+		           		
+		           		
+		           			<li>
+	   							<form th:action="@{/procurement/logOut}" method="post">
+	                            	
+		           					<button type="submit" class="btn btn-light" style="font-size:11px;">Logout</button>	
+		           			
+		           					<input type="hidden" th:value="${quserId}" name="quserId"> 
+		           				
+		           				</form>
+		           			</li>
+		           		
+	   					</ul>
+					</div>
+			
+				</div>
+				
+				<label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label>
+			
+			</div>
+			
+			<div class="row">
+			
+				<div class="col">
+					<table class="table-condensed table-bordered table-striped" style="background-color:#fffff0;">	
+  						<thead>
+        		 			<tr><td colspan="2" style="color:#330099;font-size:12px;font-weight:bold;padding:5px;">System Assigned Role(s)</td></tr>
+  						</thead>
+  						<tbody>
+  							<tr>
+  								<td style="font-size:12px;font-weight:bold;padding:5px;">IT Approver</td>
+  								<td style="padding:5px;">	
+  									<span th:text="${ITapprover.username}"></span>
+  								</td>
+  							</tr>
+  							<tr>	
+  								<td  style="font-size:12px;font-weight:bold;padding:5px;">FO Approver</td>
+  								<td style="padding:5px;">	
+  									<span th:text="${FOapprover.username}"></span>	
+  								</td>
+  							</tr>
+  							<tr>	
+  								<td  style="font-size:12px;font-weight:bold;padding:5px;">PPC</td>
+  								<td style="padding:5px;">	
+  									<span th:text="${Ppc.username}"></span>	
+  								</td>
+  							</tr>	   				 
+        				</tbody>
+  					</table>
+				</div>
+			
+			</div>
+			
+		</div>
+	</body>
+</html>  	
+  	
+  	
+ 		
+  
+  

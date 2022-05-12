@@ -78,7 +78,7 @@
   							<th style="color:#006400;font-size:12px;">Rep.By</th>
   							
   							<th style="color:#006400;font-size:12px;">Edit</th>
-  							<th style="color:#006400;font-size:12px;">Delete</th>
+  							<th th:if="${quser.role}=='dba'" style="color:#006400;font-size:12px;">Delete</th>
   							
   						</tr>
   					</thead>
@@ -110,7 +110,7 @@
 	           					</form>
                             </td>
                            
-                            <td>
+                            <td th:if="${quser.role}=='dba'">
                             	<form th:action="@{/procurement/assets/delete}" method="post" onClick="return confirmDelete();">
                             	
 	           			        	<button type="submit" class="btn btn-danger fa fa-trash btn-sm"></button>	

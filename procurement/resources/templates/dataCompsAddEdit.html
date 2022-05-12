@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>TCP Data Compare</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+				
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		<script th:src="@{/js/calendarControl.js}"></script>
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<form th:action="@{/dataComp/list}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           		</form>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   		<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
+      			<div class="row">
+        			<div class="col-8">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit TCP Data Compare Records</p>
+				          
+        			</div>
+      			</div>
+     		
+     			<label th:if="${priznakNew}" th:text="'Last input date was: '+ ${lastRecord.date}" style="background-color:#F0E68C;color:green;font-size:12px;"></label>
+     		
+  				<form class="form-main" th:action="@{/dataComp/createDataComp}" th:object="${dataComp}" method="post">
+                    
+                    <div class="form-group">
+                       	<label for="date" class="col-form-label">Date <sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{date}" id="date" required  size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
+                    </div>
+                    
+                    <div class="form-group">
+                       	<label for="hmis" class="col-form-label">HMIS Data:</label> 
+                       	<input type="number" th:field="*{hmis}" id="hmis" required placeholder="HMIS Data" size="5" maxlength="3"/>
+                    </div>
+                   
+                   <div class="form-group">
+                       	<label for="bedList" class="col-form-label">Bed List Data:</label> 
+                       	<input type="number" th:field="*{bedList}" id="bedList" required placeholder="Bed List Data" size="5" maxlength="3"/>
+                    </div>     	
+                	                    
+                	                    
+                	<div class="form-group">
+                       	<label for="hmax" class="col-form-label">Hourly Census Max:</label> 
+                       	<input type="number" th:field="*{hmax}" id="hmax" required placeholder="HC Max" size="5" maxlength="3"/>
+                    </div>                    
+                	                    
+                    <div class="form-group">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                    </div>
+                            	
+                    <input type="hidden" id="id" th:field="*{dataid}">
+     				<input type="hidden" th:value="${quserId}" name="quserId"> 
+                        	
+            	</form>
+  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				

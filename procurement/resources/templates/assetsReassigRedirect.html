@@ -25,96 +25,98 @@
 	</head>
 
 	<body id="page-top">
+	
+		<div class="container">
 
   <!-- Navigation -->
-  		<nav id="hcssmenu">
-    		<ul>
-        		<li>
-           			<form th:action="@{/procurement/assets/list}" method="post">
-                            	
-	           			<button type="submit" class="btn btn-light">Back</button>	
-	           			
-	           			<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
-	           			<input type="hidden" th:value="${priznak}" name="priznak">
-	           			<input type="hidden" th:value="${quserId}" name="quserId">
-	           				
-	           		</form>	
-        		</li>
-            	
-            </ul>
-      	</nav>
-
-		<div class="container">
- 
-  			<section class="page-section" id="mainBody">
-    			<div class="container">
-      				<div class="row" >
-        				<div class="col-lg-8 text-center">
-				          	<label style="color:#880000;">Re-Assignation of Asset # : </label>
-				         	<label style="font-weight:bold;color:teal;" th:text="${asset.assetNumber}"></label>
-        				</div>
-      				</div>
-      				
-      				<table class="table table-striped">
-      					<tr>
-      						<td colspan="2" style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></td>
-      					</tr>
-      					<tr>
-      						<td th:text="'Priznak is '+ ${priznak}"></td>
-      						<td th:text="'StringSearch is '+ ${stringSearch}"></td>
-     			     	</tr>
-     			     </table>		
-									
-					<div th:text="${message}"></div>
-				
-					<hr/>
-					<table class="table table-sm table-bordered">
-						<tr><td th:text="'Old User:  '+ ${oldAssignee.cname}"></td></tr>
-						<tr><td th:text="'Title:  '+ ${oldAssignee.title}"></td></tr>
-						<tr><td th:text="'Email:  '+ ${oldAssignee.email}"></td></tr>
-						<tr><td th:text="'Project:  '+ ${oldAssignee.projectNumber}"></td></tr>
-						<tr><td th:text="'Employment Status:  '+ ${oldAssignee.empStatus}"></td></tr>
-					</table>
+	  		<nav id="hcssmenu">
+	    		<ul>
+	        		<li>
+	           			<form th:action="@{/procurement/assets/list}" method="post">
+	                            	
+		           			<button type="submit" class="btn btn-light">Back</button>	
+		           			
+		           			<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+		           			<input type="hidden" th:value="${priznak}" name="priznak">
+		           			<input type="hidden" th:value="${quserId}" name="quserId">
+		           				
+		           		</form>	
+	        		</li>
+	            	
+	            </ul>
+	      	</nav>
+	
+			<div class="container">
+	 
+	  			<section class="page-section" id="mainBody">
+	    			<div class="container">
+	      				<div class="row" >
+	        				<div class="col-lg-8 text-center">
+					          	<label style="color:#880000;">Re-Assignation of Asset # : </label>
+					         	<label style="font-weight:bold;color:teal;" th:text="${asset.assetNumber}"></label>
+	        				</div>
+	      				</div>
+	      				
+	      				<table class="table table-striped">
+	      					<tr>
+	      						<td colspan="2" style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></td>
+	      					</tr>
+	      					<tr>
+	      						<td th:text="'Priznak is '+ ${priznak}"></td>
+	      						<td th:text="'StringSearch is '+ ${stringSearch}"></td>
+	     			     	</tr>
+	     			     </table>		
+										
+						<div th:text="${message}"></div>
 					
-					<hr/>
-					<table class="table table-sm table-bordered">
-						<tr><td th:text="'New User:  '+ ${newAssignee.cname}"></td></tr>
-						<tr><td th:text="'Title:  '+ ${newAssignee.title}"></td></tr>
-						<tr><td th:text="'Email:  '+ ${newAssignee.email}"></td></tr>
-						<tr><td th:text="'Project:  '+ ${newAssignee.projectNumber}"></td></tr>
-						<tr><td th:text="'Employment Status:  '+ ${newAssignee.empStatus}"></td></tr>
-					</table>
-					
-					<hr/>
-					<table class="table table-sm table-bordered">
-						<tr><td th:text="'Reassigned by:  '+ ${reassignedBy}"></td></tr>
-						<tr><td th:text="'Notes:  '+ ${notes}"></td></tr>
+						<hr/>
+						<table class="table table-sm table-bordered">
+							<tr><td th:text="'Old User:  '+ ${oldAssignee.cname}"></td></tr>
+							<tr><td th:text="'Title:  '+ ${oldAssignee.title}"></td></tr>
+							<tr><td th:text="'Email:  '+ ${oldAssignee.email}"></td></tr>
+							<tr><td th:text="'Project:  '+ ${oldAssignee.projectNumber}"></td></tr>
+							<tr><td th:text="'Employment Status:  '+ ${oldAssignee.empStatus}"></td></tr>
+						</table>
 						
-					</table>
+						<hr/>
+						<table class="table table-sm table-bordered">
+							<tr><td th:text="'New User:  '+ ${newAssignee.cname}"></td></tr>
+							<tr><td th:text="'Title:  '+ ${newAssignee.title}"></td></tr>
+							<tr><td th:text="'Email:  '+ ${newAssignee.email}"></td></tr>
+							<tr><td th:text="'Project:  '+ ${newAssignee.projectNumber}"></td></tr>
+							<tr><td th:text="'Employment Status:  '+ ${newAssignee.empStatus}"></td></tr>
+						</table>
+						
+						<hr/>
+						<table class="table table-sm table-bordered">
+							<tr><td th:text="'Reassigned by:  '+ ${reassignedBy}"></td></tr>
+							<tr><td th:text="'Notes:  '+ ${notes}"></td></tr>
+							
+						</table>
+						
+						<br>
 					
-					<br>
-				
-					<form th:action="@{/procurement/assets/list}" method="post">
-                            	
-	           			<button type="submit" class="btn btn-primary">Back</button>	
-	           			
-	           			<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
-	           			<input type="hidden" th:value="${priznak}" name="priznak">
-	           			<input type="hidden" th:value="${quserId}" name="quserId">
-	           				
-	           		</form>
-				
-  					<hr/>
-  				  				  						
-  				</div>
-  		
-  			</section>
+						<form th:action="@{/procurement/assets/list}" method="post">
+	                            	
+		           			<button type="submit" class="btn btn-primary">Back</button>	
+		           			
+		           			<input type="hidden" th:value="${stringSearch}" name="stringSearch"> 
+		           			<input type="hidden" th:value="${priznak}" name="priznak">
+		           			<input type="hidden" th:value="${quserId}" name="quserId">
+		           				
+		           		</form>
+					
+	  					<hr/>
+	  				  				  						
+	  				</div>
+	  		
+	  			</section>
+	  		</div>
+	  		
+	  		<!-- Footer -->
+	  		
+	  		<footer class="customFooter">&copy;TRC Corp</footer> 
   		</div>
-  		
-  		<!-- Footer -->
-  		
-  		<footer class="customFooter">&copy;TRC Corp</footer> 
-  		
 	</body>
 </html>			
 				

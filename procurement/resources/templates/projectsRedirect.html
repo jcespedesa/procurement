@@ -6,7 +6,7 @@
   		<meta charset="utf-8">
   		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   		
-  		<title>API test</title>
+  		<title>Projects</title>
   		
   		<!-- Bootstrap core CSS -->
   		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
@@ -25,45 +25,46 @@
 	</head>
 
 	<body id="page-top">
+		<div class="container">
 
   <!-- Navigation -->
-  		<nav id="hcssmenu">
-    		<ul>
-        		<li>
-           			<form th:action="@{/procurement/projects/list}" method="post">
-                            	
-	           			<button type="submit" class="btn btn-light">Back</button>	
-	           			
-	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
-	           			
-	           		</form>
-        		</li>
-            	
-            </ul>
-      	</nav>
-
-		<div class="container">
-			<div class="row">&nbsp;</div>
-			<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
-			<div class="row">&nbsp;</div>
- 
-  			<section class="page-section" id="mainBody">
-    			
-      				<div class="row" >
-        				<div class="col-lg-6">
-				          	<div style="color:navy;font-weight:bold;" th:text="${message}"></div>
-				         	
-        				</div>
-      				</div>
-     			    
-  			  		
-  			</section>
+	  		<nav id="hcssmenu">
+	    		<ul>
+	        		<li>
+	           			<form th:action="@{/procurement/projects/list}" method="post">
+	                            	
+		           			<button type="submit" class="btn btn-light">Back</button>	
+		           			
+		           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+		           			
+		           		</form>
+	        		</li>
+	            	
+	            </ul>
+	      	</nav>
+	
+			<div class="container">
+				<div class="row">&nbsp;</div>
+				<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
+				<div class="row">&nbsp;</div>
+	 
+	  			<section class="page-section" id="mainBody">
+	    			
+	      				<div class="row" >
+	        				<div class="col-lg-6">
+					          	<div style="color:navy;font-weight:bold;" th:text="${message}"></div>
+					         	
+	        				</div>
+	      				</div>
+	     			    
+	  			  		
+	  			</section>
+	  		</div>
+	  		
+	  		<!-- Footer -->
+	  		
+	  		<footer class="customFooter">&copy;TRC Corp</footer> 
   		</div>
-  		
-  		<!-- Footer -->
-  		
-  		<footer class="customFooter">&copy;TRC Corp</footer> 
-  		
 	</body>
 </html>			
 				

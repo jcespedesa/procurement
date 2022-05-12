@@ -2,6 +2,7 @@ package com.trc.controllers;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,6 +22,7 @@ import com.trc.entities.ItemsEntity;
 import com.trc.entities.LogsEntity;
 import com.trc.entities.PeripheralsEntity;
 import com.trc.entities.ProjectsEntity;
+import com.trc.entities.SectionAssigEntity;
 import com.trc.entities.SettingsEntity;
 import com.trc.entities.SitesEntity;
 import com.trc.entities.TitlesEntity;
@@ -33,6 +35,8 @@ import com.trc.services.LogsService;
 import com.trc.services.PeripheralsService;
 import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
+import com.trc.services.SectionsAssigService;
+import com.trc.services.SectionsService;
 import com.trc.services.SettingsService;
 import com.trc.services.SitesService;
 import com.trc.services.TempUsersService;
@@ -78,6 +82,12 @@ public class PortalController
 	
 	@Autowired
 	ClientsService serviceClients;
+	
+	@Autowired
+	SectionsAssigService serviceSectionsAssig;
+	
+	@Autowired
+	SectionsService serviceSections;
 	
 
 	@RequestMapping(path={"/menu"})
@@ -657,30 +667,65 @@ public class PortalController
 	@RequestMapping(path="/userLogin", method=RequestMethod.POST)
 	public String clientLogin(Model model,String email,String password)
 	{
+		ArrayList<String> assignedSections=new ArrayList<String>();
+		
+		LogsEntity log=new LogsEntity();
+		
 		Boolean priznakSuccess=false;
+		
 		String message="Invalid username/password...";
-				
+		String userIdString=null;
+		
 		//Retrieving stored password
 		priznakSuccess=serviceUsers.checkPass(email,password);
 		
 		if(priznakSuccess)
 		{	
-			//System.out.println("User has the right password...");
-						
+			
+			
 			//Retrieving user credentials
 			UsersEntity quser=serviceUsers.getUserByEmail(email);
 			
-			//System.out.println("Selected user was: "+ user);
+			userIdString=String.valueOf(quser.getUserid());
+			
+			//Retrieving list of sections
+			List<SectionAssigEntity> sections=serviceSectionsAssig.getAssigById(userIdString);
+			
+			//Creating a list of assigned sections
+			for(SectionAssigEntity section : sections)
+			{
+				String sectionNumber=section.getAssigSectionNumber();
+				String sectionName=serviceSections.getSectionByNumber(sectionNumber);
+				
+				assignedSections.add(sectionNumber);
+				section.setUsername(sectionName);
+			}
+			
+			//Processing logs
+	      	log.setSubject(quser.getEmail());
+	      	log.setAction("User has successfully login into the system");
+	      	log.setObject("User description is: "+ quser.getUsername());
+	      	serviceLogs.saveLog(log);
+			
+			model.addAttribute("sections",sections);
+			model.addAttribute("assignedSections",assignedSections);
 			
 			model.addAttribute("quser",quser);
 			model.addAttribute("quserId",quser.getUserid());
-			
+						
 			return "mainMenu";
 					
 		}
 		else
 		{
 			//System.out.println("User has not the right password...");
+			
+			//Processing logs
+	      	log.setSubject("Login failed");
+	      	log.setAction("User is not having a valid password");
+	      	log.setObject("User description is: "+ email);
+	      	serviceLogs.saveLog(log);
+			
 			model.addAttribute("message",message);
 			return "login";
 			
@@ -692,14 +737,32 @@ public class PortalController
 	@RequestMapping(path="/mainMenu", method=RequestMethod.POST)
 	public String backToMainMenu(Model model,Long quserId)
 	{
+		ArrayList<String> assignedSections=new ArrayList<String>();
+		
+		String userIdString=null;
 		
 		//Retrieving user credentials
 		UsersEntity quser=serviceUsers.getUserById(quserId);
 		
-		//System.out.println("Selected user was: "+ quser);
+		userIdString=String.valueOf(quser.getUserid());
 		
+		//Retrieving list of sections
+		List<SectionAssigEntity> sections=serviceSectionsAssig.getAssigById(userIdString);
+		
+		//Creating a list of assigned sections
+		for(SectionAssigEntity section : sections)
+		{
+			String sectionNumber=section.getAssigSectionNumber();
+			String sectionName=serviceSections.getSectionByNumber(sectionNumber);
+			
+			assignedSections.add(sectionNumber);
+			section.setUsername(sectionName);
+		}
+		
+		model.addAttribute("sections",sections);
+		model.addAttribute("assignedSections",assignedSections);
+						
 		model.addAttribute("quser",quser);
-		
 		model.addAttribute("quserId",quserId);
 		
 		return "mainMenu";

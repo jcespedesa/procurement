@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Assign new section</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
+			
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    			
+	</head>
+
+	<body id="page-top">
+		<div class="container">
+  <!-- Navigation -->
+  		
+	   		<div>
+	   		
+	   			<nav id="hcssmenu">
+		    		<ul>
+		        		
+		            	<li>
+		           			
+		           			<form th:action="@{/procurement/sectionsAssig/list}" method="post">
+	                            	
+		           				<button type="submit" class="btn btn-light">Back</button>
+		           				
+		           				<input type="hidden" th:value="${userId}" name="userId">	
+		           				<input type="hidden" th:value="${quserId}" name="quserId">
+		           				
+		           			</form>
+		        		</li>
+		        		
+		        		
+		            </ul>
+	      		</nav>
+	   		
+	      			<div class="row">
+	        			<table class="table table-striped">
+	        				<tr>
+					        	<td style="color:#880000;">Adding Sections for user:  <span th:text="${user.username}" style="color:#330099;font-weight:bold;"></span></td>
+					            <td><label style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+					   		</tr>
+					   	</table>
+	      			</div>
+	      			
+	      			<div class="col-sm">
+	     		
+	     				<form class="form-main" th:action="@{/procurement/sectionsAssig/addSection}" th:object="${assigSection}" method="post">
+	  						<label for="siteNumber" class="col-form-label">Select a section :</label> 
+                       		<select size="1" name="assigSectionNumber">
+                       			<option th:each="section : ${sections}" th:value="${section.sectionNumber}" th:text="${section.sectionName}" ></option>
+                       		</select>
+                       			
+                       		<div class="form-group">
+                       			<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                    		</div>
+                            	
+                    		<input type="hidden" th:value="${userId}" name="userId"> 
+     						<input type="hidden" th:value="${quserId}" name="quserId"> 		
+	  					</form>
+	  				</div>	  				
+	  		</div>
+	  		
+	  		<!-- Footer -->
+	  
+	  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  		</div>
+ 	</body>
+</html>			

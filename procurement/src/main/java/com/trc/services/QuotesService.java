@@ -103,12 +103,9 @@ public class QuotesService
 			
 			id=Long.parseLong(quoteId);
 			
-			
-			
 			//Preparing the address for scan docs folder
 			dirPath=uploadDirAux+dirTrail+quoteId;
-			
-						
+									
 			//resetting strobe field
 			repository.resetStrobe(id);
 			

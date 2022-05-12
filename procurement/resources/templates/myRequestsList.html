@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>My Requests</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
+			
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+
+
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+    			<li>
+           			<form th:action="@{/purchases/mainMenu}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-light">Back</button>	
+	           			
+	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			
+	           			</form>
+        		</li>
+        		
+            </ul>
+      	</nav>
+   		<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
+      			<div class="row">
+        			<div class="col-lg-12 ">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">My Requests</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<table class="table table-striped table-responsive-md">
+  					<thead>
+  						<tr>
+  							<th style="color:#006400;font-size:12px;">#</th>
+  							<th style="color:#006400;font-size:12px;">Date</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Description</th>
+  							<th style="color:#006400;font-size:12px;">Item</th>
+  							<th style="color:#006400;font-size:12px;">Project</th>
+  							<th style="color:#006400;font-size:12px;">Date IT Approval</th>
+  							<th style="color:#006400;font-size:12px;">Date FO Approval</th>
+  							<th style="color:#006400;font-size:12px;">Status</th>
+  							<th style="color:#006400;font-size:12px;">Details</th>
+  							<th style="color:#006400;font-size:12px;">Retrieve</th>
+  						</tr>
+  					</thead>
+  					<tbody>
+  						<tr th:each="purchase,itemNum : ${purchases}">
+  							<td th:text="${itemNum.count}" style="font-size:12px;"></td>
+  							<td th:text="${purchase.reqDate}" style="font-size:12px;"></td>
+  							<td th:text="${purchase.itemName}" style="font-size:12px;"></td>
+  							<td th:text="${purchase.projectName}" style="font-size:12px;"></td>
+  							<td th:text="${purchase.itDateApproval}" style="font-size:12px;"></td>
+  							<td th:text="${purchase.foDateApproval}" style="font-size:12px;"></td>
+  							<td th:text="${purchase.status}" style="font-size:12px;"></td>  									  							
+  							<td>
+                            	<form th:action="@{/purchases/details}" method="post">
+                            	
+	           			        	<button type="submit" class="btn btn-primary fa fa-edit btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${section.sectionid}" name="id"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           					</form>
+                            </td>
+                            <td>
+                                <form th:action="@{/purchases/retrieve}" method="post" onClick="return confirmRetrieve();">
+                            	
+	           			        	<button type="submit" class="btn btn-danger fa fa-trash btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${section.sectionid}" name="id"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           					</form>
+                            </td>
+                                                                                   
+  						</tr>	
+  					</tbody>	
+  				</table>
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  		
+ 	</body>
+</html>			

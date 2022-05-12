@@ -271,4 +271,195 @@ public class UsersService
         return s;
     }
 	
+	
+	public UsersEntity getITapprover() 
+	{
+		
+		UsersEntity itApprover=repository.getITapprover();
+		
+		
+		return itApprover;
+	   
+	}
+	
+	public UsersEntity getFOapprover() 
+	{
+		UsersEntity foApprover=repository.getFOapprover();
+		
+		
+		return foApprover;
+	   
+	}
+	
+	public UsersEntity getPpc() 
+	{
+		UsersEntity ppc=repository.getPpc();
+		
+		
+		return ppc;
+	   
+	}
+	
+	public String checkUniqueITrole() 
+	{
+		int priznak=0;
+		
+		String priznakUnique=null;
+		
+		//Checking uniqueness
+		priznak=repository.getUniqueIT();
+		
+		
+		if(priznak==0)
+			priznakUnique="Yes";
+		else
+			priznakUnique="No";
+				
+		
+		return priznakUnique;
+	   
+	}
+	
+	public String checkUniqueFOrole() 
+	{
+		int priznak=0;
+		
+		String priznakUnique=null;
+		
+		//Checking uniqueness
+		priznak=repository.getUniqueFO();
+		
+		
+		if(priznak==0)
+			priznakUnique="Yes";
+		else
+			priznakUnique="No";
+				
+		
+		return priznakUnique;
+	   
+	}
+	
+	public String checkUniquePPCrole() 
+	{
+		int priznak=0;
+		
+		String priznakUnique=null;
+		
+		//Checking uniqueness
+		priznak=repository.getUniquePPC();
+		
+		
+		if(priznak==0)
+			priznakUnique="Yes";
+		else
+			priznakUnique="No";
+				
+		
+		return priznakUnique;
+	   
+	}
+
+
+	public String updateRoles(Long userId, String priznakITapprover, String priznakFOapprover, String priznakPpc) 
+	{
+		int priznak=0;
+		int counter=0;
+		
+		boolean priznakOperationOK=false;
+		
+		String message=null;
+		
+		//Checking one more time if the selected roles are not taken
+		//And if there is not more than one assignment
+		if(priznakITapprover.equals("Yes"))
+		{
+			priznak=repository.getUniqueIT();
+			
+			if(priznak==0)
+			{	
+				priznakOperationOK=true;
+				priznak=0;
+				counter++;
+				
+				//System.out.println("IT assignment detected");
+			}	
+			
+		}
+		
+		if(priznakFOapprover.equals("Yes"))
+		{
+			priznak=repository.getUniqueFO();
+			
+			if(priznak==0)
+			{	
+				priznakOperationOK=true;
+				priznak=0;
+				counter++;
+				
+				//System.out.println("FO assignment detected");
+			}	
+			
+		}
+		
+		if(priznakPpc.equals("Yes"))
+		{
+			priznak=repository.getUniquePPC();
+			
+			if(priznak==0)
+			{	
+				priznakOperationOK=true;
+				priznak=0;
+				counter++;
+				
+				//System.out.println("PPC assignment detected");
+			}	
+			
+		}
+				
+		if((priznakOperationOK)&&(counter==1))
+		{
+			//Updating profiles in table secure
+			repository.updateRoles(userId,priznakITapprover,priznakFOapprover,priznakPpc);
+			message="Assignment of new role was successful";
+		}
+		else
+			message="Error: double assignment or occupied role was detected. Please review the roles assignment again...";
+		
+		
+		return message;
+		
+	}
+
+
+	public String demoteById(Long userId, String priznakRole) 
+	{
+		String message=null;
+		
+		switch(priznakRole) 
+        {
+            case "priznakITapprover":
+                repository.resetPriznakITapprov(userId);
+                message="IT Approval Role was demoted";
+            break;
+            
+            case "priznakFOapprover":
+                repository.resetPriznakFOapprov(userId);
+                message="FO Approval Role was demoted";
+            break;
+            
+            case "priznakPpc":
+                repository.resetPriznakPpc(userId);
+                message="PPC Role was demoted";
+            break;
+            
+            default:
+                message="No priznak found...";
+            break;
+        }        
+		
+		return message;
+	}
+
+	
 }

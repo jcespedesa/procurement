@@ -34,10 +34,19 @@ public class UsersEntity
 	@Column(name="active")
 	private String active;
 	
+	@Column(name="priznakitapprover")
+	private String priznakITapprover;
+	
+	@Column(name="priznakfoapprover")
+	private String priznakFOapprover;
+	
+	@Column(name="priznakppc")
+	private String priznakPpc;
+	
 	@Override
 	public String toString()
 	{
-		return "UsersEntity[userid="+ userid +",username="+ username +",email="+ email +",role="+ role +",password="+ password +",domain="+ domain +",active="+ active +"]";				
+		return "UsersEntity[userid="+ userid +",username="+ username +",email="+ email +",role="+ role +",password="+ password +",domain="+ domain +",active="+ active +",priznakITapprover="+ priznakITapprover +",priznakFOapprover="+ priznakFOapprover +",priznakPpc="+ priznakPpc +"]";				
 		
 	}
 
@@ -110,6 +119,36 @@ public class UsersEntity
 	public void setEmail(String email) 
 	{
 		this.email=email;
+	}
+
+	public String getPriznakITapprover() 
+	{
+		return priznakITapprover;
+	}
+
+	public void setPriznakITapprover(String priznakITapprover) 
+	{
+		this.priznakITapprover=priznakITapprover;
+	}
+
+	public String getPriznakFOapprover() 
+	{
+		return priznakFOapprover;
+	}
+
+	public void setPriznakFOapprover(String priznakFOapprover) 
+	{
+		this.priznakFOapprover=priznakFOapprover;
+	}
+
+	public String getPriznakPpc() 
+	{
+		return priznakPpc;
+	}
+
+	public void setPriznakPpc(String priznakPpc) 
+	{
+		this.priznakPpc=priznakPpc;
 	}
 	
 	

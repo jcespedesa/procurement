@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+ 
+	<head>
+    	<title>Advanced Permissions</title>
+		
+		<meta charset="utf-8">
+    	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+					
+  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+  		
+  		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+    	
+	</head>
+ 
+	<body>
+    	<div class="container">
+        	
+        	<div class="card">
+        	   	<div class="card-body">
+        	   	
+        	   		<!-- Navigation -->
+			  		<nav id="hcssmenu">
+			    		<ul>
+			        		<li>
+			           			<form th:action="@{/procurement/users/edit}" method="post">
+			                            	
+				           			<button type="submit" class="btn btn-success">Cancel</button>	
+				           			
+				           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+				           			<input type="hidden" th:value="${user.userid}" name="id">
+				           			
+				           		</form>
+			        		</li>
+			            	
+			            </ul>
+			      	</nav>
+        	   		<div class="row">&nbsp;</div>
+        	   		<label style="color:darkBlue;font-weight:bold;">Special Permissions</label>
+        	   		<div class="row">
+                		<div class="col-4" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
+                		<div class="row">&nbsp;</div>
+                		
+                		<table class="table table-striped table-bordered">
+			                			
+			               	<tr><td><label style="color: #880000;font-weight: bold; background-color: #FFFFCC;">Warning: these options have very important impact in the App functioning and in the general workflow.<br>
+			               		Please review the App documentation carefully before proceeding.<br>
+			               		Important: It is not recommended to have two or more roles assigned to one user. Please just choose one available role.</label></td></tr> 
+			                <tr>
+			                   	<td>
+			                   		<label style="color:green;font-weight:bold;background-color:peachPuff" th:text="'Modifying Assigned Roles to  : '+ ${user.username}"></label>                           	
+			               			<form action="#" th:action="@{/procurement/users/advancedPermsSet}" method="post">
+			                        	
+				           				<div class="form-group">
+				               				<label for="priznakITapprover">IT Approver Role : </label> 
+				               				<select size="1" name="priznakITapprover" th:if="${priznakUniqueIT}=='Yes'">
+					    						<option th:value="${priznakITapprover}" th:text="${priznakITapprover}"></option>
+					    						<option value="Yes">Yes</option>
+					    						<option value="No">No</option>
+					    					</select><br>
+					    					<label th:if="${priznakUniqueIT}=='Yes'" style="color:indigo;background-color:#fffacd;font-weight:bold;" th:text="'Notice: This role is available to be assigned at the moment.'"></label>
+					    					<label th:unless="${priznakUniqueIT}=='Yes'" style="color:#800000;background-color:lightgrey;font-weight:bold;" th:text="'Notice: The IT Approver role is hold at the moment by : '+ ${itApprover.username} +'.  And it cannot be assigned until he/she is demoted manually of this role in the previous page.'"></label>
+					    					<input th:unless="${priznakUniqueIT}=='Yes'" type="hidden" value="" name="priznakITapprover">
+				           				</div>
+				                        
+				              			<div class="form-group">
+				               				<label for="priznakFOapprover">Front Office Approver Role : </label> 
+				               				<select size="1" name="priznakFOapprover" th:if="${priznakUniqueFO}=='Yes'">
+					    						<option th:value="${priznakFOapprover}" th:text="${priznakFOapprover}"></option>
+					    						<option value="Yes">Yes</option>
+					    						<option value="No">No</option>
+					    					</select><br>
+					    					<label th:if="${priznakUniqueFO}=='Yes'" style="color:indigo;background-color:#fffacd;font-weight:bold;" th:text="'Notice: This role is available to be assigned at the moment.'"></label>
+					    					<label th:unless="${priznakUniqueFO}=='Yes'" style="color:#800000;background-color:lightgrey;font-weight:bold;" th:text="'Notice: The Front Office Approver role is hold at the moment by : '+ ${foApprover.username} +'.  And it cannot be assigned until he/she is demoted manually of this role in the previous page.'"></label>
+					    					<input th:unless="${priznakUniqueFO}=='Yes'" type="hidden" value="" name="priznakFOapprover">
+				           				</div>
+				           				
+				           				<div class="form-group">
+				               				<label for="priznakPpc">Primary Point of Contact (PPC) Role : </label> 
+				               				<select size="1" name="priznakPpc" th:if="${priznakUniquePPC}=='Yes'">
+					    						<option th:value="${priznakPpc}" th:text="${priznakPpc}"></option>
+					    						<option value="Yes">Yes</option>
+					    						<option value="No">No</option>
+					    					</select><br>
+					    					<label th:if="${priznakUniquePPC}=='Yes'" style="color:indigo;background-color:#fffacd;font-weight:bold;" th:text="'Notice: This role is available to be assigned at the moment.'"></label>
+					    					<label th:unless="${priznakUniquePPC}=='Yes'" style="color:#800000;background-color:lightgrey;font-weight:bold;" th:text="'Notice: The PPC role is hold at the moment by : '+ ${ppc.username} +'.  And it cannot be assigned until he/she is demoted manually of this role in the previous page.'"></label>
+					    					<input th:unless="${priznakUniquePPC}=='Yes'" type="hidden" value="" name="priznakPpc">
+				           				</div>
+				                                     
+				               			<div class="form-group">
+				               				<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+				               			</div>
+				 
+				               			<input type="hidden" name="userId" th:value="${user.userid}">
+				                   		<input type="hidden" th:value="${quserId}" name="quserId"> 
+			            			</form>
+			            		</td>
+			            	</tr>
+			            </table>
+			      	            		
+                 </div>	
+                    
+             </div>
+           </div>
+           <div style="color:#000088; font-size:10px;font-weight: bold;" class="card-footer text-muted">TRC Corp</div>
+        </div>
+    
+	</body>
+ 
+</html>

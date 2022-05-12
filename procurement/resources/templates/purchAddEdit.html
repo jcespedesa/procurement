@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Purchase Requests</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+				
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+		
+	</head>
+
+	<body id="page-top">
+
+  <!-- Navigation -->
+  		
+   		<div class="container">
+   		
+   			<nav id="hcssmenu">
+    		<ul>
+        		<li>
+           			<a th:href="@{/purchases/mainMenu/(quserId=${quserId})}"><span>Back</span></a>
+        		</li>
+            	
+            </ul>
+      	</nav>
+   		<div class="row"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>
+      			<div class="row">
+        			<div class="col-lg-12 text-center">
+				          <p class="navbar-brand" style="color:#880000;font-size:15px;">New Purchase Request</p>
+				          
+        			</div>
+      			</div>
+     		
+  				<form class="form-main" th:action="@{/purchases/createRequest}" th:object="${purchase}" method="post">
+                    
+                    <div class="form-group">
+                       	<input type="text" th:field="*{reqid}" readOnly  size="2" disabled/>
+                       	
+                       	<label for="reqDate" class="col-form-label">Request Date: <sup>*</sup>:</label> 
+                       	<input type="text" th:field="*{reqDate}" id="reqDate" placeholder="Date" required  size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
+                   </div>
+                   <div class="form-group">    	
+                       	<label for="itemNumber" class="col-form-label">Requested Item :</label> 
+                       	<select th:field="*{itemNumber}" id="itemNumber" required>
+                       		<option th:value="*{itemNumber}" th:text="*{itemName}"></option>
+                       		<option th:each="item : ${items}" th:value="${item.itemNumber}" th:text="${item.item}" ></option>
+                       	</select>
+                       	
+                       	<label for="quantity" class="col-form-label">Qty :</label> 
+                       	<select th:field="*{quantity}" id="quantity" required>
+                       		<option th:value="*{quantity}" th:text="*{quantity}"></option>
+                       		<option th:each="quantity : ${quantities}" th:value="${quantity}" th:text="${quantity}" ></option>
+                       	</select>
+                       	
+                   </div>    	
+                   <div class="form-group">
+                       	<label for="project" class="col-form-label">Project To be Charged with this Purchase :</label> 
+                       	<select th:field="*{projectNumber}" id="projectNumber">
+                       		<option th:value="*{projectNumber}" th:text="*{projectName}"></option>
+                       		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}" ></option>
+                       	</select>
+                    </div>
+                                            	
+                	<div class="form-group">
+      					<label for="notes">Notes/Observations:</label><br>
+      					<textarea id="notes" th:field="*{notes}" rows="7" cols="80" required></textarea>
+      				</div>	
+                                                           
+                    <div class="form-group">
+                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+                       
+                    </div>
+                            	
+                    <input type="hidden" id="id" th:field="*{reqid}">
+     				<input type="hidden" th:value="${quserId}" name="quserId"> 
+     				
+     				<input type="hidden" th:value="${seed}" th:attr="name='strobe'">
+                        	
+            	</form>
+  				
+  		</div>
+  		
+  		<!-- Footer -->
+  
+  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  			
+	</body>
+</html>			
+				
+				

@@ -46,9 +46,19 @@ body
 /* End separators */
 
 
+/*tables configuration */
+
+table, th, td 
+{
+  	border-collapse: collapse;
+}
+th, td 
+{
+  	padding: 5px;
+}
 
 
-
+/* End tables configuration */
 
 /*Top horizontal navigation menu settings*/
 
