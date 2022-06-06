@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.entities.AssetsEntity;
+import com.trc.entities.ClientsEntity;
 import com.trc.repositories.AssetAssigRepository;
 import com.trc.repositories.AssetsRepository;
 import com.trc.repositories.ClientsRepository;
@@ -437,12 +438,49 @@ public class AssetsService
 	public List<AssetsEntity> getByClientId(String clientId) 
 	{
 		List<AssetsEntity> result=repository.getByAssignee(clientId);
-		
+					
 		if(result.size() > 0)
 			return result;
 		else
 			return new ArrayList<AssetsEntity>();
 	}
+	
+	
+	public List<ClientsEntity> getClientsMultipleAssigs() 
+	{
+		//Retrieving list of assets
+		List<AssetsEntity> ListAssets=repository.getAllActives();
 		
+		//Retrieving list of users
+		List<ClientsEntity> listClients=repositoryClients.getAllActives();
+		
+		int counterRep=0;
+		
+		String clientIdString=null;
+		
+		for(ClientsEntity client : listClients)
+		{
+			for(AssetsEntity asset : ListAssets)
+			{
+				clientIdString=String.valueOf(client.getClientid());
+				
+				if(asset.getClientId().equals(clientIdString))
+					counterRep++;
+			}
+			client.setCounter(counterRep);
+			counterRep=0;
+			
+		}
+		
+		
+		if(listClients.size() > 0)
+			return listClients;
+		else
+			return new ArrayList<ClientsEntity>();
+			
+			
+	}
+	
+	
 		
 }

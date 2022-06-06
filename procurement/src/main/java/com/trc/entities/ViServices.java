@@ -21,6 +21,9 @@ public class ViServices
 	@Column(name="counter")
 	private int counter;
 	
+	@Column(name="service")
+	private String service;
+	
 	@Column(name="kluch")
 	private String kluch;
 	
@@ -29,7 +32,7 @@ public class ViServices
 	@Override
 	public String toString()
 	{
-		return "VispdatsEntity[serviceid="+ serviceid +",hmisId="+ hmisId +",counter="+ counter +",kluch="+ kluch +"]";				
+		return "VispdatsEntity[serviceid="+ serviceid +",hmisId="+ hmisId +",counter="+ counter +",kluch="+ kluch +",service="+ service +"]";				
 			
 	}
 
@@ -72,5 +75,16 @@ public class ViServices
 	{
 		this.kluch=kluch;
 	}
+
+	public String getService() 
+	{
+		return service;
+	}
+
+	public void setService(String service) 
+	{
+		this.service=service;
+	}
+	
 	
 }

@@ -66,10 +66,10 @@
   					<thead>
   						<tr>
   							<th style="color:#006400;font-size:12px;">ID</th>
-  							<th style="color:#006400;font-size:12px;">Username</th>
+  							<th style="color:#006400;font-size:12px;">User</th>
   							<th style="color:#006400;font-size:12px;">Email</th>
   							<th style="color:#006400;font-size:12px;">Role</th>
-  							<th style="color:#006400;font-size:12px;">Domain</th>
+  							<th style="color:#006400;font-size:12px;">Special Role</th>
   							<th style="color:#006400;font-size:12px;">Active</th>
   							
   							<th style="color:#006400;font-size:12px;">Edit</th>
@@ -83,7 +83,7 @@
   							<td th:text="${user.username}" style="font-size:12px;"></td>
   							<td th:text="${user.email}" style="font-size:12px;"></td>
   							<td th:text="${user.role}" style="font-size:12px;"></td>
-  							<td th:text="${user.domain}" style="font-size:12px;"></td>
+  							<td th:text="${user.assignedRole}" style="font-size:12px;"></td>
   							
   							<td th:if="${user.active}=='Yes'" th:text="${user.active}" style="font-size:12px;"></td>
   							<td th:unless="${user.active}=='Yes'" th:text="${user.active}" style="font-size:12px;background-color: #ffcc99"></td>

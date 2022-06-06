@@ -18,6 +18,9 @@ public interface ProjectsRepository extends CrudRepository<ProjectsEntity,Long>
 	@Query("Select u from ProjectsEntity u Order by project")
 	List<ProjectsEntity>  getAllByProject();
 	
+	@Query("Select u from ProjectsEntity u where (u.department='300' and u.active='Yes') Order by project")
+	List<ProjectsEntity>  getAllHHSactive();
+	
 	@Query("Select u from ProjectsEntity u WHERE u.projectNumber LIKE '%' || ?1 || '%' Order by project")
 	List<ProjectsEntity>  getProjectsByNum(@Param("stringSearch") String stringSearch);
 	

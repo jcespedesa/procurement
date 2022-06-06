@@ -379,7 +379,7 @@ public class servicesController
 			JSONObject jsonObjectBedList=new JSONObject();
 			JSONObject jsonObjectHmax=new JSONObject();
 			
-			//Modifying the JSON objects to be able to order them 
+			//Modifying the JSON objects to be able to order its records
 			Field changeMapHMIS=jsonObjectHMIS.getClass().getDeclaredField("map");
 			changeMapHMIS.setAccessible(true);
 			changeMapHMIS.set(jsonObjectHMIS, new LinkedHashMap<>());

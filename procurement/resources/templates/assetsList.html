@@ -88,7 +88,7 @@
   							<td th:text="${asset.site}" style="font-size:12px;" noWrap></td>
   							<td th:text="${asset.assetNumber}" style="font-size:12px;"></td>
   							
-  							<td th:text="${asset.program}" style="font-size:11px;"></td>
+  							<td th:text="${asset.program} +' ('+ ${asset.project} +')'" style="font-size:11px;"></td>
   							<td th:text="${asset.username}" style="font-size:12px;" noWrap></td>  							
   							<td th:text="${asset.datePurchased}" style="font-size:12px;"></td>
   							

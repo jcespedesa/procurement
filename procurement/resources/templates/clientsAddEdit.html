@@ -77,7 +77,7 @@
                        	<label for="program" class="col-form-label">Program :</label> 
                        	<select th:field="*{projectNumber}" id="projectNumber">
                        		<option th:value="*{projectNumber}" th:text="${projectName}"></option>
-                       		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}" ></option>
+                       		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}+' ('+ ${project.projectNumber} +')'" ></option>
                        		<option value="Unknown">Unknown</option>
                        	</select>
                        	

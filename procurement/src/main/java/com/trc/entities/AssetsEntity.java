@@ -92,11 +92,14 @@ public class AssetsEntity
 	
 	@Column(name="status")
 	private String status;
+	
+	@Column(name="counter")
+	private Integer counter;
 
 	@Override
 	public String toString()
 	{
-		return "AssetsEntity[assetid="+ assetid +",item="+ item +",assetNumber="+ assetNumber +",maker="+ maker +",model="+ model +",datePurchased="+ datePurchased +",username="+ username +",title="+ title +",empStatus="+ empStatus +",division="+ division +",site="+ site +",active="+ active +",notes="+ notes +",realDatePurchased="+ realDatePurchased +",project="+ project +",strobe="+ strobe +",author="+ author +",authorEmail="+ authorEmail +",kluch="+ kluch +",email="+ email +",program="+ program +",klass="+ klass +",dateCreation="+ dateCreation +",age="+ age +",status="+ status +",clientId="+ clientId +",authorId="+ authorId +"]";				
+		return "AssetsEntity[assetid="+ assetid +",item="+ item +",assetNumber="+ assetNumber +",maker="+ maker +",model="+ model +",datePurchased="+ datePurchased +",username="+ username +",title="+ title +",empStatus="+ empStatus +",division="+ division +",site="+ site +",active="+ active +",notes="+ notes +",realDatePurchased="+ realDatePurchased +",project="+ project +",strobe="+ strobe +",author="+ author +",authorEmail="+ authorEmail +",kluch="+ kluch +",email="+ email +",program="+ program +",klass="+ klass +",dateCreation="+ dateCreation +",age="+ age +",status="+ status +",clientId="+ clientId +",authorId="+ authorId +",counter="+ counter +"]";				
 		
 	}
 	
@@ -375,6 +378,18 @@ public class AssetsEntity
 	public void setAuthorId(String authorId) 
 	{
 		this.authorId=authorId;
+	}
+
+
+	public int getCounter() 
+	{
+		return counter;
+	}
+
+
+	public void setCounter(int counter) 
+	{
+		this.counter=counter;
 	}
 	
 	

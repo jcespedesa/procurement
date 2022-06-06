@@ -65,7 +65,7 @@
 		                    <div class="form-group">
 		                       	<label for="requester" class="col-form-label">Select a program<sup>*</sup>:</label> 
 		                       	<select name="stringSearch" required>
-                       				<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}" ></option>
+                       				<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project} +' ('+ ${project.projectNumber} +')'" ></option>
                        			</select>
 		                    </div>
 		                    

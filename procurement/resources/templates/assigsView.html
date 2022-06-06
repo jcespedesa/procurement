@@ -28,7 +28,7 @@
   		
 
 
-   		<div>
+   		<div class="container">
    		
    			<nav id="hcssmenu">
 	    		<ul>
@@ -66,14 +66,11 @@
   							<th style="color:#006400;font-size:12px;">Asset ID</th>
   							<th style="color:#006400;font-size:12px;">Asset Number</th>
   							
-  							<th style="color:#006400;font-size:12px;" noWrap>Name</th>
-  							<th style="color:#006400;font-size:12px;">Title</th>
-  							<th style="color:#006400;font-size:12px;">Email</th>
-  							<th style="color:#006400;font-size:12px;">Project</th>
-  							
-  							<th style="color:#006400;font-size:12px;" noWrap>Date Assignation</th>
-  							<th style="color:#006400;font-size:12px;" noWrap>Assignated by</th>
-  							<th style="color:#006400;font-size:12px;" noWrap>Email</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Previous Assignee</th>
+  							  							  							
+  							<th style="color:#006400;font-size:12px;" noWrap>Date Re-Assignation</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Assigned To</th>
+  							<th style="color:#006400;font-size:12px;" noWrap>Assigned By</th>
   						</tr>
   					</thead>
   					<tbody>
@@ -81,14 +78,11 @@
   							<td th:text="${assig.assetId}" style="font-size:12px;" noWrap></td>
   							<td th:text="${assig.assetNumber}" style="font-size:12px;" noWrap></td>
   							
-  							<td th:text="${assig.newAssigName}" style="font-size:12px;" noWrap></td>
-  							<td th:text="${assig.newAssigTitle}" style="font-size:11px;" noWrap></td>
-  							<td th:text="${assig.newAssigEmail}" style="font-size:12px;" noWrap></td>
-  							<td th:text="${assig.newAssigProject}" style="font-size:12px;" noWrap></td>
-  							  							
+  							<td th:text="${assig.assigName}" style="font-size:12px;" noWrap></td>
+  							  							  							
   							<td th:text="${assig.dateReassignation}" style="font-size:12px;"></td>
+  							<td th:text="${assig.newAssigName}" style="font-size:12px;" noWrap></td>
   							<td th:text="${assig.reassignedBy}" style="font-size:12px;" noWrap></td>
-  							<td th:text="${assig.emailReassigner}" style="font-size:12px;" noWrap></td>
   							                                                                                   
   						</tr>	
   					</tbody>	

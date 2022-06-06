@@ -48,11 +48,14 @@ public class ClientsEntity
 	@Column(name="notes")
 	private String notes;
 	
+	@Column(name="counter")
+	private Integer counter;
+	
 		
 	@Override
 	public String toString()
 	{
-		return "ClientsEntity[clientid="+ clientid +",cname="+ cname +",division="+ division +",projectNumber="+ projectNumber +",hhsDivision="+ hhsDivision +",email="+ email +",active="+ active +",vacStatus="+ vacStatus +",siteNumber="+ siteNumber +",title="+ title +",empStatus="+ empStatus +",notes="+ notes +"]";				
+		return "ClientsEntity[clientid="+ clientid +",cname="+ cname +",division="+ division +",projectNumber="+ projectNumber +",hhsDivision="+ hhsDivision +",email="+ email +",active="+ active +",vacStatus="+ vacStatus +",siteNumber="+ siteNumber +",title="+ title +",empStatus="+ empStatus +",notes="+ notes +",counter="+ counter +"]";				
 		
 	}
 
@@ -199,6 +202,18 @@ public class ClientsEntity
 	public void setEmpStatus(String empStatus) 
 	{
 		this.empStatus=empStatus;
+	}
+
+
+	public int getCounter() 
+	{
+		return counter;
+	}
+
+
+	public void setCounter(int counter) 
+	{
+		this.counter=counter;
 	}
 
 	

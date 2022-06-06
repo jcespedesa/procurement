@@ -49,10 +49,43 @@ public class PurchasesController
 		UsersEntity ITapprover=serviceUsers.getITapprover();
 		UsersEntity FOapprover=serviceUsers.getFOapprover();
 		UsersEntity Ppc=serviceUsers.getPpc();
-				
+		
 		//Retrieving user information
 		UsersEntity quser=serviceUsers.getUserById(quserId);
+				
 		
+		//Checking if the pool of approvers is complete
+		if(FOapprover==null)
+		{
+			String message="Critical Error. Front Office Approver cannot be found!. If you are not a db please contact your System Administrator to correct it...";
+			
+			model.addAttribute("message",message);
+			model.addAttribute("quser",quser);
+			model.addAttribute("quserId",quserId);
+			
+			return "purchRedError";
+		}
+		if(ITapprover==null)
+		{
+			String message="Critical Error. IT Approver cannot be found!. If you are not a db please contact your System Administrator to correct it...";
+			
+			model.addAttribute("message",message);
+			model.addAttribute("quser",quser);
+			model.addAttribute("quserId",quserId);
+			
+			return "purchRedError";
+		}
+		if(Ppc==null)
+		{
+			String message="Critical Error. PPC cannot be found!. If you are not a db please contact your System Administrator to correct it...";
+			
+			model.addAttribute("message",message);
+			model.addAttribute("quser",quser);
+			model.addAttribute("quserId",quserId);
+			
+			return "purchRedError";
+		}
+				
 		model.addAttribute("ITapprover",ITapprover);
 		model.addAttribute("FOapprover",FOapprover);
 		model.addAttribute("Ppc",Ppc);

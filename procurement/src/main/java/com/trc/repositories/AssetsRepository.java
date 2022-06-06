@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.trc.entities.AssetsEntity;
-
+ 
 
 @Repository
 public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
@@ -93,6 +93,10 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	
 	@Query("Select u from AssetsEntity u WHERE u.clientId=?1")
 	List<AssetsEntity> getByAssignee(String clientId);
+	
+	@Query("Select u from AssetsEntity u Where u.active='Yes'")
+	List<AssetsEntity> getAllActives();
+	
 	
 		
 }

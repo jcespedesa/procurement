@@ -158,8 +158,16 @@ public class UsersService
 		Boolean priznakSuccess=false;
 		String storedPassword=null;
 		
-		//Retrieving stored password for this email
-		storedPassword=repository.getPassByEmail(email);
+		try
+		{
+		
+			//Retrieving stored password for this email
+			storedPassword=repository.getPassByEmail(email);
+		
+		}catch (Exception e)
+		{
+			System.out.println("Critical Error: Repeated email was found: "+ email);
+		}
 		
 		//Coding input password
 		//password=this.encodePass(password);

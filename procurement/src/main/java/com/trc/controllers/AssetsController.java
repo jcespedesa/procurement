@@ -95,7 +95,7 @@ public class AssetsController
 			List<ItemsEntity> items=serviceItems.getAllMainItems();
 			
 			//Preparing list of projects
-			List<ProjectsEntity> projects=serviceProjects.getAllHHSprojects();
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSactiveProjects();
 						
 			//Preparing list of authors email
 			List<String> emails=service.getAuthorEmails();
@@ -225,7 +225,7 @@ public class AssetsController
 			List<DivisionsEntity> divisions=serviceDivisions.getAllByName();
 			
 			//Preparing list of active projects by udelny bes
-			List<ProjectsEntity> projects=serviceProjects.getAllHHSbyUB();
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSactiveProjects();
 			
 						
 			String priznakNew=null;
@@ -275,6 +275,8 @@ public class AssetsController
 		public String editAssetsById(Model model,Long id,String stringSearch,String priznak,Long quserId) throws RecordNotFoundException 
 		{
 			ClientsEntity client=new ClientsEntity();
+			ClientsEntity oldUser=new ClientsEntity();
+			
 			new ClientsEntity();
 			
 			Long clientIdLong=null;
@@ -297,7 +299,7 @@ public class AssetsController
 			List<DivisionsEntity> divisions=serviceDivisions.getAllByName();
 			
 			//Preparing list of active projects by udelny bes
-			List<ProjectsEntity> projects=serviceProjects.getAllHHSbyUB();
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSactiveProjects();
 			
 									
 			String site=null;
@@ -305,9 +307,10 @@ public class AssetsController
 						
 			String itemName=null;
 			String itemNumber=null;
-			
-					
+								
 			String priznakNew=null;
+			
+			Long oldUserId=null;
 											
 			AssetsEntity entity=service.getAssetById(id);
 												
@@ -318,6 +321,19 @@ public class AssetsController
 				
 			//Preparing history of re-assignations 
 			List<AssetAssigEntity> assigs=serviceReassig.getAssigById(assetId);
+			
+			for(AssetAssigEntity assig : assigs)
+			{
+				
+				oldUserId=Long.parseLong(assig.getAssigId());
+								
+				oldUser=serviceClients.getClientById(oldUserId);
+								
+				assig.setAssigName(oldUser.getCname());
+									
+			}
+			
+			
 											
 			itemNumber=entity.getItem();
 															
@@ -442,7 +458,7 @@ public class AssetsController
 			List<ItemsEntity> items=serviceItems.getAllMainItems();
 			
 			//Preparing list of projects
-			List<ProjectsEntity> projects=serviceProjects.getAllHHSprojects();
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSactiveProjects();
 						
 			//Preparing list of authors 
 			List<String> emails=service.getAuthorEmails();
@@ -876,7 +892,7 @@ public class AssetsController
 			List<ItemsEntity> items=serviceItems.getAllMainItems();
 			
 			//Preparing list of projects
-			List<ProjectsEntity> projects=serviceProjects.getAllHHSprojects();
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSactiveProjects();
 						
 			//Preparing list of authors email
 			List<String> emails=service.getAuthorEmails();
@@ -1143,8 +1159,8 @@ public class AssetsController
 	 
 	        ICsvBeanWriter csvWriter=new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 	        	        
-	        String[] csvHeader={"Item","Asset Number","Maker", "Model", "Date Purchased","User","Project","Program","Date Inventory","Registered by"};
-	        String[] nameMapping={"site","assetNumber","maker","model","datePurchased","username","project","program","dateCreation","author"};
+	        String[] csvHeader={"Item","Asset Number","Maker", "Model", "Date Purchased","User","Project","Program","Registered by"};
+	        String[] nameMapping={"site","assetNumber","maker","model","datePurchased","username","project","program","author"};
 	        
 	        String[] csvHeader2={"Description","Item Related","User"};
 	        String[] nameMapping2={"description","itemId","notes"};
@@ -1228,7 +1244,7 @@ public class AssetsController
 			List<TitlesEntity> titles=serviceTitles.getAllTitles();
 						
 			//Preparing list of projects
-			List<ProjectsEntity> projects=serviceProjects.getAllHHSprojects();
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSactiveProjects();
 			
 			//System.out.println("title number is "+ titleNumber);
 			//System.out.println("title is "+ titleName);
@@ -1324,6 +1340,154 @@ public class AssetsController
 						
 			return "assetsReassigRedirect";
 
+		}
+		
+		@RequestMapping(path="/reports", method=RequestMethod.POST)
+		public String reports(Model model, Long quserId)
+		{
+						
+			//Preparing list of items
+			List<ItemsEntity> items=serviceItems.getAllMainItems();
+			
+			//Preparing list of projects
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSactiveProjects();
+						
+			//Preparing list of authors email
+			List<String> emails=service.getAuthorEmails();
+			
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
+			model.addAttribute("items",items);
+			model.addAttribute("emails",emails);
+			model.addAttribute("projects",projects);
+			
+			return "reportsMenu";
+			
+			
+		}
+		
+		@RequestMapping(path="/multipleAssigs",method=RequestMethod.POST)
+		public String multipleAssignations(Model model,Long quserId) throws RecordNotFoundException
+		{
+			List<ClientsEntity> clients=service.getClientsMultipleAssigs();
+			
+			String message="List of Users Having Assigned IT Items";
+						
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
+			model.addAttribute("clients",clients);
+			model.addAttribute("message",message);
+					
+			return "multipleAssigsList";
+			
+			
+		}
+		
+		
+		@RequestMapping(path="/viewRepeated", method=RequestMethod.POST)
+		public String repeatedItemsView(Model model, Long quserId, String clientId, String cname) throws RecordNotFoundException
+		{
+						
+			//Preparing list of assets assigned to this user
+			List<AssetsEntity> assets=service.getByClientId(clientId);
+						
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        String itemName=null;
+			String itemNumber=null;
+	        
+	      //finding item description
+	        for(AssetsEntity asset : assets)
+			{
+	        	itemNumber=asset.getItem();
+	        	itemName=serviceItems.getItemByNumber(itemNumber);
+	        	
+	        	asset.setSite(itemName);
+	        
+			}	
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
+			
+			model.addAttribute("assets",assets);
+			model.addAttribute("clientId",clientId);
+			model.addAttribute("cname",cname);
+			
+			return "multipleAssigsItems";
+			
+			
+		}
+		
+		
+		//Exporting assigned assets to CSV "exportItemsCSV"
+		@RequestMapping(path="/exportItemsCSV", method=RequestMethod.POST)
+		public void repeatedItemsExport(Model model,HttpServletResponse response, Long quserId, String clientId, String cname) throws RecordNotFoundException, IOException
+		{
+			response.setContentType("text/csv");
+	        DateFormat dateFormatter=new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+	        String currentDateTime=dateFormatter.format(new Date());
+	         
+	        String headerKey="Content-Disposition";
+	       	        	        
+	        String headerValue="attachment; filename="+ clientId +"-"+ currentDateTime +".csv";
+	        response.setHeader(headerKey,headerValue);
+	        
+			//Preparing list of assets assigned to this user
+			List<AssetsEntity> assets=service.getByClientId(clientId);
+						
+			//Retrieving user identity
+	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        String itemName=null;
+			String itemNumber=null;
+	        
+	      //finding item description
+	        for(AssetsEntity asset : assets)
+			{
+	        	itemNumber=asset.getItem();
+	        	itemName=serviceItems.getItemByNumber(itemNumber);
+	        	
+	        	asset.setSite(itemName);
+	        
+			}	
+	        
+	        ICsvBeanWriter csvWriter=new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+	        
+	        String[] csvTitle={"Assets Assigned to: "+ cname};
+	        String[] csvSpace={" "};
+	        
+	        String[] csvHeader={"Asset Number","Description","Model", "Date Purchased","Status","Active","Notes"};
+	        String[] nameMapping={"assetNumber","site","model","datePurchased","status","active","notes"};
+	        
+	        csvWriter.writeHeader(csvTitle);
+	        csvWriter.writeHeader(csvSpace);
+	        csvWriter.writeHeader(csvHeader);
+	         
+	        for(AssetsEntity asset : assets) 
+	        {
+	            csvWriter.write(asset, nameMapping);
+	        }
+			
+	        csvWriter.close();
+	        
+	        	        
+	        //Processing logs
+			LogsEntity log=new LogsEntity();
+			log.setSubject(quser.getEmail());
+			log.setAction("Exporting Assets Information to CSV file");
+			log.setObject("Assets registered to "+ cname);
+			serviceLogs.saveLog(log);
+	        
+	        model.addAttribute("quserId",quserId);
+			model.addAttribute("quser",quser);
 		}
 			
 }

@@ -70,6 +70,18 @@ public class ProjectsService
 		
 	}
 	
+	public List<ProjectsEntity> getAllHHSactiveProjects()
+	{
+		List<ProjectsEntity> result=repository.getAllHHSactive();
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<ProjectsEntity>();
+		
+	}
+	
+	
 	public List<ProjectsEntity> getHhsFormView()
 	{
 		String department="300";

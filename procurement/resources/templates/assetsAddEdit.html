@@ -187,7 +187,7 @@
                    	<label for="program" class="col-form-label">Program :</label> 
                    	<select th:field="*{project}" id="project">
                    		<option th:value="*{project}" th:text="${projectName}"></option>
-                   		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}" ></option>
+                   		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}+' ('+ ${project.projectNumber} +')'" ></option>
                    		<option value="Unknown">Unknown</option>
                    	</select>
                        	
@@ -250,15 +250,12 @@
       				<table class="table table-bordered-sm">
       					<thead>
       						<tr class="table-active">
-      							<td colspan="4" style="font-weight:bold">Previous Owners</td>
+      							<td colspan="4" style="font-weight:bold">Previous Owner(s)</td>
       						</tr>
       					</thead>
       					<tbody>
       						<tr th:each="assig : ${assigs}">
       							<td th:text="${assig.assigName}"></td>
-      							<td th:text="${assig.assigEmail}"></td>
-      							<td th:text="${assig.assigTitle}"></td>
-      							<td th:text="${assig.assigProject}"></td>
       						</tr>
      					</tbody>		
       				</table>

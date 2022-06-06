@@ -47,6 +47,29 @@ public class UsersController
 		
 		List<UsersEntity> list=service.getAllUsers();
 		
+		
+		//Finding assigned roles
+		for(UsersEntity user : list)
+		{
+			if(user.getPriznakFOapprover()!=null)
+			{	
+				if(user.getPriznakFOapprover().equals("Yes"))
+					user.setAssignedRole("FO Approver");
+			}
+			
+			if(user.getPriznakITapprover()!=null)
+			{	
+				if(user.getPriznakITapprover().equals("Yes"))
+					user.setAssignedRole("IT Approver");
+			}
+			if(user.getPriznakPpc()!=null)
+			{	
+				if(user.getPriznakPpc().equals("Yes"))
+					user.setAssignedRole("Assigned PPC");
+			}
+			
+		}
+		
 		//Retrieving user identity
         UsersEntity quser=service.getUserById(quserId);
         

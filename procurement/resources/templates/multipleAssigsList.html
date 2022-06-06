@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>Assigned Items</title>
+  		
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
+			
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>
+		
+	</head>
+
+	<body id="page-top">
+		<div class="container">
+
+  <!-- Navigation -->
+	  		<nav id="hcssmenu">
+	    		<ul>
+	        		<li>
+	           			<form th:action="@{/procurement/assets/reports}" method="post">
+	                            	
+		           			<button type="submit" class="btn btn-light">Back</button>	
+		           			
+		           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+		           			
+		           		</form>
+	        		</li>
+	        			            	
+	            </ul>
+	      	</nav>
+	
+			<div class="container">
+				<div class="row">&nbsp;</div>
+				<div class="row" style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></div>
+				<div class="row">&nbsp;</div>
+	 
+	  			<section class="page-section" id="mainBody">
+	    			
+	      				<div class="row" >
+	        				<div class="col-lg-6">
+					          	<div style="color:navy;font-weight:bold;" th:text="${message}"></div>
+					         	
+	        				</div>
+	      				</div>
+	     			    
+	  			  		
+	  			</section>
+	  			<table class="table table-striped table-responsive-md">
+  					<thead>
+  						<tr>
+  							<th style="color:#006400;font-size:12px;">#</th>
+  							<th style="color:#006400;font-size:12px;">Employee ID</th>
+  							<th style="color:#006400;font-size:12px;">Name</th>
+  							<th style="color:#006400;font-size:12px;">Project</th>
+  							<th style="color:#006400;font-size:12px;text-align:center;">Assigned items</th>
+  							
+  							  							  							
+  							<th style="color:#006400;font-size:12px;">Details</th>
+  							
+  							
+  						</tr>
+  					</thead>
+  					<tbody>
+  						<tr th:each="client,itemNum : ${clients}">
+  							<td th:text="${itemNum.count}" style="font-size:12px;"></td>
+  							<td th:text="${client.clientid}" style="font-size:12px;"></td>
+  							<td th:text="${client.cname}" style="font-size:12px;"></td>
+  							<td th:text="${client.projectNumber}" style="font-size:12px;"></td>
+  							<td th:text="${client.counter}" style="font-size:12px;text-align:center;"></td>
+  							  												  							
+  							<td>
+                            	
+                                <form th:action="@{/procurement/assets/viewRepeated}" method="post">
+                            	
+	           			        	<button type="submit" class="btn btn-primary fa fa-eye btn-sm"></button>	
+	           			
+	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           						<input type="hidden" th:value="${client.clientid}" name="clientId"> 
+	           						<input type="hidden" th:value="${client.cname}" name="cname"> 
+	           						 
+	           					</form>
+                            </td>
+                                                           
+  						</tr>	
+  					</tbody>	
+  				</table>
+	  			
+	  		</div>
+	  		
+	  		<!-- Footer -->
+	  		
+	  		<footer class="customFooter">&copy;TRC Corp</footer> 
+  		</div>
+	</body>
+</html>			
+				
+				

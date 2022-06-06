@@ -26,8 +26,7 @@ public class UsersEntity
 	
 	@Column(name="password")
 	private String password;
-	
-		
+			
 	@Column(name="domain")
 	private String domain;
 	
@@ -43,10 +42,13 @@ public class UsersEntity
 	@Column(name="priznakppc")
 	private String priznakPpc;
 	
+	@Column(name="assignedrole")
+	private String assignedRole;
+	
 	@Override
 	public String toString()
 	{
-		return "UsersEntity[userid="+ userid +",username="+ username +",email="+ email +",role="+ role +",password="+ password +",domain="+ domain +",active="+ active +",priznakITapprover="+ priznakITapprover +",priznakFOapprover="+ priznakFOapprover +",priznakPpc="+ priznakPpc +"]";				
+		return "UsersEntity[userid="+ userid +",username="+ username +",email="+ email +",role="+ role +",password="+ password +",domain="+ domain +",active="+ active +",priznakITapprover="+ priznakITapprover +",priznakFOapprover="+ priznakFOapprover +",priznakPpc="+ priznakPpc +",assignedRole="+ assignedRole +"]";				
 		
 	}
 
@@ -150,7 +152,15 @@ public class UsersEntity
 	{
 		this.priznakPpc=priznakPpc;
 	}
-	
-	
+
+	public String getAssignedRole() 
+	{
+		return assignedRole;
+	}
+
+	public void setAssignedRole(String assignedRole) 
+	{
+		this.assignedRole=assignedRole;
+	}
 	
 }
