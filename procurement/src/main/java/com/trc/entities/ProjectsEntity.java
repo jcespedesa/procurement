@@ -45,12 +45,15 @@ public class ProjectsEntity
 	@Column(name="udelnybes")
 	private String udelnyBes;
 	
+	@Column(name="tcpgraph")
+	private String tcpGraph;
+	
 	//Constructors
 		
 	@Override
 	public String toString()
 	{
-		return "ProjectsEntity[projectid="+ projectid +",projectNumber="+ projectNumber +",project="+ project +",department="+ department +",active="+ active +",siteNumber1="+ siteNumber1 +",siteNumber2="+ siteNumber2 +",buffer1="+ buffer1 +",buffer2="+ buffer2 +",hhsDivision="+ hhsDivision +",udelnyBes="+ udelnyBes+"]";				
+		return "ProjectsEntity[projectid="+ projectid +",projectNumber="+ projectNumber +",project="+ project +",department="+ department +",active="+ active +",siteNumber1="+ siteNumber1 +",siteNumber2="+ siteNumber2 +",buffer1="+ buffer1 +",buffer2="+ buffer2 +",hhsDivision="+ hhsDivision +",udelnyBes="+ udelnyBes+",tcpGraph="+ tcpGraph +"]";				
 		
 	}
 	
@@ -165,6 +168,16 @@ public class ProjectsEntity
 	public void setUdelnyBes(String udelnyBes) 
 	{
 		this.udelnyBes=udelnyBes;
+	}
+
+	public String getTcpGraph() 
+	{
+		return tcpGraph;
+	}
+
+	public void setTcpGraph(String tcpGraph) 
+	{
+		this.tcpGraph=tcpGraph;
 	}
 	
 	

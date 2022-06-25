@@ -43,8 +43,13 @@ public interface AssetsRepository extends CrudRepository<AssetsEntity,Long>
 	
 	@Modifying
 	@Transactional
+	@Query("Update AssetsEntity u set u.author=?2 where u.id=?1")
+	void setAuthor(Long id,String username);
+	
+	@Modifying
+	@Transactional
 	@Query(value="insert into assets(item,assetNumber,maker,model,datePurchased,username,title,site,active,notes,project,strobe,author,authorEmail,kluch,email,program) values (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15,?16,?17,?18,?19)",nativeQuery=true)
-	void saveNewAsset(String item,String assetNumber,String maker,String model,String datePurchased,String username,String title,String site,String active,String notes,String project,String strobe,String author,String authorEmail,String kluch,String email,String program,String klass,String status);
+	void saveNewAsset(String item,String assetNumber,String maker,String model,String datePurchased,String username,String title,String site,String active,String notes,String project,String strobe,String author,String kluch,String email,String program,String klass,String status);
 	
 	@Query("Select u from AssetsEntity u WHERE u.kluch=?1")
 	List<AssetsEntity> getThisSessionAssets(String kluch);

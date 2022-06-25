@@ -58,7 +58,7 @@ public class AssetsService
 	}
 	
 	
-	public AssetsEntity createOrUpdate(AssetsEntity entity)
+	public AssetsEntity createOrUpdate(AssetsEntity entity, String username)
 	{
 		if(entity.getAssetid()==null)
 		{
@@ -94,6 +94,7 @@ public class AssetsService
 			datePurchased=entity.getDatePurchased();
 			repository.setDatePurchased(id,datePurchased);
 			repository.setDivision(id,division);
+			repository.setAuthor(id, username);
 			
 			return entity;
 		}
@@ -129,8 +130,8 @@ public class AssetsService
 				
 				newEntity.setProject(entity.getProject());
 				
-				newEntity.setAuthorId(entity.getAuthorId());
-				newEntity.setAuthor(entity.getAuthor());
+				newEntity.setAuthor(username);
+				
 				newEntity.setAuthorEmail(entity.getAuthorEmail());
 				
 				newEntity.setEmail(entity.getEmail());
@@ -200,7 +201,7 @@ public class AssetsService
 		String author=null;
 		String kluch=null;
 		String email=null;
-		String authorEmail=null;
+		
 		String program=null;
 		String klass=null;
 		String status=null;
@@ -217,8 +218,7 @@ public class AssetsService
 		notes=asset.getNotes();
 		project=asset.getProject();
 		strobe=asset.getStrobe();
-		author=asset.getAuthor();
-		authorEmail=asset.getAuthorEmail();
+		
 		kluch=asset.getKluch();
 		email=asset.getEmail();
 		program=asset.getProgram();
@@ -226,7 +226,7 @@ public class AssetsService
 		status=asset.getStatus();
 		
 		//Trying to save new record in table
-		repository.saveNewAsset(item,assetNumber,maker,model,datePurchased,username,title,site,active,notes,project,strobe,author,authorEmail,kluch,email,program,klass,status);
+		repository.saveNewAsset(item,assetNumber,maker,model,datePurchased,username,title,site,active,notes,project,strobe,author,kluch,email,program,klass,status);
 		
 		return kluch;
 	

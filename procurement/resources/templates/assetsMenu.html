@@ -31,77 +31,103 @@
 
    		<div class="container">
    		
-   			<nav id="hcssmenu">
-    			<ul>
-        			<li>
-           				<form th:action="@{/portal/mainMenu}" method="post">
-               				<button type="submit" class="btn btn-light">Back</button>	
-	           			
-	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
-	           			
-	           			</form>
-        			</li>
-            	
-        			<li>
-        		
-        				<form th:action="@{/procurement/assets/list}" method="post">
-                            	
-	           				<button type="submit" class="btn btn-light">List All Assets</button>	
-	           			
-	           				<input type="hidden" th:value="all" name="stringSearch"> 
-	           				<input type="hidden" th:value="list" name="priznak">
-	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
-	           				
-	           			</form>
-        		
-        			</li>
-        		        		
-        			<li>
-	           			
-	           			<form th:action="@{/procurement/assets/new}" method="post">
-                            	
-	           				<button type="submit" class="btn btn-light">Add New</button>	
-	           			
-	           				<input type="hidden" th:value="new" name="stringSearch"> 
-	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
-	           				
-	           			</form>
-	        		</li>
-	        		<li>
-	           			
-	           			<form th:action="@{/procurement/assets/views}" method="post">
-                            	
-	           				<button type="submit" class="btn btn-light">Export</button>	
-	           			
-	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
-	           				
-	           			</form>
-	        		</li>
-	        		<li>
-	           			
-	           			<form th:action="@{/procurement/assets/reports}" method="post">
-                            	
-	           				<button type="submit" class="btn btn-light">Reports</button>	
-	           			
-	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
-	           				
-	           			</form>
-	        		</li>
-            	</ul>
-      		</nav>
+   			<div class="row">
+   			
+   				<div class="col-4">
+		
+					<img class="img-fluid mb-4" th:src="@{/images/inventoryIt-pic.png}" style="height:150px;width:160px;">
+				
+				</div>
+				
+								
+				<div class="col-8">	
    		
-      		<div class="row"> 
-        		<div class="col-lg-12 text-center">
-			          <p class="navbar-brand" style="color:#880000;font-size:15px;">Options for Searching Assets</p>
-				          
-        		</div>
-      		</div>
-      			
-      		<div class="col-sm"><label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></div>	
-      			
+   					<div class="row">
+   		
+			   			<nav id="hcssmenu">
+			    			<ul>
+			        			<li>
+			           				<form th:action="@{/portal/mainMenu}" method="post">
+			               				<button type="submit" class="btn btn-light">Back</button>	
+				           			
+				           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+				           			
+				           			</form>
+			        			</li>
+			            	
+			        			<li th:if="${quser.role}=='dba'">
+			        		
+			        				<form th:action="@{/procurement/assets/list}" method="post">
+			                            	
+				           				<button type="submit" class="btn btn-light">List All Assets</button>	
+				           			
+				           				<input type="hidden" th:value="all" name="stringSearch"> 
+				           				<input type="hidden" th:value="list" name="priznak">
+				           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+				           				
+				           			</form>
+			        		
+			        			</li>
+			        		        		
+			        			<li>
+				           			
+				           			<form th:action="@{/procurement/assets/new}" method="post">
+			                            	
+				           				<button type="submit" class="btn btn-light">Add New</button>	
+				           			
+				           				<input type="hidden" th:value="new" name="stringSearch"> 
+				           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+				           				
+				           			</form>
+				        		</li>
+				        		<li>
+				           			
+				           			<form th:action="@{/procurement/assets/views}" method="post">
+			                            	
+				           				<button type="submit" class="btn btn-light">Export</button>	
+				           			
+				           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+				           				
+				           			</form>
+				        		</li>
+				        		<li>
+				           			
+				           			<form th:action="@{/procurement/assets/reports}" method="post">
+			                            	
+				           				<button type="submit" class="btn btn-light">Reports</button>	
+				           			
+				           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+				           				
+				           			</form>
+				        		</li>
+			            	</ul>
+			      		</nav>
+			      		
+			      	</div>
+			      	
+			      	<div class="row" style="height:50px !important;"></div>
+			      	
+			      	<div class="row">
+		      		
+			      		<table th:if="${quser.role}!='dba'" class="table-condensed table-bordered table-striped" style="background-color:#fffff0;">					        			
+	        		 		<thead>
+	        		 			<tr><td colspan="2" style="color:brown;font-size:12px;font-weight:bold;background-color:#d3d3d3;">Your Assigned Projects</td></tr>
+	  						</thead>
+	  						<tbody>
+	  							<tr th:each="project : ${assigProjects}">
+	  								<td th:text="${project.assigProjectNumber}" style="font-size:12px;"></td>
+	  								<td th:text="${project.assigProject}" style="font-size:12px;"></td>
+	  							</tr>	
+	  						</tbody>
+	        			</table>
+	        		</div>			
+			      		
+		   		</div>
+	   		</div>
+      		      			
       		<div class="row">
       			
-      			<div class="col">
+      			<div class="col" th:if="${quser.role}=='dba'">
       				<label class="warning">Search by Asset Number</label>
       				
       				<form class="utilityForm" th:action="@{/procurement/assets/findAssetByNum}" method="post">
@@ -124,7 +150,7 @@
       			</div>
       				
       				
-      			<div class="col">
+      			<div class="col" th:if="${quser.role}=='dba'">
       				
       					<label class="warning">Search by Item</label>
       				
@@ -150,33 +176,9 @@
       				
       				</div>
       				      				
-      				<div class="col">
       				
-      					<label class="warning">Search by Author (Person who registered items)</label>
-      				
-      					<form class="utilityForm" th:action="@{/procurement/assets/findAssetsByAuthor}" method="post">
-	                    
-		                    <div class="form-group">
-		                       	<label for="requester" class="col-form-label">Select Author<sup>*</sup>:</label> 
-		                       	<select name="stringSearch" required>
-                       				<option th:each="client : ${clients}" th:value="${client.clientid}" th:text="${client.cname}" ></option>
-                       			</select>
-		                    </div>
-		                                        
-		                    
-		                    <div class="form-group">
-		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
-		                       	
-		                    </div>
-		                    
-		                    <input type="hidden" th:value="findAssetsByAuthor" name="priznak">
-		                    <input type="hidden" th:value="${quserId}" name="quserId"> 
-		                      	
-	            		</form>
-      				
-      				
-      				</div>
      		
+     				<label style="color:teal;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label>
 	  				
   				</div>
   				
@@ -188,13 +190,19 @@
       				
       					<form class="utilityForm" th:action="@{/procurement/assets/findAssetsByProgram}" method="post">
 	                    
-		                    <div class="form-group">
+		                    <div class="form-group" th:if="${quser.role}=='dba'">
 		                       	<label for="requester" class="col-form-label">Select Program<sup>*</sup>:</label> 
 		                       	<select name="stringSearch" required>
                        				<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project} +' ('+ ${project.projectNumber} +')'" ></option>
                        			</select>
 		                    </div>
-		                                        
+		                    
+		                    <div class="form-group" th:unless="${quser.role}=='dba'">
+		                       	<label for="requester" class="col-form-label">Select Program<sup>*</sup>:</label> 
+		                       	<select name="stringSearch" required>
+                       				<option th:each="project : ${assigProjects}" th:value="${project.assigProjectNumber}" th:text="${project.assigProject} +' ('+ ${project.assigProjectNumber} +')'" ></option>
+                       			</select>
+		                    </div>                    
 		                    
 		                    <div class="form-group">
 		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
@@ -207,8 +215,8 @@
 	            		</form>
       				      				
       				</div>
-      				
-      				<div class="col">
+      				 
+      				<div class="col" th:if="${quser.role}=='dba'">
       				
       					<label class="warning">Search by Assignee</label>
       				
@@ -232,9 +240,17 @@
 		                    <input type="hidden" th:value="${quserId}" name="quserId"> 
 		                      	
 	            		</form>
-      				
-      				
       				</div>
+      				
+  				</div>
+  				
+  				<div class="row">
+  				
+  				<div class="col-sm">	
+      				
+      				
+      			
+      			</div> 
   				
   				</div>
   		</div>

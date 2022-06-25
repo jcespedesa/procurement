@@ -82,6 +82,19 @@ public class ProjectsService
 	}
 	
 	
+	public List<ProjectsEntity> getAllTcpGraphParticipants()
+	{
+		List<ProjectsEntity> result=repository.getTcpGraphParticipants();
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<ProjectsEntity>();
+		
+	}
+	
+	
+	
 	public List<ProjectsEntity> getHhsFormView()
 	{
 		String department="300";
@@ -136,6 +149,8 @@ public class ProjectsService
 				
 				newEntity.setHhsDivision(entity.getHhsDivision());
 				newEntity.setUdelnyBes(entity.getUdelnyBes());
+				
+				newEntity.setTcpGraph(entity.getTcpGraph());
 				
 				newEntity=repository.save(newEntity);
 				

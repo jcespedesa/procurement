@@ -101,17 +101,22 @@
                        		<option value=""></option>
                        	</select>
                        	<label th:text="${site}"></label>
-                    </div>   	
-                    <div class="form-group">   	                     	
                        	<label for="siteNumber2" class="col-form-label">Site 2 <sup>*</sup>:</label> 
                        	<select th:field="*{siteNumber2}" id="siteNumber2">
                        		<option th:value="*{siteNumber2}" th:text="${site2}"></option>
                        		<option th:each="site : ${sites}" th:value="${site.siteNumber}" th:text="${site.sname}" ></option>
                        		<option value=""></option>
                        	</select>
+                    </div>   	
+                    <div class="form-group">   	                     	
+                    	<label for="active">TCP Graph Participant : </label>
+     					<select th:field="*{tcpGraph}">
+					     	<option th:value="*{tcpGraph}" th:text="*{tcpGraph}"></option>
+					    	<option th:value="'Yes'" th:text="Yes"></option>
+					    	<option th:value="'No'" th:text="No"></option>
+     					</select>  	   	
                     </div>
-                    
-                    
+                                        
                     <div class="form-group col-md-8">
      					<label for="active">Active</label>
      					<select th:field="*{active}">

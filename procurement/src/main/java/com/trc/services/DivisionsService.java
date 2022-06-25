@@ -28,6 +28,17 @@ public class DivisionsService
 		
 	}
 	
+	public List<DivisionsEntity> getAllActives()
+	{
+		List<DivisionsEntity> result=(List<DivisionsEntity>) repository.getAllActives();
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<DivisionsEntity>();
+		
+	}
+	
 	public List<DivisionsEntity> getAllByName()
 	{
 		List<DivisionsEntity> result=repository.getAllByName();

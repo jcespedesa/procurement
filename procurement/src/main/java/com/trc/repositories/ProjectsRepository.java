@@ -44,5 +44,8 @@ public interface ProjectsRepository extends CrudRepository<ProjectsEntity,Long>
 	
 	@Query("Select count(u) from ProjectsEntity u where u.projectNumber=?1")
 	int findProjectDuplicity(String projectNumber);
+	
+	@Query("Select u from ProjectsEntity u where (u.department='300' and u.tcpGraph='Yes' and u.active='Yes') Order by project")
+	List<ProjectsEntity>  getTcpGraphParticipants();
 }
 

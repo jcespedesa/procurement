@@ -20,4 +20,7 @@ public interface DivisionsRepository extends CrudRepository<DivisionsEntity,Long
 	
 	@Query("Select count(u) from DivisionsEntity u where u.dnumber=?1")
 	int findDivisionDuplicity(String dnumber);
+	
+	@Query("Select u from DivisionsEntity u Where u.active='Yes' Order by dname")
+	List<DivisionsEntity>  getAllActives();
 }

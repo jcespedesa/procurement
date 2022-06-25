@@ -28,6 +28,7 @@ import com.trc.entities.DivisionsEntity;
 import com.trc.entities.ItemsEntity;
 import com.trc.entities.LogsEntity;
 import com.trc.entities.PeripheralsEntity;
+import com.trc.entities.ProjectAssigEntity;
 import com.trc.entities.ProjectsEntity;
 import com.trc.entities.SitesEntity;
 import com.trc.entities.TitlesEntity;
@@ -39,6 +40,7 @@ import com.trc.services.DivisionsService;
 import com.trc.services.ItemsService;
 import com.trc.services.LogsService;
 import com.trc.services.PeripheralsService;
+import com.trc.services.ProjectsAssigService;
 import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.SitesService;
@@ -83,6 +85,9 @@ public class AssetsController
 	@Autowired
 	DivisionsService serviceDivisions;
 	
+	@Autowired
+	ProjectsAssigService serviceProjectsAssig;
+	
 	//CRUD operations for assets
 	
 		@RequestMapping(path="/menu")
@@ -94,28 +99,47 @@ public class AssetsController
 			//Preparing list of items
 			List<ItemsEntity> items=serviceItems.getAllMainItems();
 			
-			//Preparing list of projects
-			List<ProjectsEntity> projects=serviceProjects.getAllHHSactiveProjects();
-						
 			//Preparing list of authors email
 			List<String> emails=service.getAuthorEmails();
 			
 			//Preparing list of assignees
 			List<String> assigEmails=service.getAssigneeEmails();
-			
+								
+						
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
 	        
+	        //Preparing list of all available projects
+			List<ProjectsEntity> projects=serviceProjects.getAllHHSactiveProjects();
+	        				        
+	        String userIdString=null;
+	        userIdString=String.valueOf(quser.getUserid());
+	        
+	        //Retrieving array of assigned projects
+			List<ProjectAssigEntity> assigProjects=serviceProjectsAssig.getAssigById(userIdString);
+			
+			//Creating a list of assigned projects
+			for(ProjectAssigEntity assigProject : assigProjects)
+			{
+				String projectNumber=assigProject.getAssigProjectNumber();
+				String projectName=serviceProjects.getProjectByNum(projectNumber);
+				
+				assigProject.setAssigProject(projectName);
+			}
+			
+			    
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
 						
 			model.addAttribute("items",items);
 			model.addAttribute("emails",emails);
-			model.addAttribute("projects",projects);
 			model.addAttribute("assigEmails",assigEmails);
 			
-			model.addAttribute("clients",clients);
+			model.addAttribute("projects",projects);
+			model.addAttribute("assigProjects",assigProjects);
 			
+			model.addAttribute("clients",clients);
+						
 			return "assetsMenu";
 			
 			
@@ -130,6 +154,7 @@ public class AssetsController
 			List<AssetsEntity> list=service.getAllAssets();
 			
 			int priznakPeripherals=0;
+			int age=0;
 			
 			String projectNumber=null;
 			String projectName=null;
@@ -144,12 +169,12 @@ public class AssetsController
 			
 			String cname=null;
 			String clientId=null;
-			String authorId=null;
-			String authorName=null;
+			String ageString=null;
+			String datePurchased=null;
 			
 			Long assetIdLong=null;
 			Long clientIdLong=null;
-			Long authorIdLong=null;						
+					
 			
 			for(AssetsEntity asset : list)
 			{
@@ -172,11 +197,7 @@ public class AssetsController
 				clientIdLong=Long.parseLong(clientId);
 				cname=serviceClients.getCnameById(clientIdLong);
 				
-				//finding author name
-				authorId=asset.getAuthorId();
-				authorIdLong=Long.parseLong(authorId);
-				authorName=serviceClients.getCnameById(authorIdLong);
-								
+												
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -185,11 +206,25 @@ public class AssetsController
 				if(priznakPeripherals > 0)
 					asset.setStrobe("Yes");
 				
+				//Checking age of the asset
+				datePurchased=asset.getRealDatePurchased();
+				
+				if((datePurchased==null)||(datePurchased.equals("1900-01-01 00:00:00")))
+					age=0;
+				else
+					age=service.priznakOldItem(datePurchased);
+							
+								
+				if((age>5)&&(age<100))
+					ageString="Old";
+				else
+					ageString="New";
+				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
 				asset.setUsername(cname);
-				asset.setAuthor(authorName);
+				asset.setAge(ageString);
 							
 			}
 			
@@ -222,7 +257,7 @@ public class AssetsController
 			List<SitesEntity> sites=serviceSites.getAllHHSsites();
 			
 			//Preparing list of Divisions
-			List<DivisionsEntity> divisions=serviceDivisions.getAllByName();
+			List<DivisionsEntity> divisions=serviceDivisions.getAllActives();
 			
 			//Preparing list of active projects by udelny bes
 			List<ProjectsEntity> projects=serviceProjects.getAllHHSactiveProjects();
@@ -251,6 +286,24 @@ public class AssetsController
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
 	        
+	        String userIdString=null;
+	        userIdString=String.valueOf(quser.getUserid());
+	        
+	        //Retrieving array of assigned projects
+			List<ProjectAssigEntity> assigProjects=serviceProjectsAssig.getAssigById(userIdString);
+			
+			//Creating a list of assigned projects
+			for(ProjectAssigEntity assigProject : assigProjects)
+			{
+				String projectNumber=assigProject.getAssigProjectNumber();
+				String projectName=serviceProjects.getProjectByNum(projectNumber);
+				
+				assigProject.setAssigProject(projectName);
+			}
+			
+			model.addAttribute("projects",projects);
+			model.addAttribute("assigProjects",assigProjects);
+	        	        
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
 				
@@ -260,7 +313,6 @@ public class AssetsController
 			model.addAttribute("items",items);
 			model.addAttribute("clients",clients);
 			model.addAttribute("sites",sites);
-			model.addAttribute("projects",projects);
 			model.addAttribute("divisions",divisions);
 			
 			model.addAttribute("priznakNew",priznakNew);
@@ -280,11 +332,10 @@ public class AssetsController
 			new ClientsEntity();
 			
 			Long clientIdLong=null;
-			Long authorIdLong=null;
-			
+						
 			String assetId=null;
 			String username=null;
-			String authorName=null;
+			
 			
 			//Preparing list of items
 			List<ItemsEntity> items=serviceItems.getAllMainItems();
@@ -296,7 +347,7 @@ public class AssetsController
 			List<SitesEntity> sites=serviceSites.getAllHHSsites();
 			
 			//Preparing list of Divisions
-			List<DivisionsEntity> divisions=serviceDivisions.getAllByName();
+			List<DivisionsEntity> divisions=serviceDivisions.getAllActives();
 			
 			//Preparing list of active projects by udelny bes
 			List<ProjectsEntity> projects=serviceProjects.getAllHHSactiveProjects();
@@ -349,15 +400,29 @@ public class AssetsController
 			
 			client=serviceClients.getClientById(clientIdLong);
 			username=client.getCname();
-			
-			//Finding authorName(person reporting the asset)
-			authorIdLong=Long.parseLong(entity.getAuthorId());
-			
-			serviceClients.getClientById(authorIdLong);
-			authorName=client.getCname();
-			
+							
+						
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
+	        
+	        String userIdString=null;
+	        userIdString=String.valueOf(quser.getUserid());
+	        
+	        //Retrieving array of assigned projects
+			List<ProjectAssigEntity> assigProjects=serviceProjectsAssig.getAssigById(userIdString);
+			
+			//Creating a list of assigned projects
+			for(ProjectAssigEntity assigProject : assigProjects)
+			{
+				String projectNumber=assigProject.getAssigProjectNumber();
+				String projectName=serviceProjects.getProjectByNum(projectNumber);
+				
+				assigProject.setAssigProject(projectName);
+			}
+			
+			model.addAttribute("projects",projects);
+			model.addAttribute("assigProjects",assigProjects);
+	        
 	        
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
@@ -373,7 +438,6 @@ public class AssetsController
 						
 			model.addAttribute("items",items);
 			model.addAttribute("sites",sites);
-			model.addAttribute("projects",projects);
 			model.addAttribute("divisions",divisions);
 			
 			model.addAttribute("clients",clients);
@@ -382,8 +446,7 @@ public class AssetsController
 			model.addAttribute("stringSearch",stringSearch);
 			model.addAttribute("priznak",priznak);
 			model.addAttribute("username",username);
-			model.addAttribute("authorName",authorName);
-						
+									
 			return "assetsAddEdit";
 		}
 		
@@ -423,12 +486,12 @@ public class AssetsController
 		{
 						
 			String message="Asset was updated successfully...";
-									
-			service.createOrUpdate(asset);
-						
+			
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
-	               
+			
+			service.createOrUpdate(asset,quser.getUsername());
+			
 	        	        	        
 	        //Processing logs
 			LogsEntity log=new LogsEntity();
@@ -483,13 +546,12 @@ public class AssetsController
 		{
 			String cname=null;
 			String clientId=null;
-			String authorId=null;
-			String authorName=null;
-						
+									
 			List<AssetsEntity> list=service.getByAssetNum(stringSearch);
 			new ClientsEntity();
 			
 			int priznakPeripherals=0;
+			int age=0; 
 			
 			String projectNumber=null;
 			String projectName=null;
@@ -502,9 +564,12 @@ public class AssetsController
 			String titleName=null;
 			String titleNumber=null;
 			
+			String datePurchased=null;
+			String ageString=null;
+			
 			Long assetIdLong=null;
 			Long clientIdLong=null;	
-			Long authorIdLong=null;
+			
 			
 			for(AssetsEntity asset : list)
 			{
@@ -525,11 +590,7 @@ public class AssetsController
 				clientIdLong=Long.parseLong(clientId);
 				cname=serviceClients.getCnameById(clientIdLong);
 				
-				//finding author name
-				authorId=asset.getAuthorId();
-				authorIdLong=Long.parseLong(authorId);
-				authorName=serviceClients.getCnameById(authorIdLong);
-				
+								
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -538,11 +599,27 @@ public class AssetsController
 				if(priznakPeripherals > 0)
 					asset.setStrobe("Yes");
 				
+				//Checking age of the asset
+				datePurchased=asset.getRealDatePurchased();
+				
+				if((datePurchased==null)||(datePurchased.equals("1900-01-01 00:00:00")))
+					age=0;
+				else
+					age=service.priznakOldItem(datePurchased);
+							
+								
+				if((age>5)&&(age<100))
+					ageString="Old";
+				else
+					ageString="New";
+				
+				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
 				asset.setUsername(cname);
-				asset.setAuthor(authorName);			
+								
+				asset.setAge(ageString);
 			}
 			
 			//Retrieving user identity
@@ -564,13 +641,12 @@ public class AssetsController
 		{
 			String cname=null;
 			String clientId=null;
-			String authorId=null;
-			String authorName=null;
-						
+									
 			List<AssetsEntity> list=service.getByItem(stringSearch);
 			new ClientsEntity();
 			
 			int priznakPeripherals=0;
+			int age=0; 
 			
 			String projectNumber=null;
 			String projectName=null;
@@ -583,10 +659,12 @@ public class AssetsController
 			
 			String assetId=null;
 			
+			String datePurchased=null;
+			String ageString=null;
+			
 			Long assetIdLong=null;
 			Long clientIdLong=null;	
-			Long authorIdLong=null;
-			
+						
 			for(AssetsEntity asset : list)
 			{
 			
@@ -604,12 +682,7 @@ public class AssetsController
 				clientId=asset.getClientId();
 				clientIdLong=Long.parseLong(clientId);
 				cname=serviceClients.getCnameById(clientIdLong);
-				
-				//finding author name
-				authorId=asset.getAuthorId();
-				authorIdLong=Long.parseLong(authorId);
-				authorName=serviceClients.getCnameById(authorIdLong);
-				
+								
 				
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
@@ -619,11 +692,26 @@ public class AssetsController
 				if(priznakPeripherals > 0)
 					asset.setStrobe("Yes");
 				
+				//Checking age of the asset
+				datePurchased=asset.getRealDatePurchased();
+				
+				if((datePurchased==null)||(datePurchased.equals("1900-01-01 00:00:00")))
+					age=0;
+				else
+					age=service.priznakOldItem(datePurchased);
+							
+								
+				if((age>5)&&(age<100))
+					ageString="Old";
+				else
+					ageString="New";
+				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
 				asset.setUsername(cname);
-				asset.setAuthor(authorName);
+								
+				asset.setAge(ageString);
 			}
 			
 			//Retrieving user identity
@@ -635,7 +723,7 @@ public class AssetsController
 			model.addAttribute("stringSearch",stringSearch);												
 			model.addAttribute("assets",list);
 			model.addAttribute("priznak",priznak);
-						
+												
 			return "assetsList";
 			
 		}
@@ -645,13 +733,12 @@ public class AssetsController
 		{
 			String cname=null;
 			String clientId=null;
-			String authorId=null;
-			String authorName=null;
-			
+						
 			List<AssetsEntity> list=service.getByAuthor(stringSearch);
 			new ClientsEntity();
 			
 			int priznakPeripherals=0;
+			int age=0; 
 						
 			String projectNumber=null;
 			String projectName=null;
@@ -664,10 +751,12 @@ public class AssetsController
 			
 			String assetId=null;
 			
+			String datePurchased=null;
+			String ageString=null;
+			
 			Long assetIdLong=null;
 			Long clientIdLong=null;
-			Long authorIdLong=null;
-			
+						
 			for(AssetsEntity asset : list)
 			{
 			
@@ -686,11 +775,7 @@ public class AssetsController
 				clientIdLong=Long.parseLong(clientId);
 				cname=serviceClients.getCnameById(clientIdLong);
 				
-				//finding author name
-				authorId=asset.getAuthorId();
-				authorIdLong=Long.parseLong(authorId);
-				authorName=serviceClients.getCnameById(authorIdLong);
-				
+								
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -699,11 +784,26 @@ public class AssetsController
 				if(priznakPeripherals > 0)
 					asset.setStrobe("Yes");
 				
+				//Checking age of the asset
+				datePurchased=asset.getRealDatePurchased();
+				
+				if((datePurchased==null)||(datePurchased.equals("1900-01-01 00:00:00")))
+					age=0;
+				else
+					age=service.priznakOldItem(datePurchased);
+							
+								
+				if((age>5)&&(age<100))
+					ageString="Old";
+				else
+					ageString="New";
+				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
 				asset.setUsername(cname);
-				asset.setAuthor(authorName);
+				
+				asset.setAge(ageString);
 			}
 			
 			//Retrieving user identity
@@ -726,13 +826,12 @@ public class AssetsController
 		{
 			String cname=null;
 			String clientId=null;
-			String authorId=null;
-			String authorName=null;
-			
+						
 			List<AssetsEntity> list=service.getByProgram(stringSearch);
 			new ClientsEntity();
 			
 			int priznakPeripherals=0;
+			int age=0; 
 			
 			String projectNumber=null;
 			String projectName=null;
@@ -747,7 +846,9 @@ public class AssetsController
 			
 			Long assetIdLong=null;	
 			Long clientIdLong=null;
-			Long authorIdLong=null;
+						
+			String datePurchased=null;
+			String ageString=null;
 			
 			for(AssetsEntity asset : list)
 			{
@@ -767,11 +868,7 @@ public class AssetsController
 				clientIdLong=Long.parseLong(clientId);
 				cname=serviceClients.getCnameById(clientIdLong);
 				
-				//finding author name
-				authorId=asset.getAuthorId();
-				authorIdLong=Long.parseLong(authorId);
-				authorName=serviceClients.getCnameById(authorIdLong);
-				
+								
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -780,11 +877,26 @@ public class AssetsController
 				if(priznakPeripherals > 0)
 					asset.setStrobe("Yes");
 				
+				//Checking age of the asset
+				datePurchased=asset.getRealDatePurchased();
+				
+				if((datePurchased==null)||(datePurchased.equals("1900-01-01 00:00:00")))
+					age=0;
+				else
+					age=service.priznakOldItem(datePurchased);
+							
+								
+				if((age>5)&&(age<100))
+					ageString="Old";
+				else
+					ageString="New";
+				
 				asset.setProgram(projectName);
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
 				asset.setUsername(cname);	
-				asset.setAuthor(authorName);
+								
+				asset.setAge(ageString);
 			}
 			
 			//Retrieving user identity
@@ -807,9 +919,7 @@ public class AssetsController
 		{
 			String cname=null;
 			String clientId=null;
-			String authorId=null;
-			String authorName=null;
-			
+						
 			List<AssetsEntity> list=service.getByClientId(stringSearch);
 			new ClientsEntity();
 			
@@ -828,8 +938,7 @@ public class AssetsController
 			
 			Long assetIdLong=null;	
 			Long clientIdLong=null;
-			Long authorIdLong=null;
-						
+									
 			for(AssetsEntity asset : list)
 			{
 			
@@ -848,11 +957,7 @@ public class AssetsController
 				clientIdLong=Long.parseLong(clientId);
 				cname=serviceClients.getCnameById(clientIdLong);
 				
-				//finding author name
-				authorId=asset.getAuthorId();
-				authorIdLong=Long.parseLong(authorId);
-				authorName=serviceClients.getCnameById(authorIdLong);
-				
+								
 				//Finding if this current asset is having peripherals
 				assetIdLong=asset.getAssetid();
 				assetId=Long.toString(assetIdLong);
@@ -865,7 +970,7 @@ public class AssetsController
 				asset.setSite(itemName);
 				asset.setTitle(titleName);
 				asset.setUsername(cname);
-				asset.setAuthor(authorName);
+				
 			}
 			
 			//Retrieving user identity
@@ -900,13 +1005,31 @@ public class AssetsController
 			//Retrieving user identity
 	        UsersEntity quser=serviceUsers.getUserById(quserId);
 	        
+	        String userIdString=null;
+	        userIdString=String.valueOf(quser.getUserid());
+	        
+	        //Retrieving array of assigned projects
+			List<ProjectAssigEntity> assigProjects=serviceProjectsAssig.getAssigById(userIdString);
+			
+			//Creating a list of assigned projects
+			for(ProjectAssigEntity assigProject : assigProjects)
+			{
+				String projectNumber=assigProject.getAssigProjectNumber();
+				String projectName=serviceProjects.getProjectByNum(projectNumber);
+				
+				assigProject.setAssigProject(projectName);
+			}
+			
+			model.addAttribute("projects",projects);
+			model.addAttribute("assigProjects",assigProjects);
+	        
 	        model.addAttribute("quserId",quserId);
 			model.addAttribute("quser",quser);
 			
 			model.addAttribute("items",items);
 			model.addAttribute("emails",emails);
-			model.addAttribute("projects",projects);
 			
+									
 			return "viewsMenuAssets";
 			
 			
@@ -924,7 +1047,7 @@ public class AssetsController
 			int age=0;
 			
 			Long clientIdLong=null;
-			Long authorIdLong=null;
+			
 			
 			String assetId=null;
 			String projectNumber=null;
@@ -936,7 +1059,6 @@ public class AssetsController
 			String viewTitle=null;
 			String header="Assets View by Program : ";
 			String username=null;
-			String author=null;
 			String datePurchased=null;
 			
 			String periphNumber=null;
@@ -960,10 +1082,7 @@ public class AssetsController
 				clientIdLong=Long.parseLong(asset.getClientId());
 				username=serviceClients.getCnameById(clientIdLong);
 				
-				//Finding name of the person reporting the asset
-				authorIdLong=Long.parseLong(asset.getAuthorId());
-				author=serviceClients.getCnameById(authorIdLong);
-			
+							
 				//Finding project name
 				projectNumber=asset.getProject();
 				projectName=serviceProjects.getProjectByNum(projectNumber);
@@ -997,7 +1116,7 @@ public class AssetsController
 				asset.setTitle(titleName);
 				asset.setAge(ageString);
 				asset.setUsername(username);
-				asset.setAuthor(author);
+				
 			}
 			
 			for(PeripheralsEntity peripheral : listPeripherals)
@@ -1005,8 +1124,7 @@ public class AssetsController
 				assetId=peripheral.getAssetId();
 				assetIdLong=Long.parseLong(assetId);
 				username=service.getUsername(assetIdLong);
-				
-								
+												
 				//Finding item name
 				periphNumber=peripheral.getPeripheralNum();
 				periphName=serviceItems.getItemByNumber(periphNumber);
@@ -1073,7 +1191,7 @@ public class AssetsController
 			List<PeripheralsEntity> listPeripherals=servicePeripherals.getByProject(stringSearch);
 			
 			Long clientIdLong=null;
-			Long authorIdLong=null;
+			
 			
 			String assetId=null;
 			String projectNumber=null;
@@ -1089,7 +1207,7 @@ public class AssetsController
 			String day=null;
 			String podcherk="/";
 			String username=null;
-			String author=null;
+			
 			
 			String periphNumber=null;
 			String periphName=null;
@@ -1102,11 +1220,7 @@ public class AssetsController
 				//Finding username
 				clientIdLong=Long.parseLong(asset.getClientId());
 				username=serviceClients.getCnameById(clientIdLong);
-				
-				//Finding name of person reporting the asset
-				authorIdLong=Long.parseLong(asset.getAuthorId());
-				author=serviceClients.getCnameById(authorIdLong);
-				
+												
 				//Finding project name
 				projectNumber=asset.getProject();
 				projectName=serviceProjects.getProjectByNum(projectNumber);
@@ -1137,7 +1251,6 @@ public class AssetsController
 				asset.setTitle(titleName);
 				asset.setDateCreation(dateConverted);
 				asset.setUsername(username);
-				asset.setAuthor(author);
 				
 			}
 			
@@ -1159,8 +1272,8 @@ public class AssetsController
 	 
 	        ICsvBeanWriter csvWriter=new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 	        	        
-	        String[] csvHeader={"Item","Asset Number","Maker", "Model", "Date Purchased","User","Project","Program","Registered by"};
-	        String[] nameMapping={"site","assetNumber","maker","model","datePurchased","username","project","program","author"};
+	        String[] csvHeader={"Item","Asset Number","Maker", "Model", "Date Purchased","User","Project","Program"};
+	        String[] nameMapping={"site","assetNumber","maker","model","datePurchased","username","project","program"};
 	        
 	        String[] csvHeader2={"Description","Item Related","User"};
 	        String[] nameMapping2={"description","itemId","notes"};

@@ -39,7 +39,10 @@
                             	
 	           				<button type="submit" class="btn btn-light">Back</button>	
 	           			
-	           				<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           				<input type="hidden" th:value="${quserId}" name="quserId">
+	           				 
+	           				<input type="hidden" th:value="${projectNumber}" name="projectNumber"> 
+	           				<input type="hidden" th:value="${project}" name="project"> 
 	           			
 	           			</form>
 	           		</li>
@@ -49,6 +52,9 @@
 	           			     <button type="submit" class="btn btn-light">Add New</button>
 	           			
 	           				 <input type="hidden" th:value="${quserId}" name="quserId"> 
+	           				 
+	           				 <input type="hidden" th:value="${projectNumber}" name="projectNumber"> 
+	           				 <input type="hidden" th:value="${project}" name="project">
 	           				
 	           			</form>
 	        		</li>
@@ -57,7 +63,10 @@
                             	
 	           			     <button type="submit" class="btn btn-light">Export to CSV</button>
 	           			
-	           				 <input type="hidden" th:value="${quserId}" name="quserId"> 
+	           				 <input type="hidden" th:value="${quserId}" name="quserId">
+	           				 
+							 <input type="hidden" th:value="${projectNumber}" name="projectNumber"> 
+	           				<input type="hidden" th:value="${project}" name="project">
 	           				
 	           			</form>
 	        		</li>	        			        		
@@ -67,7 +76,10 @@
       		
       			<table class="table table-striped">
       				<tr>
-      					<td style="color:teal;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></td>
+      					<td style="color:teal;font-weight:bold;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></td>
+					</tr>
+					<tr>
+      					<td style="color:brown;font-weight:bold;" th:text="${project} +' ('+ ${projectNumber} +')'"></td>
 					</tr>
 				</table>	
 					    		
@@ -79,6 +91,7 @@
   							<th style="color:#006400;font-size:12px;">HMIS Data</th>
   							<th style="color:#006400;font-size:12px;">Bed List Data</th>
   							<th style="color:#006400;font-size:12px;">Hourly Census Max</th>
+  							<th style="color:#006400;font-size:12px;">Project</th>
   							  							  							
   							<th style="color:#006400;font-size:12px;">Edit</th>
   							<th style="color:#006400;font-size:12px;">Delete</th>
@@ -92,7 +105,7 @@
   							<td th:text="${dataComp.hmis}" style="font-size:12px;"></td>
   							<td th:text="${dataComp.bedList}" style="font-size:12px;"></td>
   							<td th:text="${dataComp.hmax}" style="font-size:12px;"></td>
-  							  												  							
+  							<td th:text="${dataComp.projectNumber}" style="font-size:12px;"></td>  												  							
   							<td>
                             	
                                 <form th:action="@{/dataComp/edit}" method="post">
@@ -102,6 +115,9 @@
 	           						<input type="hidden" th:value="${dataComp.dataid}" name="id"> 
 	           						
 	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						
+	           						<input type="hidden" th:value="${project}" name="project"> 
+	           						<input type="hidden" th:value="${projectNumber}" name="projectNumber">
 	           						 
 	           					</form>
                             </td>
@@ -113,7 +129,12 @@
 	           			
 	           						<input type="hidden" th:value="${dataComp.dataid}" name="id"> 
 	           						
-	           						<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           						<input type="hidden" th:value="${quserId}" name="quserId">
+	           						
+	           						<input type="hidden" th:value="${projectNumber}" name="projectNumber"> 
+	           						
+	           						<input type="hidden" th:value="${project}" name="project"> 
+	           						<input type="hidden" th:value="${projectNumber}" name="projectNumber">
 	           						 
 	           					</form>
                             </td>

@@ -30,10 +30,16 @@ public class DataCompEntity
 	@Column(name="hmax")
 	private String hmax;
 	
+	@Column(name="projectnumber")
+	private String projectNumber;
+	
+	@Column(name="project")
+	private String project;
+	
 	@Override
 	public String toString()
 	{
-		return "DataCompEntity[dataid="+ dataid +",date="+ date +",realDate="+ realDate +",hmis="+ hmis +",bedList="+ bedList +",hmax="+ hmax +"]";				
+		return "DataCompEntity[dataid="+ dataid +",date="+ date +",realDate="+ realDate +",hmis="+ hmis +",bedList="+ bedList +",hmax="+ hmax +",projectNumber="+ projectNumber +",project="+ project +"]";				
 		
 	}
 
@@ -97,6 +103,26 @@ public class DataCompEntity
 	public void setHmax(String hmax) 
 	{
 		this.hmax=hmax;
+	}
+
+	public String getProjectNumber() 
+	{
+		return projectNumber;
+	}
+
+	public void setProjectNumber(String projectNumber) 
+	{
+		this.projectNumber=projectNumber;
+	}
+
+	public String getProject() 
+	{
+		return project;
+	}
+
+	public void setProject(String project) 
+	{
+		this.project=project;
 	}
 	
 	

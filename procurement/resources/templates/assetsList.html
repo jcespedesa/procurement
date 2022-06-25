@@ -73,10 +73,10 @@
   							<th style="color:#006400;font-size:12px;">Project</th>
   							<th style="color:#006400;font-size:12px;">User</th>
   							<th style="color:#006400;font-size:12px;">Date Purchased</th>
+  							
   							<th style="color:#006400;font-size:12px;">Peripherals</th>
   							<th style="color:#006400;font-size:12px;">Active</th>
-  							<th style="color:#006400;font-size:12px;">Rep.By</th>
-  							
+  							  							
   							<th style="color:#006400;font-size:12px;">Edit</th>
   							<th th:if="${quser.role}=='dba'" style="color:#006400;font-size:12px;">Delete</th>
   							
@@ -90,14 +90,17 @@
   							
   							<td th:text="${asset.program} +' ('+ ${asset.project} +')'" style="font-size:11px;"></td>
   							<td th:text="${asset.username}" style="font-size:12px;" noWrap></td>  							
-  							<td th:text="${asset.datePurchased}" style="font-size:12px;"></td>
+  							<!--  <td th:text="${asset.datePurchased}" style="font-size:12px;"></td> -->
+  							
+  							<td th:if="${asset.age=='Old'}" th:text="${asset.datePurchased}" style="font-size:12px;background-color:#f8edeb;"></td>
+  							<td th:unless="${asset.age=='Old'}" th:text="${asset.datePurchased}" style="font-size:12px;"></td>
   							
   							<td th:if="${asset.strobe}=='Yes'" th:text="${asset.strobe}" style="font-size:12px;background-color:lightblue;text-align: center;"></td>	
   							<td th:unless="${asset.strobe}=='Yes'" th:text="${asset.strobe}" style="font-size:12px;text-align: center;"></td>
   							
   							<td th:if="${asset.active}=='Yes'" th:text="${asset.active}" style="font-size:12px;"></td>
   							<td th:unless="${asset.active}=='Yes'" th:text="${asset.active}" style="font-size:12px;background-color:#ffccff;text-align: center;"></td>
-  							<td th:text="${asset.author}" style="font-size:12px;" noWrap></td>						  							
+  												  							
   							<td>
                             	<form th:action="@{/procurement/assets/edit}" method="post">
                             	

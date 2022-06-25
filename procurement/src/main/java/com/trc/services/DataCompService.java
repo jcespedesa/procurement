@@ -125,4 +125,17 @@ public class DataCompService
 	}
 	
 	
+	public List<DataCompEntity> getDataCompByProjectNum(String projectNumber)
+	{
+		List<DataCompEntity> result=(List<DataCompEntity>) repository.findAllByProjectNum(projectNumber);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<DataCompEntity>();
+		
+	}
+	
+	
+	
 }

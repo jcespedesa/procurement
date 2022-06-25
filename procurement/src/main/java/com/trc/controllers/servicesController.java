@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
@@ -26,9 +25,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.trc.entities.BedListsEntityHHS;
 import com.trc.entities.BedListsEntityHMIS;
 import com.trc.entities.DataCompEntity;
+import com.trc.entities.ProjectsEntity;
 import com.trc.entities.UsersEntity;
 import com.trc.entities.ViSpdatsEntity;
 import com.trc.services.DataCompService;
+import com.trc.services.ProjectsService;
 import com.trc.services.ServicesService;
 import com.trc.services.UsersService;
 
@@ -43,6 +44,9 @@ public class servicesController
 	
 	@Autowired
 	UsersService serviceUsers;
+	
+	@Autowired
+	ProjectsService serviceProjects;
 	
 	@Autowired
 	DataCompService serviceDataComp;
@@ -370,60 +374,87 @@ public class servicesController
     }
 
 	//TCP Data report process
+		
+	@GetMapping("/tcpDataSel")
+	public String tcpDataRepSel(Model model, Long quserId)
+	{
+		List<ProjectsEntity> list=serviceProjects.getAllTcpGraphParticipants();
+			
+		String message="Please select a project to continue...";
+			
+		//Retrieving user identity
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+			
+		model.addAttribute("projects",list);
+		model.addAttribute("message",message);
+		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
+		return "tcpDataSel";
+			
+	}
 	
-		@GetMapping("/tcpDataRep")
-		public String tcpDataReport(Model model, Long quserId) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
-		{
+	
+	@RequestMapping(value="/tcpDataRep", method=RequestMethod.POST)
+	public String tcpDataReport(Model model, Long quserId, String projectNumber) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
+	{
 						
-			JSONObject jsonObjectHMIS=new JSONObject();
-			JSONObject jsonObjectBedList=new JSONObject();
-			JSONObject jsonObjectHmax=new JSONObject();
+		JSONObject jsonObjectHMIS=new JSONObject();
+		JSONObject jsonObjectBedList=new JSONObject();
+		JSONObject jsonObjectHmax=new JSONObject();
 			
-			//Modifying the JSON objects to be able to order its records
-			Field changeMapHMIS=jsonObjectHMIS.getClass().getDeclaredField("map");
-			changeMapHMIS.setAccessible(true);
-			changeMapHMIS.set(jsonObjectHMIS, new LinkedHashMap<>());
-			changeMapHMIS.setAccessible(false);
+		//Modifying the JSON objects to be able to order its records
+		Field changeMapHMIS=jsonObjectHMIS.getClass().getDeclaredField("map");
+		changeMapHMIS.setAccessible(true);
+		changeMapHMIS.set(jsonObjectHMIS, new LinkedHashMap<>());
+		changeMapHMIS.setAccessible(false);
 			
-			Field changeMapBedList=jsonObjectBedList.getClass().getDeclaredField("map");
-			changeMapBedList.setAccessible(true);
-			changeMapBedList.set(jsonObjectBedList, new LinkedHashMap<>());
-			changeMapBedList.setAccessible(false);
+		Field changeMapBedList=jsonObjectBedList.getClass().getDeclaredField("map");
+		changeMapBedList.setAccessible(true);
+		changeMapBedList.set(jsonObjectBedList, new LinkedHashMap<>());
+		changeMapBedList.setAccessible(false);
 			
-			Field changeMapHmax=jsonObjectHmax.getClass().getDeclaredField("map");
-			changeMapHmax.setAccessible(true);
-			changeMapHmax.set(jsonObjectHmax, new LinkedHashMap<>());
-			changeMapHmax.setAccessible(false);
+		Field changeMapHmax=jsonObjectHmax.getClass().getDeclaredField("map");
+		changeMapHmax.setAccessible(true);
+		changeMapHmax.set(jsonObjectHmax, new LinkedHashMap<>());
+		changeMapHmax.setAccessible(false);
 			
-			//Retrieving data from the table
-			List<DataCompEntity> listValuesGraph=serviceDataComp.getAllByDate();
+		//Retrieving data from the table
+		List<DataCompEntity> listValuesGraph=serviceDataComp.getDataCompByProjectNum(projectNumber);
+		
+		//Retrieving project name
+		String project=serviceProjects.getProjectByNum(projectNumber);	
 			
-			//System.out.println(listValuesGraph);
+		//System.out.println(listValuesGraph);
 			
-			for(DataCompEntity dataComp:listValuesGraph)
-	        {
+		for(DataCompEntity dataComp:listValuesGraph)
+	    {
 	            jsonObjectHMIS.put(dataComp.getDate(),dataComp.getHmis());
 	            jsonObjectBedList.put(dataComp.getDate(),dataComp.getBedList());
 	            jsonObjectHmax.put(dataComp.getDate(),dataComp.getHmax());
-	        }
+	    }
 						
-			//System.out.println(jsonObjectHMIS);
-	        //System.out.println(jsonObjectBedList);
-	        //System.out.println(jsonObjectHmax);
+		//System.out.println(jsonObjectHMIS);
+	    //System.out.println(jsonObjectBedList);
+	    //System.out.println(jsonObjectHmax);
 						
-			//Retrieving user identity
-	        UsersEntity quser=serviceUsers.getUserById(quserId);
-	        
-	        model.addAttribute("quserId",quserId);
-			model.addAttribute("quser",quser);
+		//Retrieving user identity
+	    UsersEntity quser=serviceUsers.getUserById(quserId);
+	       
+	    model.addAttribute("quserId",quserId);
+	    model.addAttribute("quser",quser);
 			
-			model.addAttribute("listValuesGraph",listValuesGraph);
-			model.addAttribute("dataHMIS",jsonObjectHMIS);
-			model.addAttribute("dataBedList",jsonObjectBedList);
-			model.addAttribute("dataHmax",jsonObjectHmax);
+		model.addAttribute("listValuesGraph",listValuesGraph);
+		model.addAttribute("dataHMIS",jsonObjectHMIS);
+		model.addAttribute("dataBedList",jsonObjectBedList);
+		model.addAttribute("dataHmax",jsonObjectHmax);
+		
+		model.addAttribute("projectNumber",projectNumber);
+		model.addAttribute("project",project);
 									
-			return "tcpDataReport";
+		return "tcpDataReport";
 				
-		}
+	}
 }
 

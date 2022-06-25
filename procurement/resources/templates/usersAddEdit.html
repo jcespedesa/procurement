@@ -51,6 +51,17 @@
 		           			
 		           		</form>
 	        		</li>
+	        		<li th:if="${user.userid}!=null">
+	        		
+	           			<form th:action="@{/procurement/projectsAssig/list}" method="post">
+	                            	
+		           			<button type="submit" class="btn btn-light">Assigned Projects</button>	
+		           			
+		           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+		           			<input type="hidden" th:value="${user.userid}" name="userId">
+		           			
+		           		</form>
+	        		</li>
 	            	<li th:if="${user.userid}!=null">
 	            	
 	           			<form th:action="@{/procurement/users/advancedPerms}" method="post">
@@ -133,7 +144,7 @@
   						
   					<table th:if="${user.userid}!=null" class="table-condensed table-bordered table-striped" style="background-color:#fffff0;">					        			
         		 		<thead>
-        		 			<tr><td colspan="3" style="color:#330099;font-size:12px;font-weight:bold;background-color:#d3d3d3;padding:5px;">Assigned Sections</td></tr>
+        		 			<tr><td colspan="3" style="color:brown;font-size:12px;font-weight:bold;background-color:#d3d3d3;padding:5px;">Assigned Sections</td></tr>
   							<tr>
   								<th style="color:#006400;font-size:12px;text-align:center;background-color:#fffacd;padding:5px;" noWrap>Number</th>
   								<th style="color:#006400;font-size:12px;text-align:center;background-color:#fffacd;padding:5px;" noWrap>Section Name</th>
@@ -147,10 +158,30 @@
         				</tbody>
         			</table>	 
   				</div>
+  				
+  				<div class="col">
+  						
+  					<table th:if="${user.userid}!=null" class="table-condensed table-bordered table-striped" style="background-color:#fffff0;">					        			
+        		 		<thead>
+        		 			<tr><td colspan="3" style="color:brown;font-size:12px;font-weight:bold;background-color:#d3d3d3;padding:5px;">Assigned Projects</td></tr>
+  							<tr>
+  								<th style="color:#006400;font-size:12px;text-align:center;background-color:#fffacd;padding:5px;" noWrap>Number</th>
+  								<th style="color:#006400;font-size:12px;text-align:center;background-color:#fffacd;padding:5px;" noWrap>Project</th>
+  							</tr>
+  						</thead>
+  						<tbody>
+  							<tr th:each="project,itemNum : ${projects}">
+  								<td th:text="${project.assigProjectNumber}" style="font-size:12px;padding:5px;"></td>
+  								<td th:text="${project.username}" style="font-size:12px;padding:5px;"></td>
+  							</tr>	   				 
+        				</tbody>
+        			</table>	 
+  				</div>
+  				
   				<div class="col">
   					<table th:if="${user.userid}!=null" class="table-condensed table-bordered table-striped" style="background-color:#fffff0;">	
   						<thead>
-        		 			<tr><td colspan="2" style="color:#330099;font-size:12px;font-weight:bold;padding:5px;">Assigned Role(s)</td></tr>
+        		 			<tr><td colspan="2" style="color:brown;font-size:12px;font-weight:bold;padding:5px;">Assigned Role(s)</td></tr>
   						</thead>
   						<tbody>
   							<tr th:if="${user.priznakITapprover}=='Yes'">

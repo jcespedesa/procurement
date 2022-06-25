@@ -41,6 +41,9 @@
 	           			
 	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
 	           			
+	           			<input type="hidden" th:value="${projectNumber}" name="projectNumber"> 
+	           			<input type="hidden" th:value="${project}" name="project"> 
+	           			
 	           		</form>
         		</li>
             	
@@ -50,6 +53,7 @@
       			<div class="row">
         			<div class="col-8">
 				          <p class="navbar-brand" style="color:#880000;font-size:15px;">Add/Edit TCP Data Compare Records</p>
+				          <label style="color:green;font-weight:bold;" th:text="${project} +' ('+ ${projectNumber} +')'"></label>
 				          
         			</div>
       			</div>
@@ -84,7 +88,10 @@
                     </div>
                             	
                     <input type="hidden" id="id" th:field="*{dataid}">
-     				<input type="hidden" th:value="${quserId}" name="quserId"> 
+                    <input type="hidden" th:value="${quserId}" name="quserId"> 
+                    
+                    <input type="hidden" th:value="${projectNumber}" name="projectNumber"> 
+	           		<input type="hidden" th:value="${project}" name="project">
                         	
             	</form>
   				

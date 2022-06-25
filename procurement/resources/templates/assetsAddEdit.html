@@ -178,17 +178,22 @@
                  <div class="form-group">
                        	                       	
                    	<label for="division" class="col-form-label">Division :</label> 
-                   	<select th:field="*{division}" id="division">
+                   	<select th:field="*{division}" id="division" required>
                    		<option th:value="*{division}" th:text="${divisionName}"></option>
                    		<option th:each="division : ${divisions}" th:value="${division.dnumber}" th:text="${division.dname}" ></option>
                    	</select>
                                       
                     
-                   	<label for="program" class="col-form-label">Program :</label> 
-                   	<select th:field="*{project}" id="project">
+                   	<label for="program" class="col-form-label">Program :</label>
+                   	 
+                   	<select th:field="*{project}" id="project" required th:if="${quser.role}=='dba'">
                    		<option th:value="*{project}" th:text="${projectName}"></option>
                    		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project}+' ('+ ${project.projectNumber} +')'" ></option>
-                   		<option value="Unknown">Unknown</option>
+                   	</select>
+                   	
+                   	<select th:field="*{project}" id="project" required th:unless="${quser.role}=='dba'">
+                   		<option th:value="*{project}" th:text="${projectName}"></option>
+                   		<option th:each="project : ${assigProjects}" th:value="${project.assigProjectNumber}" th:text="${project.assigProject}+' ('+ ${project.assigProjectNumber} +')'" ></option>
                    	</select>
                        	
                  </div>
@@ -217,17 +222,7 @@
                  </div>   	
                     
                  <hr>   	
-                     
-                 <div class="form-group">   	
-                   	<label for="author" class="col-form-label"> Form Completed by :</label> 
-                   	<select th:field="*{authorId}" id="authorId" required>
-                   		<option th:value="*{authorId}" th:text="${authorName}"></option>
-                  		<option th:each="client : ${clients}" th:value="${client.clientid}" th:text="${client.cname}" ></option>
-                   	</select>
-                  	
-                 </div>
-                    
-                                                            
+                                                                                              
                  <div class="form-group">
       				<label for="notes">Notes/Observations:</label><br>
       				<textarea id="notes" th:field="*{notes}" rows="7" cols="80"></textarea>
@@ -284,6 +279,7 @@
                 </div>   	
                                                 	
                 <input type="hidden" id="id" th:field="*{assetid}"> 
+                                
                 <input type="hidden" th:value="${seed}" th:attr="name='strobe'"> 
                 <input type="hidden" th:value="${kluch}" th:attr="name='kluch'"> 
                 <input type="hidden" th:value="${stringSearch}" name="stringSearch"> 

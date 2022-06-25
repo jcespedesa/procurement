@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.DivisionsEntity;
 import com.trc.entities.LogsEntity;
+import com.trc.entities.ProjectAssigEntity;
 import com.trc.entities.SectionAssigEntity;
 import com.trc.entities.UsersEntity;
 import com.trc.services.DivisionsService;
 import com.trc.services.LogsService;
+import com.trc.services.ProjectsAssigService;
+import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.SectionsAssigService;
 import com.trc.services.SectionsService;
@@ -38,7 +41,13 @@ public class UsersController
 	SectionsAssigService serviceSectionsAssig;
 	
 	@Autowired
+	ProjectsAssigService serviceProjectsAssig;
+	
+	@Autowired
 	SectionsService serviceSections;
+	
+	@Autowired
+	ProjectsService serviceProjects;
 	
 		
 	@RequestMapping(path="/list", method=RequestMethod.POST)
@@ -87,8 +96,12 @@ public class UsersController
 	public String editUsersById(Model model,Optional<Long> id, Long quserId) throws RecordNotFoundException 
 	{
 		String userIdString=null;
+		
 		String sectionNumber=null;
 		String sectionName=null;
+		
+		String projectNumber=null;
+		String projectName=null;
 				
 		//Preparing list of divisions
 		List<DivisionsEntity> divisions=serviceDivisions.getAllDivisions();
@@ -111,8 +124,23 @@ public class UsersController
 				sectionName=serviceSections.getSectionByNumber(sectionNumber);
 				
 				section.setUsername(sectionName);
+			}
+			
+			//Retrieving the list of assigned projects
+			List<ProjectAssigEntity> projects=serviceProjectsAssig.getAssigById(userIdString);
+			
+						
+			for(ProjectAssigEntity project : projects)
+			{
+					
+				//finding project name
+				projectNumber=project.getAssigProjectNumber();
+				projectName=serviceProjects.getProjectByNum(projectNumber);
+				
+				project.setUsername(projectName);
 			}	
-									
+			
+			model.addAttribute("projects",projects);						
 			model.addAttribute("sections",sections);
 			model.addAttribute("user",entity);
 		}

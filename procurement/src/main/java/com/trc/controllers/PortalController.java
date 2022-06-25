@@ -191,11 +191,11 @@ public class PortalController
 	public String createOrUpdateAsset(Model model,AssetsEntity asset,RedirectAttributes redirectAttributes)
 	{
 		String kluch=null;
-		
+		String username="void";
 		
 		//System.out.println("Inside the controller to update or create. Object is: "+ asset);
 		
-		service.createOrUpdate(asset);
+		service.createOrUpdate(asset,username);
 		
 		kluch=asset.getKluch();
 		
@@ -681,8 +681,7 @@ public class PortalController
 		
 		if(priznakSuccess)
 		{	
-			
-			
+						
 			//Retrieving user credentials
 			UsersEntity quser=serviceUsers.getUserByEmail(email);
 			

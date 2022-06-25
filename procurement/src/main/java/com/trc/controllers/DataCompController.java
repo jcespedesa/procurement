@@ -20,9 +20,11 @@ import org.supercsv.prefs.CsvPreference;
 
 import com.trc.entities.DataCompEntity;
 import com.trc.entities.LogsEntity;
+import com.trc.entities.ProjectsEntity;
 import com.trc.entities.UsersEntity;
 import com.trc.services.DataCompService;
 import com.trc.services.LogsService;
+import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.UsersService;
 
@@ -39,11 +41,16 @@ public class DataCompController
 	@Autowired
 	LogsService serviceLogs;
 	
-	@RequestMapping(path="/list", method=RequestMethod.POST)
-	public String getAllSites(Model model, Long quserId)
+	@Autowired
+	ProjectsService serviceProjects;
+	
+	
+	@RequestMapping(path="/menu", method=RequestMethod.POST)
+	public String selectProject(Model model, Long quserId)
 	{
-		List<DataCompEntity> list=service.getAllDataComp();
+		List<ProjectsEntity> list=serviceProjects.getAllTcpGraphParticipants();
 		
+		String message="Please select a project to continue...";
 				
 		//Retrieving user identity
         UsersEntity quser=serviceUsers.getUserById(quserId);
@@ -51,7 +58,32 @@ public class DataCompController
         model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);
 		
+		model.addAttribute("message",message);
+		model.addAttribute("projects",list);
+		
+		return "dataCompsMenu";
+		
+		
+	}
+	
+	@RequestMapping(path="/list", method=RequestMethod.POST)
+	public String getAllSites(Model model, Long quserId, String projectNumber)
+	{
+		List<DataCompEntity> list=service.getDataCompByProjectNum(projectNumber);
+		
+		//Retrieving project name
+		String project=serviceProjects.getProjectByNum(projectNumber);		
+				
+		//Retrieving user identity
+        UsersEntity quser=serviceUsers.getUserById(quserId);
+        
+               
+        model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
+		
 		model.addAttribute("dataComps",list);
+		model.addAttribute("projectNumber",projectNumber);
+		model.addAttribute("project",project);
 		
 		return "dataCompsList";
 		
@@ -59,7 +91,7 @@ public class DataCompController
 	}
 	
 	@RequestMapping(path="/edit", method=RequestMethod.POST)
-	public String editDataCompById(Model model,Optional<Long> id, Long quserId) throws RecordNotFoundException 
+	public String editDataCompById(Model model,Optional<Long> id, Long quserId, String projectNumber, String project) throws RecordNotFoundException 
 	{
 		boolean priznakNew=false;
 		
@@ -95,12 +127,15 @@ public class DataCompController
 		
 		model.addAttribute("lastRecord",lastRecord);
 		model.addAttribute("priznakNew",priznakNew);
+		
+		model.addAttribute("project",project);
+		model.addAttribute("projectNumber",projectNumber);
 				
 		return "dataCompsAddEdit";
 	}
 	
 	@RequestMapping(path="/delete", method=RequestMethod.POST)
-	public String deleteDataCompById(Model model, Long id, Long quserId) throws RecordNotFoundException
+	public String deleteDataCompById(Model model, Long id, Long quserId, String projectNumber, String project) throws RecordNotFoundException
 	{
 		String message=null;
 		
@@ -126,12 +161,15 @@ public class DataCompController
 		
 		model.addAttribute("message",message);
 		
+		model.addAttribute("project",project);
+		model.addAttribute("projectNumber",projectNumber);
+		
 		return "dataCompsRedirect";
 		
 	}
 	
 	@RequestMapping(path="/createDataComp", method=RequestMethod.POST)
-	public String createOrUpdateDataComp(Model model, DataCompEntity dataComp, Long quserId)
+	public String createOrUpdateDataComp(Model model, DataCompEntity dataComp, Long quserId, String project, String projectNumber)
 	{
 		int priznakDuplicate=0;
 		
@@ -196,13 +234,16 @@ public class DataCompController
 		
 		model.addAttribute("message",message);
 		
+		model.addAttribute("project",project);
+		model.addAttribute("projectNumber",projectNumber);
+		
 		return "dataCompsRedirect";
 		
 		
 	}
 	
 	@RequestMapping(path="/exportCSV", method=RequestMethod.POST)
-    public void exportToCSV(Model model,HttpServletResponse response,Long quserId) throws IOException, RecordNotFoundException 
+    public void exportToCSV(Model model,HttpServletResponse response,Long quserId, String project, String projectNumber) throws IOException, RecordNotFoundException 
 	{
         response.setContentType("text/csv");
         DateFormat dateFormatter=new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
@@ -219,11 +260,15 @@ public class DataCompController
 		
 		 
         ICsvBeanWriter csvWriter=new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+        
+        String[] csvTitle={"TCP Date Comp. for: "+ project};
+        String[] csvSpace={" "};
         	        
         String[] csvHeader={"Date","HMIS Data","Bed List Data","Max Hourly Census"};
         String[] nameMapping={"date","hmis","bedList","hmax"};
                       
-        	         
+        csvWriter.writeHeader(csvTitle);
+        csvWriter.writeHeader(csvSpace);	         
         csvWriter.writeHeader(csvHeader);
          
         for (DataCompEntity dataComp : list) 
@@ -245,6 +290,9 @@ public class DataCompController
         
         model.addAttribute("quserId",quserId);
 		model.addAttribute("quser",quser);
+		
+		model.addAttribute("project",project);
+		model.addAttribute("projectNumber",projectNumber);
          
     }
 	

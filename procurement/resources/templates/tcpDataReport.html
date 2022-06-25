@@ -25,11 +25,7 @@
 			<nav id="hcssmenu">
 				<ul>
 			   		<li>
-			   			<form th:action="@{/portal/mainMenu}" method="post">
-            				<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
-	           			
-	        				<input type="hidden" th:value="${quserId}" name="quserId"> 
-	        			</form>
+			   			<a th:href="@{/procurement/services/tcpDataSel(quserId=${quserId})}">Back</a>
 			   		</li>
 			            	
 			    </ul>
@@ -48,6 +44,7 @@
       			<div class="col" style="border:1px solid;">
                                                         
                     <div class="alert alert-info">Graph TCP Data</div>
+                    <label style="color:brown;font-weight:bold;" th:text="${project} +' ('+ ${projectNumber} +')'"></label>
                             
                         <div class="card">
                            	<div class="card-body">
