@@ -23,4 +23,7 @@ public interface DataCompRepository extends CrudRepository<DataCompEntity,Long>
 	
 	@Query("Select u from DataCompEntity u Where projectNumber=?1 Order by project")
 	List<DataCompEntity> findAllByProjectNum(String projectNumber);
+	
+	@Query("Select u from DataCompEntity u Where (projectNumber=?1 and realDate<=?3 and realDate>=?2)")
+	List<DataCompEntity> findAllByDate(String projectNumber,String initialDate,String finalDate);
 }

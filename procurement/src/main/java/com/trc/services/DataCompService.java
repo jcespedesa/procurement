@@ -136,6 +136,15 @@ public class DataCompService
 		
 	}
 	
-	
+	public List<DataCompEntity> getDataCompByDate(String projectNumber,String initialDate,String finalDate)
+	{
+		List<DataCompEntity> result=(List<DataCompEntity>) repository.findAllByDate(projectNumber,initialDate,finalDate);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<DataCompEntity>();
+		
+	}
 	
 }

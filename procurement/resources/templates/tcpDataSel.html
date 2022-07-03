@@ -14,13 +14,14 @@
 		<!-- Custom styles for this template -->
 		<link rel="stylesheet" th:href="@{/css/style.css}">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">		
-			
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">	
 		
 		<!-- Bootstrap core JavaScript -->
   		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
   		  
     	<!-- Custom scripts for this template -->
   		<script th:src="@{/js/modalDelete.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
 		
 	</head>
 
@@ -64,7 +65,18 @@
 	                       		<option value=""></option>
 	                       		<option th:each="project : ${projects}" th:value="${project.projectNumber}" th:text="${project.project} +' ('+ ${project.projectNumber} +')'" ></option>
 	                       	</select>
-	                    </div> 
+	                    </div>
+	                    
+	                    <div class="form-group">   
+                   			<label for="initialDate" class="col-form-label">Initial Date :</label> 
+                   			<input type="text" name="initialDate" placeholder="Date" size="10" maxlength="10" onfocus="showCalendarControl(this);" required/>
+	                    </div>
+	                    
+	                    <div class="form-group">   
+                   			<label for="finalDate" class="col-form-label">Final Date :</label> 
+                   			<input type="text" name="finalDate" placeholder="Date" size="10" maxlength="10" onfocus="showCalendarControl(this);" required/>
+	                    </div>
+	                     
 	                    <div class="form-group">
 	                    	<input type="submit" class="btn btn-primary btn-sm" value=" Continue ">
 	                    </div>

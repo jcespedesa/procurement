@@ -44,8 +44,8 @@
       			<div class="col" style="border:1px solid;">
                                                         
                     <div class="alert alert-info">Graph TCP Data</div>
-                    <label style="color:brown;font-weight:bold;" th:text="${project} +' ('+ ${projectNumber} +')'"></label>
-                            
+                    <label style="color:brown;font-weight:bold;" th:text="${project} +' ('+ ${projectNumber} +')'"></label><br>
+                    <label style="color:teal;font-weight:bold;" th:text="${initialDate} +' - '+ ${finalDate}"></label><br>        
                         <div class="card">
                            	<div class="card-body">
                                	<canvas id="myChart"></canvas>

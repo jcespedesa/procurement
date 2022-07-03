@@ -397,7 +397,7 @@ public class servicesController
 	
 	
 	@RequestMapping(value="/tcpDataRep", method=RequestMethod.POST)
-	public String tcpDataReport(Model model, Long quserId, String projectNumber) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
+	public String tcpDataReport(Model model, Long quserId, String projectNumber,String initialDate,String finalDate) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
 	{
 						
 		JSONObject jsonObjectHMIS=new JSONObject();
@@ -421,7 +421,7 @@ public class servicesController
 		changeMapHmax.setAccessible(false);
 			
 		//Retrieving data from the table
-		List<DataCompEntity> listValuesGraph=serviceDataComp.getDataCompByProjectNum(projectNumber);
+		List<DataCompEntity> listValuesGraph=serviceDataComp.getDataCompByDate(projectNumber,initialDate,finalDate);
 		
 		//Retrieving project name
 		String project=serviceProjects.getProjectByNum(projectNumber);	
@@ -452,6 +452,9 @@ public class servicesController
 		
 		model.addAttribute("projectNumber",projectNumber);
 		model.addAttribute("project",project);
+		
+		model.addAttribute("initialDate",initialDate);
+		model.addAttribute("finalDate",finalDate);
 									
 		return "tcpDataReport";
 				
